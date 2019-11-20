@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import {List, Col, Row, Descriptions} from 'antd';
 import { withRouter} from 'react-router-dom';
 import './StudyPath.css';
+import { getPathDetail } from '../../fetch'
 
 class PathDetails extends Component{
     constructor(props) {
@@ -12,23 +13,17 @@ class PathDetails extends Component{
     }
 
     componentWillMount() {
-        this.getPathDetails();
+        console.log(this.props.match);
+        this.getPathDetail(this.props.match.params.id);
     }
 
-    getPathDetails = () => {
-        fetch('https://api.bangneedu.com/learningPathDetails/' + this.props.match.params.id, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-            }})
-            .then((res) => res.json())
-            .then( res => {
-                console.log(res)
-                this.setState({
-                    pathDetail: res.data[this.props.match.params.index]
-                })
-            })
-            .catch( err => console.log(err))
+    getPathDetail = (id) => {
+        getPathDetail(id).then((res) => {
+            console.log(res)
+            this.setState({
+                pathDetail: res[0],
+            });
+        })
     };
 
     render() {
@@ -47,7 +42,7 @@ class PathDetails extends Component{
                                     <div>
                                         内容简介
                                         <div style={{float: 'right', fontWeight: 400, fontSize: 14}}>用时
-                                            <span className='mainColor'>{this.state.pathDetail.time}</span> 天
+                                            <span className='mainColor'>{this.state.pathDetail.time}</span>
                                         </div>
                                     </div>
                                 } column={1}>

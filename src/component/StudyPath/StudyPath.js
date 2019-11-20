@@ -2,34 +2,27 @@ import React, { Component } from 'react';
 import {Row, Col} from 'antd';
 import './StudyPath.css';
 import PathInfo from "./PathInfo";
+import { getStudyPaths } from '../../fetch'
 
 class StudyPath extends Component{
     constructor(props) {
         super(props);
         this.state = {
-
+            current: 1
         }
     }
 
     componentWillMount() {
-        this.getStudyPath();
+        this.getStudyPaths(this.state.current);
     }
 
-    getStudyPath = () => {
-        fetch('https://api.bangneedu.com/learningPath?current' + this.state.current +'&size=10', {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-            }})
-            .then((res) => res.json())
-            .then( res => {
-                console.log(res)
-                // this.getPathInfo(res.data.records);
-                this.setState({
-                    path: res.data.records
-                })
-            })
-            .catch( err => console.log(err))
+    getStudyPaths = (current) => {
+        getStudyPaths(current).then((res) => {
+            console.log(res)
+            this.setState({
+                path: res.records,
+            });
+        })
     };
 
     render() {

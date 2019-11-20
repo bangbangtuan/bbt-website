@@ -75,6 +75,7 @@
 .MasterProfileContext{
     background-color: #fff;
     min-width: 800px;
+    display: flex;
 }
 .postInfo,.apprenticeInfo,.masterInfo{
     width: 130px;
@@ -86,7 +87,7 @@
      padding-left: 10px;
 }
 .postInfo{
-    margin-right: 15px; 
+    margin-right: 15px;
 }
 .infoIcon{
     float: left;

@@ -84,7 +84,7 @@ class App extends React.Component {
                         <Route path="/path" render={() => {
                             return <StudyPath />
                         }} />
-                        <Route path="/pathDetail/:id/:index" render={() => {
+                        <Route path="/pathDetail/:id" render={() => {
                             return <PathDetails />
                         }} />
                         <Route path="/pathDetails" render={() => {
@@ -156,8 +156,8 @@ class App extends React.Component {
                         <Route path="/masterList" render={() => {
                             return <MasterList/>
                         }}/>
-                        
-                        
+
+
                         <Route component={PageNotFound}/>
                     </Switch>
                 </BrowserRouter>

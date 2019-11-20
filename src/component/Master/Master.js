@@ -46,55 +46,49 @@ class Master extends React.Component {
         <Col md={16}>
           <div className="con-header">师徒计划</div>
           <div className="MasterProfileContext">
-            <Row gutter={16}>
-              <Col span={8}>
-                <Card
+              <Card
                   title="成为师傅"
                   bordered={false}
                   headStyle={{ border: "none"}}
-                >
+              >
                   <div style={{minWidth:"320px" }}>
-                    <Link to={"/masterPostList"}>
-                      <div className="postInfo">
-                        <div className="infoIcon">
-                          <AirPlane />
-                        </div>
-                        <p className="infoTitle">我发布的</p>
-                        <p className="infoNumber">5</p>
-                      </div>
-                    </Link>
-                    <Link to={"/apprenticeList"}>
-                      <div className="apprenticeInfo">
-                        <div className="infoIcon">
-                          <BusinessMan />
-                        </div>
-                        <p className="infoTitle">我收徒的</p>
-                        <p className="infoNumber">5</p>
-                      </div>
-                    </Link>
+                      <Link to={"/masterPostList"}>
+                          <div className="postInfo">
+                              <div className="infoIcon">
+                                  <AirPlane />
+                              </div>
+                              <p className="infoTitle">我发布的</p>
+                              <p className="infoNumber">5</p>
+                          </div>
+                      </Link>
+                      <Link to={"/apprenticeList"}>
+                          <div className="apprenticeInfo">
+                              <div className="infoIcon">
+                                  <BusinessMan />
+                              </div>
+                              <p className="infoTitle">我收徒的</p>
+                              <p className="infoNumber">5</p>
+                          </div>
+                      </Link>
                   </div>
-                </Card>
-              </Col>
-              <Col span={8}>
-                <Card
+              </Card>
+              <Card
                   title="成为徒弟"
                   bordered={false}
                   headStyle={{ border: "none"}}
-                >
+              >
                   <div style={{  minWidth:"200px" }}>
-                    <Link to={"/masterList"}>
-                      <div className="masterInfo">
-                        <div className="infoIcon">
-                          <Student />
-                        </div>
-                        <p className="infoTitle">我拜师的</p>
-                        <p className="infoNumber">5</p>
-                      </div>
-                    </Link>
+                      <Link to={"/masterList"}>
+                          <div className="masterInfo">
+                              <div className="infoIcon">
+                                  <Student />
+                              </div>
+                              <p className="infoTitle">我拜师的</p>
+                              <p className="infoNumber">5</p>
+                          </div>
+                      </Link>
                   </div>
-                </Card>
-              </Col>
-            </Row>
+              </Card>
           </div>
         </Col>
         <Col md={4} />

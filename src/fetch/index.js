@@ -35,3 +35,25 @@ export const postArticles = (body) => post({
         'Authorization': 'Bearer ' + storage.get('token')
     }
 });
+
+/* 学习路径相关 */
+export const getStudyPaths = (current) => get({
+    url: config.PATH + '?current=' + current +'&size=10',
+    headers: {
+        'Content-Type': 'application/json',
+    }
+});
+
+export const getPathInfo = (id) => get({
+    url: config.PATH_INFO + '/' + id,
+    headers: {
+        'Content-Type': 'application/json',
+    }
+});
+
+export const getPathDetail = (id) => get({
+    url: config.PATH_DETAILS + '/' + id,
+    headers: {
+        'Content-Type': 'application/json',
+    }
+});

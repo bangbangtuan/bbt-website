@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import {List, Button, Row, Col} from 'antd';
 import './StudyPath.css';
-import { Link, withRouter } from 'react-router-dom'
+import { Link, withRouter } from 'react-router-dom';
+import { getPathInfo } from '../../fetch';
 
 class MorePaths extends Component{
     constructor(props) {
@@ -13,23 +14,16 @@ class MorePaths extends Component{
 
     componentWillMount() {
         console.log(this.props.location.state);
-        this.getPathInfo();
+        this.getPathInfo(this.props.location.state.id);
     }
 
-    getPathInfo = () => {
-        fetch('https://api.bangneedu.com/learningPathDetails/' + this.props.location.state.id, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-            }})
-            .then((res) => res.json())
-            .then( res => {
-                console.log(res)
-                this.setState({
-                    pathInfo: res.data
-                })
-            })
-            .catch( err => console.log(err))
+    getPathInfo = (id) => {
+        getPathInfo(id).then((res) => {
+            console.log(res)
+            this.setState({
+                pathInfo: res
+            });
+        })
     };
 
     render() {
@@ -53,7 +47,7 @@ class MorePaths extends Component{
                                     <div>
                                         <List.Item className={index % 2 === 0 ? 'dark' : 'light'}>
                                             <div>{item.title}</div>
-                                            <Link to={'/pathDetail/' + this.props.id + '/' + index}><Button shape='round'>查看详情</Button></Link>
+                                            <Link to={'/pathDetail/' + item.id + '/' + index}><Button shape='round'>查看详情</Button></Link>
                                         </List.Item>
                                     </div>
                                 )}
