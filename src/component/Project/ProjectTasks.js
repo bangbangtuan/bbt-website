@@ -12,6 +12,7 @@ class ProjectTasks extends Component{
         this.state = {
             visible: false,
             confirmLoading: false,
+            task:'',
         }
     }
 
@@ -31,7 +32,7 @@ class ProjectTasks extends Component{
                 console.log(res)
                 this.setState({
                     task: res.data,
-                });
+                });                
             })
             .catch( err => console.log(err))
     };
@@ -58,7 +59,6 @@ class ProjectTasks extends Component{
             })
             .catch( err => console.log(err))
     };
-
     render() {
         const detail = {
             margin: '30px 0',
@@ -90,11 +90,9 @@ class ProjectTasks extends Component{
                                         <div style={detail}>
                                             任务详情： {this.state.task.details}
                                         </div>
-                                        <p align="right">
-                                            <Button type='primary' shape='round' onClick={this.receiveTask}>领取任务</Button>
-                                        </p>
+                                        <p align="right"><Button type='primary' shape='round' onClick={this.receiveTask}>领取任务</Button></p>
                                     </Content>
-                                    <MasterRecommend/>
+                                    <MasterRecommend {...this.props}/>
                                 </div>
                             </div>
                         }

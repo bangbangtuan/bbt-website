@@ -1,43 +1,35 @@
 import React, { Component } from "react";
-import { Divider, List, Card, Descriptions, Modal, Input } from "antd";
+import { Divider, List, Card, Descriptions} from "antd";
 import "./Master.css";
-import storage from "../storage";
-const data = [
-  {
-    title: "Title 1"
-  },
-  {
-    title: "Title 2"
-  },
-  {
-    title: "Title 3"
-  }
-];
+import { getMasterList } from "../../fetch";
+import { Link } from "react-router-dom";
 
 export default class MasterRecommend extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      visible: false
+      visible: false,
+      data:[]
     };
+    //console.log("recommend props",this.props.match.params.id)
   }
 
   componentDidMount() {
-    this.getPostList();
+    this.getMasterList(3, 1);
   }
 
-  getPostList = () => {
-    let token = storage.get("token");
-    fetch()
-      .then(res => res.json())
-      .then(res => {})
-      .catch(err => console.log(err));
-  };
+  getMasterList = (size, current) => {
+    getMasterList(size, current).then(res=>{
+      if(true){
+        this.setState({
+        data:res.records
+      })
+      }
+    })
+  }
 
   showModal = () => {
-    this.setState({
-      visible: true
-    });
+    return null
   };
 
   handleOk = e => {
@@ -58,47 +50,30 @@ export default class MasterRecommend extends Component {
     return (
       <div>
         <Divider />
-        <p>看下我给你的推荐吧</p>
+        <p>看下我给你的推荐吧</p>        
         <List
           grid={{ gutter: 16, column: 3 }}
-          dataSource={data}
+          dataSource={this.state.data}
           renderItem={item => (
             <List.Item>
+              <Link to={"/masterDetail/"+item.id}>
               <Card
                 style={{ background: "#eee", borderRadius: "5px" }}
-                onClick={this.showModal}
               >
-                <Descriptions title="XXX任务定价带徒" column={1}>
+                <Descriptions title={item.name} column={1}>
                   <Descriptions.Item label="周期">
-                    <p style={{ color: "blue", display: "inline" }}>10</p>天
+                    <p style={{ color: "blue", display: "inline" }}>{item.cycle}</p>天
                   </Descriptions.Item>
                   <Descriptions.Item label="定价">
-                    <p style={{ color: "red", display: "inline" }}>￥10.0</p>
+                    <p style={{ color: "red", display: "inline" }}>￥{item.price}</p>
                   </Descriptions.Item>
                 </Descriptions>
               </Card>
-              <Modal
-                title="成为师傅"
-                visible={this.state.visible}
-                onOk={this.handleOk}
-                onCancel={this.handleCancel}
-                cancelText="取消"
-                okText="确定"
-                
-              >
-                <div className="masterModal" >
-                  <p>哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈</p>
-                  <div>
-                    <Descriptions colon={false} column={2}>
-                      <Descriptions.Item label="周期" ><Input placeholder="请输入周期" style={{marginTop:"5px"}}/></Descriptions.Item>
-                      <Descriptions.Item label="定价" ><Input value="￥10.0" style={{marginTop:"5px"}}/></Descriptions.Item>
-                    </Descriptions>
-                  </div>
-                </div>
-              </Modal>
+              </Link>
             </List.Item>
           )}
         />
+        
       </div>
     );
   }

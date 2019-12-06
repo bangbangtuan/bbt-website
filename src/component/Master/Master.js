@@ -1,43 +1,34 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { Row, Col, Card, Icon } from "antd";
+import { Row, Col, Card } from "antd";
 import { AirPlane, BusinessMan, Student } from "./svgIcon";
-import storage from "../storage";
 import "./Master.css";
+import { getMasterAndApprentice } from "../../fetch";
 
 class Master extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {};
-  }
+    constructor(props) {
+        super(props);
+        this.state = {
+            apprentice:0,
+            masterWorker:0,
+            post:1
+        }
+    }
 
-  componentDidMount() {
-    this.getApprentices();
-    this.getMasters();
-    this.getPosts();
-  }
+    componentDidMount() {
+        this.getMasterAndApprentice();
+    }
 
-  getApprentices = () => {
-    let token = storage.get("token");
-    fetch()
-      .then(res => res.json())
-      .then(res => {})
-      .catch(err => console.log(err));
-  };
-  getMasters = () => {
-    let token = storage.get("token");
-    fetch()
-      .then(res => res.json())
-      .then(res => {})
-      .catch(err => console.log(err));
-  };
-  getPosts = () => {
-    let token = storage.get("token");
-    fetch()
-      .then(res => res.json())
-      .then(res => {})
-      .catch(err => console.log(err));
-  };
+    getMasterAndApprentice = () => {
+        getMasterAndApprentice().then((res) => {
+            if(res){
+              this.setState({
+                apprentice: res.apprentice,
+                masterWorker: res.masterWorker
+              })
+            }
+        })
+    };
   render() {
     document.body.style.backgroundColor = "#f8fbfd";
     return (
@@ -58,7 +49,7 @@ class Master extends React.Component {
                                   <AirPlane />
                               </div>
                               <p className="infoTitle">我发布的</p>
-                              <p className="infoNumber">5</p>
+                              <p className="infoNumber">{this.state.post}</p>
                           </div>
                       </Link>
                       <Link to={"/apprenticeList"}>
@@ -67,7 +58,7 @@ class Master extends React.Component {
                                   <BusinessMan />
                               </div>
                               <p className="infoTitle">我收徒的</p>
-                              <p className="infoNumber">5</p>
+                              <p className="infoNumber">{this.state.apprentice}</p>
                           </div>
                       </Link>
                   </div>
@@ -84,7 +75,7 @@ class Master extends React.Component {
                                   <Student />
                               </div>
                               <p className="infoTitle">我拜师的</p>
-                              <p className="infoNumber">5</p>
+                              <p className="infoNumber">{this.state.masterWorker}</p>
                           </div>
                       </Link>
                   </div>

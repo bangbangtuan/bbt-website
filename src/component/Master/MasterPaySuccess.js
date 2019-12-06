@@ -4,10 +4,10 @@ import {
   Row,
   Col,
   Descriptions,
-  Layout
+  Layout,
+  Breadcrumb
 } from "antd";
 import "./Master.css";
-import storage from "../storage";
 const { Sider, Content } = Layout;
 
 class MasterPaySuccess extends React.Component {
@@ -15,6 +15,7 @@ class MasterPaySuccess extends React.Component {
     super(props);
     this.state = {
     };
+    console.log('this.props',this.props)
   }
 
   componentDidMount() {
@@ -22,11 +23,7 @@ class MasterPaySuccess extends React.Component {
   }
 
   getMasterPay = () => {
-    let token = storage.get("token");
-    fetch()
-      .then(res => res.json())
-      .then(res => {})
-      .catch(err => console.log(err));
+
   };
   render() {
     document.body.style.backgroundColor = "#f8fbfd";
@@ -34,6 +31,20 @@ class MasterPaySuccess extends React.Component {
       <Row>
         <Col md={4} />
         <Col md={16}>
+        <Breadcrumb
+            className="con-header"
+            style={{
+              paddingLeft: 10,
+              fontSize: 16,
+              marginTop: 30,
+              marginBottom: 30
+            }}
+          >
+            <Breadcrumb.Item>
+              <a href="/master">师徒计划</a>
+            </Breadcrumb.Item>
+            <Breadcrumb.Item>支付页面</Breadcrumb.Item>
+          </Breadcrumb>
           <div style={{ background: "#fff", marginTop:"80px"}}>
             <Layout
               style={{

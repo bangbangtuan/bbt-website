@@ -7,7 +7,6 @@ import {
   Layout
 } from "antd";
 import "./Master.css";
-import storage from "../storage";
 const { Sider, Content } = Layout;
 
 class MasterPayFail extends React.Component {
@@ -22,11 +21,6 @@ class MasterPayFail extends React.Component {
   }
 
   getMasterPay = () => {
-    let token = storage.get("token");
-    fetch()
-      .then(res => res.json())
-      .then(res => {})
-      .catch(err => console.log(err));
   };
   render() {
     document.body.style.backgroundColor = "#f8fbfd";

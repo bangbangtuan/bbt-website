@@ -1,45 +1,34 @@
 import React, { Component } from "react";
 import { List, Card, Descriptions, Breadcrumb, Row, Col, Layout, Divider, Icon} from "antd";
 import "./Master.css";
-import storage from "../storage";
 import photo from "../../images/author.jpg"
+import { getMasterOrApprenticeList } from "../../fetch";
 const { Sider, Content } = Layout;
-
-const data = [
-  {
-    title: "Title 1"
-  },
-  {
-    title: "Title 2"
-  },
-  {
-    title: "Title 3"
-  },
-  {
-    title: "Title 4"
-  }
-];
 
 export default class ApprenticeList extends Component {
       constructor(props) {
         super(props);
         this.state = {
-            visible: false
+            visible: false,
+            type:3,
+            data:[]
         }
     }
 
     componentDidMount() {
-        this.getApprenticeList();
+        this.getMasterOrApprenticeList(this.state.type);
     }
 
-    getApprenticeList = () => {
-        let token = storage.get('token');
-        fetch()
-            .then((res) => res.json())
-            .then( res => {
+    getMasterOrApprenticeList = (type) => {
+      getMasterOrApprenticeList(type).then((res) => {
+          if(res){
+            this.setState({
+              data: [res]
             })
-            .catch( err => console.log(err))
-    };
+          }
+          console.log(res);
+      })
+    }
 
   showModal = () => {
     this.setState({
@@ -76,14 +65,14 @@ export default class ApprenticeList extends Component {
             }}
           >
             <Breadcrumb.Item>
-              <a href="/userProfile/1">个人中心</a>
+              <a href="/master">师徒计划</a>
             </Breadcrumb.Item>
             <Breadcrumb.Item>我收徒的</Breadcrumb.Item>
           </Breadcrumb>
           <div>
             <List
               grid={{ gutter: 16, column: 2 }}
-              dataSource={data}
+              dataSource={this.state.data}
               renderItem={item => (
                 <List.Item>
                   <Card
