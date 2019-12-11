@@ -161,7 +161,7 @@ class Project extends Component{
                                 return <div key={index} className='relative-box'>
                                     <div style={{marginBottom: 20}}>
                                         <Layout style={{ background: '#fff' }}>
-                                            <Sider width={200} height={200}  className="project-img-con">
+                                            <Sider style={{backgroundColor: '#fff'}} className="project-img-con">
                                                 <img className='pro-image' src={item.image} alt='' />
                                             </Sider>
                                             <Layout style={{ background: '#fff' }}>

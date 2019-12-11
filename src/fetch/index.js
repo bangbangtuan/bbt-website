@@ -19,6 +19,14 @@ export const postClock = (body) => post({
     }
 });
 
+export const getUserClocks = () => get({
+    url: config.CLOCK + '/user?current=0&size=10',
+    headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + storage.get('token')
+    }
+});
+
 /* 文章相关 */
 export const getArticles = (current, type="") => get({
     url: config.ARTICLE + '?current=' + current +'&size=10&type=' + type,
@@ -30,6 +38,14 @@ export const getArticles = (current, type="") => get({
 export const postArticles = (body) => post({
     url: config.ARTICLE,
     body,
+    headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + storage.get('token')
+    }
+});
+
+export const getUserArticles = () => get({
+    url: config.ARTICLE + '/user?current=0&size=10',
     headers: {
         'Content-Type': 'application/json',
         'Authorization': 'Bearer ' + storage.get('token')
@@ -109,14 +125,6 @@ export const getMasterList = (size, current) => get({
         'Content-Type': 'application/json'
     } 
 })
-
-export const getUserInfo = () => get({
-    url: config.UserInfo,
-    headers: {
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer ' + storage.get('token')
-    } 
-})
 export const getMasterDetail = (id) => get({
     url: config.MASTER + '/' + id,
     headers: {
@@ -148,3 +156,52 @@ export const getMasterOrder = (id) => get({
         'Authorization': 'Bearer ' + storage.get('token')
     }
 })
+
+
+/* 师徒相关 */
+export const getAllMasterList = () => get({
+    url: config.MASTER,
+    headers: {
+        'Content-Type': 'application/json',
+    }
+});
+
+/* 标签相关 */
+export const getTags = () => get({
+    url: config.TAG,
+    headers: {
+        'Content-Type': 'application/json',
+    }
+});
+
+/* 用户相关 */
+export const getUserInfo = () => get({
+    url: config.USER,
+    headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + storage.get('token')
+    }
+});
+
+export const getInvitationCode = () => get({
+    url: config.INVITE_CODE,
+    headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + storage.get('token')
+    }
+});
+
+export const userRegister = (body) => post({
+    url: config.REGISTER,
+    body,
+    headers: {
+        'Content-Type': 'application/json',
+    }
+});
+
+export const getValidCode = (phone) => get({
+    url: config.VALID_CODE + '/' + phone,
+    headers: {
+        'Content-Type': 'application/json',
+    }
+});

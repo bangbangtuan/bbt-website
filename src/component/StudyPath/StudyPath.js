@@ -1,14 +1,17 @@
 import React, { Component } from 'react';
-import {Row, Col} from 'antd';
+import {Row, Col, Modal, Button} from 'antd';
 import './StudyPath.css';
 import PathInfo from "./PathInfo";
 import { getStudyPaths } from '../../fetch'
+import yangshu from '../../images/yangshu.png';
+const { confirm } = Modal;
 
 class StudyPath extends Component{
     constructor(props) {
         super(props);
         this.state = {
-            current: 1
+            current: 1,
+            visible: false
         }
     }
 
@@ -25,6 +28,16 @@ class StudyPath extends Component{
         })
     };
 
+     showConfirm = () => {
+         Modal.info({
+             title: '请添加阳叔微信sunyangsheep,既可加入自学团',
+             content: (
+                 <div className='path-modal'><img src={yangshu} alt='sunyangshee' /></div>
+             ),
+             onOk() {},
+         });
+    };
+
     render() {
         return(
             <Row>
@@ -34,9 +47,12 @@ class StudyPath extends Component{
                     {
                         this.state.path && this.state.path.map((item, index) => {
                             return <div key={index}>
-                                <div className='path-header'>
-                                    <div>{item.title}</div>
-                                    <div>用时： {item.time}</div>
+                                <div className='path-con'>
+                                    <div className='path-header'>
+                                        <div>{item.title}</div>
+                                        <div>用时： {item.time}</div>
+                                    </div>
+                                    <Button type="primary" onClick={this.showConfirm}>加入自学团</Button>
                                 </div>
                                 <PathInfo item={item} />
                             </div>

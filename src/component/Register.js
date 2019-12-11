@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import {  withRouter } from 'react-router-dom';
 import {Icon, Input, Form, Button, message} from "antd";
+import { userRegister, getValidCode } from '../fetch';
 const { Search } = Input;
 
 class Register extends Component{
@@ -17,18 +18,12 @@ class Register extends Component{
         console.log(value);
         if (value && this.state.count === 60) {
             this.tick();
-            fetch('https://api.bangneedu.com/captcha/' + value, {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json'
-                }})
-                .then((res) => res.json())
-                .then(res => {
-                    console.log(res.data);
-                    if(res.data.message !== "OK") {
-                        message.error(res.data.message)
-                    }
-                });
+            getValidCode(value).then((res) => {
+                console.log(res);
+                if(res.message !== "OK") {
+                    message.error(res.message)
+                }
+            });
         } else if (!this.state.phone) {
             message.error("请填写电话号码")
         }
@@ -56,22 +51,15 @@ class Register extends Component{
             if (!err) {
                 delete values.password1;
                 console.log('Received values of form: ', values);
-                fetch('https://api.bangneedu.com/register', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(values)})
-                    .then((res) => res.json())
-                    .then( res => {
-                        console.log(res);
-                        if(res.status === 200) {
-                            message.success("登陆成功");
-                            this.props.history.push("/login")
-                        } else {
-                            message.error(res.msg);
-                        }
-                    });
+                userRegister(values).then((res) => {
+                    console.log(res);
+                    if(res.status === 200) {
+                        message.success("登陆成功");
+                        this.props.history.push("/login")
+                    } else {
+                        message.error(res.msg);
+                    }
+                });
             }
         })
     };
@@ -153,6 +141,15 @@ class Register extends Component{
                             prefix={<Icon type="insurance" style={{ color: 'rgba(0,0,0,.25)', fontSize: 16 }} />}
                             type="text"
                             placeholder="请输入验证码"
+                        />,
+                    )}
+                </Form.Item>
+                <Form.Item>
+                    {getFieldDecorator('activationCode')(
+                        <Input
+                            prefix={<Icon type="barcode" style={{ color: 'rgba(0,0,0,.25)', fontSize: 16 }} />}
+                            type="text"
+                            placeholder="输入邀请码（选填）"
                         />,
                     )}
                 </Form.Item>

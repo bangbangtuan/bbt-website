@@ -6,7 +6,7 @@ import storage from "../storage";
 import { withRouter } from 'react-router-dom';
 import ReactPaginate from 'react-paginate';
 import './paginate.css'
-import { getClocks, postClock } from '../../fetch';
+import {getClocks, getTags, postClock} from '../../fetch';
 const { TextArea } = Input;
 
 class Clock extends Component{
@@ -24,6 +24,7 @@ class Clock extends Component{
 
     componentDidMount() {
         this.getDakaList(this.state.current);
+        this.getTags();
     };
 
     getDakaList = (page) => {
@@ -33,6 +34,15 @@ class Clock extends Component{
                 dakaList: res.records,
                 pages: parseInt(res.pages),
                 changed: true
+            });
+        })
+    };
+
+    getTags = () => {
+        getTags().then((res) => {
+            console.log(res);
+            this.setState({
+                tags: res.records
             });
         })
     };
@@ -109,11 +119,16 @@ class Clock extends Component{
                         </div>
                         <div className="classify">
                             <div>点击选择打卡类别</div>
-                            <Radio.Group onChange={this.handleChange} >
-                                <Radio.Button value="前端" className={type ==='前端' ? 'radioActive':''}>#前端#</Radio.Button>
-                                <Radio.Button value="Java" className={type ==='Java' ? 'radioActive':''}>#Java#</Radio.Button>
-                                <Radio.Button value="产品经理" className={type ==='产品经理' ? 'radioActive':''}>#产品经理#</Radio.Button>
-                                <Radio.Button value="Python" className={type ==='Python' ? 'radioActive':''}>#Python#</Radio.Button>
+                            <Radio.Group onChange={this.handleChange}>
+                                {
+                                    this.state.tags && this.state.tags.map((item, index) => {
+                                        return <Radio.Button key={index} value={item.tag} className={type ===item.tag ? 'radioActive':''}><span>#{item.tag}#</span></Radio.Button>
+                                    })
+                                }
+                                {/*<Radio.Button value="前端" className={type ==='前端' ? 'radioActive':''}>#前端#</Radio.Button>*/}
+                                {/*<Radio.Button value="Java" className={type ==='Java' ? 'radioActive':''}>#Java#</Radio.Button>*/}
+                                {/*<Radio.Button value="产品经理" className={type ==='产品经理' ? 'radioActive':''}>#产品经理#</Radio.Button>*/}
+                                {/*<Radio.Button value="Python" className={type ==='Python' ? 'radioActive':''}>#Python#</Radio.Button>*/}
                             </Radio.Group>
                         </div>
                         <button className='ml-auto button' onClick={this.dakaSubmit}>{this.state.isClickable ? "打卡" : "正在处理..."}</button>

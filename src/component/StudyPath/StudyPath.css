@@ -49,3 +49,11 @@
     font-size: 16px;
     color: #333333;
 }
+.path-con {
+    display: flex;
+    justify-content: space-between;
+}
+.path-modal, .path-modal img {
+    width: 150px;
+    height: 150px;
+}

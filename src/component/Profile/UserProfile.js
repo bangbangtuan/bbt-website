@@ -76,6 +76,7 @@ class UserProfile extends Component{
         event.preventDefault();
         this.props.form.validateFields((err, values) => {
             if (!err) {
+                values.id = this.state.userInfo.id;
                 console.log('Received values of form: ', values);
                 fetch('https://api.bangneedu.com/user', {
                     method: 'PUT',

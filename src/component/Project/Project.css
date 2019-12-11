@@ -4,10 +4,6 @@
     border-left: 4px solid #ff6e37;
     padding-left: 10px;
 }
-.pro-image{
-    height: 200px;
-    width: 200px;
-}
 .relative-box {
     position: relative;
 }
@@ -46,9 +42,14 @@
 .task-card span {
     color: #ff6e37
 }
+.project-img-con .ant-layout-sider-children {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
 .project-img-con img{
-    width: 100%;
-    height: 100%;
+    width: 200px;
+    height: 300px;
 }
 .project-team-members {
     display: flex;

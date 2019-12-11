@@ -58,3 +58,13 @@
 .order-tab .ant-tabs-ink-bar {
     background: none;
 }
+
+
+.invite-code {
+    margin: 40px 0;
+    color: #333333;
+    font-weight: 450;
+}
+.invite-code div {
+    margin: 20px 0;
+}

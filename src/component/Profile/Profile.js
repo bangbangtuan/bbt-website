@@ -8,6 +8,7 @@ import storage from '../storage';
 import { withRouter } from 'react-router-dom';
 import UserTasks from "../Project/userTasks";
 import UserOrderList from "../Shop/UserOrderList";
+import { getUserClocks, getUserArticles, getUserInfo, getInvitationCode } from '../../fetch'
 const { TabPane } = Tabs;
 
 class Profile extends Component{
@@ -24,48 +25,31 @@ class Profile extends Component{
             token: token
         });
         if (token) {
-            fetch('https://api.bangneedu.com/user', {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json',
-                    "Authorization": "Bearer " + token
-                }})
-                .then((res) => res.json())
-                .then( res => {
-                    console.log(res.data);
-                    this.setState({
-                        userInfo: res.data
-                    });
-                })
-                .catch( err => console.log(err));
-            fetch('https://api.bangneedu.com/punchTheClock/user?current=0&size=10', {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json',
-                    "Authorization": "Bearer " + token
-                }})
-                .then((res) => res.json())
-                .then( res => {
-                    console.log(res.data.records);
-                    this.setState({
-                        userDaka: res.data.records
-                    });
-                })
-                .catch( err => console.log(err))
-            fetch('https://api.bangneedu.com/article/user?current=0&size=10', {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json',
-                    "Authorization": "Bearer " + token
-                }})
-                .then((res) => res.json())
-                .then( res => {
-                    console.log(res.data.records);
-                    this.setState({
-                        userArticle: res.data.records
-                    });
-                })
-                .catch( err => console.log(err))
+            getUserInfo().then((res) => {
+                console.log(res);
+                this.setState({
+                    userInfo: res
+                });
+            });
+            getInvitationCode().then((res) => {
+                console.log(res);
+                this.setState({
+                    inviteCode: res
+                });
+            });
+            getUserClocks().then((res) => {
+                console.log(res);
+                this.setState({
+                    userDaka: res.records
+                });
+            });
+            getUserArticles().then((res) => {
+                console.log(res);
+                this.setState({
+                    userArticle: res.records
+                });
+            });
+
             fetch('https://api.bangneedu.com/orderForm/0', {
                 method: 'GET',
                 headers: {
@@ -173,6 +157,20 @@ class Profile extends Component{
                                         Content of Tab Pane 3
                                     </TabPane>
                                 </Tabs>
+                            </Col>
+                            <Col md={4}/>
+                        </Row>
+                    </TabPane>
+                    <TabPane tab="我的邀请码" key="5">
+                        <Row>
+                            <Col md={4}/>
+                            <Col md={16}>
+                                {
+                                    this.state.inviteCode && <div className='invite-code'>
+                                        <div>我的邀请码: {this.state.inviteCode}</div>
+                                        <div>邀请好友注册，既可获赠积分，积分可到积分商城兑换学习课程或精美礼品。</div>
+                                    </div>
+                                }
                             </Col>
                             <Col md={4}/>
                         </Row>

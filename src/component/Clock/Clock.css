@@ -21,7 +21,6 @@
     margin: 10px 20px;
     display: flex;
     align-items: center;
-    vertical-align: middle;
 }
 .classify .ant-radio-group {
     margin-left: 20px;

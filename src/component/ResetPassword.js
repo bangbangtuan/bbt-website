@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import './Login.css';
 import {Row, Col, message, Form, Input, Icon, Button, Divider} from 'antd';
 import {  withRouter } from 'react-router-dom';
+import {  getValidCode } from '../fetch'
 const { Search } = Input;
 
 class ResetPassword extends Component{
@@ -16,18 +17,12 @@ class ResetPassword extends Component{
         console.log(value);
         if (value && this.state.count === 60) {
             this.tick();
-            fetch('https://api.bangneedu.com/captcha/' + value, {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json'
-                }})
-                .then((res) => res.json())
-                .then(res => {
-                    console.log(res.data);
-                    if(res.data.message !== "OK") {
-                        message.error(res.data.message)
-                    }
-                });
+            getValidCode(value).then((res) => {
+                console.log(res);
+                if(res.message !== "OK") {
+                    message.error(res.message)
+                }
+            });
         } else if (!this.state.phone) {
             message.error("请填写电话号码")
         }

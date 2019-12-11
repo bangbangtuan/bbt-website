@@ -30,7 +30,7 @@
     transition: all 0.3s 0.2s linear;
 }
 .middle {
-    left: 25%;
+    left: 32%;
     bottom: 0;
     width: 310px;
     z-index: 33;
@@ -53,7 +53,14 @@
     transform: scale(0.95);
 }
 .normal {
-    left: 10%;
+    left: 20%;
+    bottom: 0;
+    width: 310px;
+    transform: scale(0.9);
+    z-index: 11;
+}
+.normal2 {
+    left: 57%;
     bottom: 0;
     width: 310px;
     transform: scale(0.9);

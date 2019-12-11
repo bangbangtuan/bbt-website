@@ -114,10 +114,9 @@
     padding: 20px;
     margin: 0 auto;
 }
-.mid-project img {
-    width: 150px;
-    height: 150px;
-    border: 1px solid #999999;
+.project-img {
+    width: 200px;
+    height: 300px;
 }
 .pro-detail {
     margin-left: 40px;
@@ -143,3 +142,4 @@
     align-items: center;
     position: relative;
 }
+

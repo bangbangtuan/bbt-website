@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import './Login.css';
-import { Row, Col, message, Tabs, Form, Input, Icon, Button } from 'antd';
+import { Row, Col, message, Tabs, Form, Input, Icon, Button, Radio } from 'antd';
 import storage from './storage';
 import {  withRouter } from 'react-router-dom';
 import Register from "./Register";
@@ -59,12 +59,22 @@ class Login extends Component{
                                 <Form onSubmit={this.loginFormSubmit}>
                                     <Form.Item>
                                         {getFieldDecorator('username', {
-                                            rules: [{ required: true, message: '请输入用户名' }],
+                                            rules: [{ required: true, message: '请输入用户名或手机号' }],
                                         })(
                                             <Input
                                                 prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)', fontSize: 16 }} />}
                                                 placeholder="请输入用户名"
                                             />,
+                                        )}
+                                    </Form.Item>
+                                    <Form.Item>
+                                        {getFieldDecorator('type', {
+                                            rules: [{ required: true, message: '请选择登陆方式' }],
+                                        })(
+                                            <Radio.Group>
+                                                <Radio value="1">账号登陆</Radio>
+                                                <Radio value="2">手机号登陆</Radio>
+                                            </Radio.Group>,
                                         )}
                                     </Form.Item>
                                     <Form.Item>

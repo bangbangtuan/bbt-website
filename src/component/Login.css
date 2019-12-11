@@ -41,3 +41,11 @@
 .reset-form .ant-divider-horizontal.ant-divider-with-text-center {
     margin-bottom: 40px;
 }
+#login_type {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+#login_type .ant-radio-inner::after {
+    top: 3.5px;
+}

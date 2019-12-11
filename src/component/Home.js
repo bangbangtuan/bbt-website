@@ -13,31 +13,7 @@ class Home extends Component{
     constructor(props) {
         super(props);
         this.state = {
-            date: new Date(),
-            images: [
-                {
-                    title: '1',
-                    src: "https://interactive-examples.mdn.mozilla.net/media/examples/grapefruit-slice-332-332.jpg"
-                },
-                {
-                    title: '2',
-                    src: "https://cdn.arstechnica.net/wp-content/uploads/2016/02/5718897981_10faa45ac3_b-640x624.jpg",
-
-                },
-                {
-                    title: '3',
-                    src: "https://i.dailymail.co.uk/1s/2019/04/18/10/12427172-0-image-a-20_1555581069374.jpg"
-                },
-                {
-                    title: '4',
-                    src: "https://i.dailymail.co.uk/1s/2019/04/18/10/12427172-0-image-a-20_1555581069374.jpg"
-                },
-                {
-                    title: '5',
-                    src: "https://i.dailymail.co.uk/1s/2019/04/18/10/12427172-0-image-a-20_1555581069374.jpg"
-                },
-
-            ]
+            date: new Date()
         }
     }
 
@@ -110,9 +86,17 @@ class Home extends Component{
                 <Carousel autoplay>
                     {
                         this.state.banners && this.state.banners.map((item, index) => {
-                            return <Link key={index} to={item.route === undefined ? '' : item.route}>
-                                    <img  src={item.url} alt={item.name}/>
-                            </Link>
+                            if(item.route !== undefined) {
+                                return item.route.substring(0,4) === 'http' ?
+                                    <a href={item.route} key={index}>
+                                        <img src={item.url} alt={item.name}/>
+                                    </a>
+                                    :
+                                    <Link key={index} to={item.route === undefined ? '' : item.route}>
+                                        <img  src={item.url} alt={item.name}/>
+                                    </Link>
+                            }
+                            return <img  src={item.url} alt={item.name} key={index} />;
                         })
                     }
 
@@ -131,14 +115,12 @@ class Home extends Component{
                             {
                                 this.state.project && <Row>
                                     <Col md={6}>
-                                        <img src={this.state.project.image} alt='' />
+                                        <img src={this.state.project.image} alt='' className='project-img' />
                                     </Col>
                                     <Col md={18}>
                                         <Descriptions title={this.state.project.name} column={1} className='pro-detail'>
                                             <Descriptions.Item label="技术栈: ">{this.state.project.technology}</Descriptions.Item>
                                             <Descriptions.Item label="项目介绍 ">{this.state.project.details}</Descriptions.Item>
-                                            {/*<Descriptions.Item label="代练价格: ">10元/练一次</Descriptions.Item>*/}
-                                            {/*<Descriptions.Item label="代练时间: ">晚上8点开始练完为止</Descriptions.Item>*/}
                                         </Descriptions>
                                         <button onClick={this.projectDetail}>查看详情</button>
                                     </Col>

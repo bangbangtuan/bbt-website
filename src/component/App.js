@@ -40,6 +40,7 @@ import MasterRecommend from "./Master/MasterRecommend"
 import MasterPostList from "./Master/MasterPostList"
 import ApprenticeList from "./Master/ApprenticeList"
 import MasterList from "./Master/MasterList"
+import AllMasterList from "./Master/AllMasterList";
 
 class App extends React.Component {
 
@@ -155,6 +156,9 @@ class App extends React.Component {
                         }}/>
                         <Route path="/masterList" render={() => {
                             return <MasterList/>
+                        }}/>
+                        <Route path="/allMasterList" render={() => {
+                            return <AllMasterList/>
                         }}/>
 
 
