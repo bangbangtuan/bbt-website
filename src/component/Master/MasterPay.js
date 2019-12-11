@@ -2,9 +2,8 @@ import React from "react";
 import { Link, withRouter } from "react-router-dom";
 import { Row, Col, Descriptions, Layout, Breadcrumb, Divider, message } from "antd";
 import "./Master.css";
-import { getMasterOrder, masterPay, postAddMaster} from "../../fetch";
+import {  masterPay} from "../../fetch";
 import QRCode from 'qrcode.react';
-import storage from "../storage";
 const { Sider, Content } = Layout;
 
 class MasterPay extends React.Component {
@@ -14,96 +13,37 @@ class MasterPay extends React.Component {
     this.state = {
       data: {},
       projectDetail:'',
-      payURL:'',
-      order:{},
-      outTradeNo:'',
-      body:{
-        'commodityName' : this.props.location.state.name,
-        'commodityImage' : this.props.location.state.image,
-        'commodityNumber' : 1,
-        'commodityPrice' : this.props.location.state.price,
-        'commodityId' : this.props.location.state.id,
-        'commoditySpecifications' : '',
-        'commodityFreight' : '',
-        'deliveryTime' : '',
-        'bbtUserAddressId' : '1198094253084844034',
-        'aggregateScore' : '',
-        'type' : 2
-      }
+      payURL:''
     }
   }
   componentDidMount(){
-    this.getMasterOrder(this.props.match.params.id);
+
     this.getMasterPay(this.props.location.state);
   }
   componentWillUnmount(){
-
-    this.state.socket.removeEventListener("message", this.paySocket)
-    this.state.socket.removeEventListener("open", this.openSocket)
-  }
-  getMasterOrder = (id) => {
-    getMasterOrder(id).then(res => {
-      this.setState({
-        order: res
-      });
-    });
-  };
-  getNowTime() {
-        let date = new Date();
-        this.year = date.getFullYear();
-        this.month = date.getMonth() + 1;
-        this.date = date.getDate();
-        this.hour = date.getHours() < 10 ? "0" + date.getHours() : date.getHours();
-        this.minute = date.getMinutes() < 10 ? "0" + date.getMinutes() : date.getMinutes();
-        this.second = date.getSeconds() < 10 ? "0" + date.getSeconds() : date.getSeconds();
-        this.milliSeconds = date.getMilliseconds();
-        var currentTime = this.year+this.month + this.date + this.hour + this.minute + this.second + this.milliSeconds+'';
-        return currentTime;
-  };
-  addMasterWork = () => {
-    if(storage.get('token')){
-      postAddMaster(this.state.body).then(res => {
-      if (res.status === 200 && res.msg === '添加成功') {
-        message.success('拜师成功,请到师徒计划中查看');
-      }
-      else{
-        message.error(res.msg);
-      }
-    })
+    if(this.state.socket){
+      this.state.socket.removeEventListener("message", this.paySocket)
+      this.state.socket.removeEventListener("open", this.openSocket)
     }
-    else{
-      message.error('用户未登录');
-    }
-
   }
-  getMasterPay = (data,socket) => {
+  getMasterPay = (data) => {
     const body = {};
-    body['outTradeNo'] = data.id+this.getNowTime();
-    body['body'] = data.name;
-    body['totalFee'] = 0.1*100;//parseInt(data.price)*100;
+    body['outTradeNo'] = data.id;
+    body['body'] = data.commodityName;
+    body['totalFee'] = parseInt(data.commodityPrice)*100;
     body['spbillCreateIp'] = '192.168.1.21';
     body['tradeType'] ='NATIVE';
-    this.setState({
-      outTradeNo:body['outTradeNo'],
-    })
-    
     masterPay(body).then(res => {
       if (res.codeUrl) {
         this.setState({
           payURL: res.codeUrl
         }); 
         let socket = new WebSocket("ws://api.bangneedu.com/myHandler/ID="+this.state.outTradeNo);
-        let state = {...this.state}
-        state['body']['paymentOrderNo'] = this.state.outTradeNo
-        this.setState({
-          ...state
-        })
         socket.addEventListener('open', this.openSocket);
         socket.addEventListener("message", this.paySocket);
         this.setState({
           'socket':socket
         })
-        console.log('添加之后',this.state.socket)
       } else {
         message.error(res.msg);
       }

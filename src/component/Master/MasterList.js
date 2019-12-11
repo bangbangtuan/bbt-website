@@ -170,7 +170,7 @@ class MasterList extends Component {
                             border: "1px solid #000",
                             width: "80px"
                           }}>
-                          {item.orderFormStatus==='1'?<Link to={{pathname: '/masterPay/'+item.id, state:{item}}}>付款</Link>
+                          {item.orderFormStatus==='1'?<Link to={{pathname: '/masterPay/'+item.id, state:item}}>付款</Link>
                           :item.orderFormStatus==='2'?'取消订单':"完成订单"}
                         </div>
                         

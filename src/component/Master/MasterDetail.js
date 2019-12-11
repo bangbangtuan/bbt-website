@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { Row, Col, Descriptions, Layout, Breadcrumb,message } from "antd";
 import "./Master.css";
 import { withRouter} from 'react-router-dom';
-import {getMasterDetail, getProjectTaskDetail, postAddMaster, getMasterOrApprenticeList} from '../../fetch'
+import {getMasterDetail, getProjectTaskDetail, postAddMaster} from '../../fetch'
 import storage from "../storage";
 const { Sider, Content } = Layout;
 
@@ -32,24 +32,6 @@ class MasterDetail extends React.Component {
       })
     })
   };
-  checkMaster = () => {
-    const type = 2;
-    const commodityId = this.state.data.id
-    var flag = true;
-    getMasterOrApprenticeList(type).then(res => {
-      if (res) {
-       res.forEach(function(item){
-         if(item.commodityId===commodityId && item.orderFormStatus!=='6'){
-           message.error('已拜师，请勿重复拜师');
-           flag = false;
-         }
-       })
-      }
-      if(flag){
-        this.props.history.push({ pathname:'/masterPay/'+this.state.data.id, state: this.state.data});
-      }
-    });
-  }
   addMasterWork = () => {
     const body = {};
     body['commodityName'] = this.state.data.name;
@@ -65,10 +47,9 @@ class MasterDetail extends React.Component {
     body['type'] = 2;
     console.log("log",body);
     if(storage.get('token')){
-      postAddMaster(body).then(res => {
+     postAddMaster(body).then(res => {
       if (res.status === 200 && res.msg === '添加成功') {
-        message.success('拜师成功，请支付');
-        this.props.history.push("/masterPay/"+this.state.data.id);
+        message.success('拜师成功，请到师徒计划中支付');
       }
       else{
         message.error(res.msg);
@@ -126,7 +107,7 @@ class MasterDetail extends React.Component {
                   </Descriptions>
                 </Content>
                 <div style={{ padding: "20px" }}>
-                  <button className="btnDetail" onClick={this.checkMaster}>拜师</button>
+                  <button className="btnDetail" onClick={this.addMasterWork}>拜师</button>
                 </div>
               </Layout>
             </Layout>
