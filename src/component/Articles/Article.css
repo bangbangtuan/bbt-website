@@ -70,3 +70,25 @@
     /*border-radius: 5px;*/
     color: #ff6e37;
 }
+
+.share-modal {
+  width: 100px;
+  height: 100px;
+}
+
+.ant-btn .like .share{
+  background: #ccc5c5
+}
+
+
+.text {
+  margin-right: 3px;
+}
+
+.anticon svg {
+  margin-bottom: 5px
+}
+
+.comment-input button {
+  width: 105px
+}
