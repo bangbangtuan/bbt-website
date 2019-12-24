@@ -52,6 +52,32 @@ export const getUserArticles = () => get({
     }
 });
 
+export const getMyLikeArtilce = () => get({
+    url: config.ARTICLE + '/allLike',
+    headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + storage.get('token')
+    }
+});
+
+export const addLike = (body) => put({
+    url: config.ARTICLE + '/like',
+    body,
+    headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + storage.get('token')
+    }
+});
+
+export const cancelLike = (body) => put({
+    url: config.ARTICLE + '/not_like',
+    body,
+    headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + storage.get('token')
+    }
+});
+
 export const getArticleDetails = (id) => get({
     url: config.ARTICLE + '/' + id,
     headers: {

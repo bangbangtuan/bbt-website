@@ -70,3 +70,12 @@
     /*border-radius: 5px;*/
     color: #ff6e37;
 }
+
+.share-modal {
+  width: 300px;
+  height: 300px;
+}
+
+.like {
+  margin-left: 10px;
+}
