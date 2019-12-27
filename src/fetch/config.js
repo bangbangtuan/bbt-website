@@ -5,6 +5,7 @@ export const PATH = URL + '/learningPath';
 export const PATH_INFO = URL + '/learningPathDetails';
 export const PATH_DETAILS = URL + '/learningPathDetails/details';
 export const MASTER = URL + '/projectMentor'
+export const MessagePush = URL + '/messagePush';
 export const ORDER = URL + '/orderForm'
 export const TaskUser = URL + '/projectTaskUser'
 export const ProjectTask = URL + '/projectTask'

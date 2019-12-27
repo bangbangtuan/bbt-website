@@ -2,7 +2,7 @@ import React from "react";
 import { Link, withRouter } from "react-router-dom";
 import { Row, Col, Descriptions, Layout, Breadcrumb, Divider, message } from "antd";
 import "./Master.css";
-import {  masterPay} from "../../fetch";
+import {  masterPay, getMasterDetail} from "../../fetch";
 import QRCode from 'qrcode.react';
 const { Sider, Content } = Layout;
 
@@ -13,18 +13,29 @@ class MasterPay extends React.Component {
     this.state = {
       data: {},
       projectDetail:'',
-      payURL:''
+      payURL:'',
+      master:{}
     }
   }
   componentDidMount(){
-
     this.getMasterPay(this.props.location.state);
+    this.getMasterDetail(this.props.location.state.commodityId)
   }
   componentWillUnmount(){
     if(this.state.socket){
       this.state.socket.removeEventListener("message", this.paySocket)
       this.state.socket.removeEventListener("open", this.openSocket)
     }
+  }
+  getMasterDetail = (id) => {
+    getMasterDetail(id).then(res => {
+      if(res){
+        this.setState({
+          master:res
+        })
+      }
+    })
+    
   }
   getMasterPay = (data) => {
     const body = {};
@@ -38,7 +49,7 @@ class MasterPay extends React.Component {
         this.setState({
           payURL: res.codeUrl
         }); 
-        let socket = new WebSocket("ws://api.bangneedu.com/myHandler/ID="+this.state.outTradeNo);
+        let socket = new WebSocket("ws://api.bangneedu.com/myHandler/ID="+data.id);
         socket.addEventListener('open', this.openSocket);
         socket.addEventListener("message", this.paySocket);
         this.setState({
@@ -56,7 +67,6 @@ class MasterPay extends React.Component {
   paySocket = (event) =>{
     console.log("Message from server", event);
     if (event.data.includes("付款成功")) {
-      this.addMasterWork();
       this.props.history.push({
       pathname: "/masterPaySuccess",
       state: this.props.location.state
@@ -97,18 +107,18 @@ class MasterPay extends React.Component {
               }}
             >
               <Sider theme="light" width="230px" style={{ height: "230px" }}>
-                <img className="master-image" src={this.props.location.state.image} alt="师傅带徒" />
+                <img className="master-image" src={this.props.location.state.commodityImage} alt="师傅带徒" />
               </Sider>
               <Layout style={{ backgroundColor: "#fff" }}>
                 <Content style={{ margin: 0, paddingLeft: "20px" }}>
-                  <Descriptions title="师傅有偿带徒做任务" column={1}>
+                  <Descriptions title={this.props.location.state.commodityName} column={1}>
                     <Descriptions.Item label="师傅昵称">
-                      {this.props.location.state.userName}
+                      {this.state.master.userName}
                     </Descriptions.Item>
                     <Descriptions.Item label="任务名称">
-                      {this.props.location.state.projectTaskName}
+                      {this.state.master.projectTaskName}
                       <Link
-                        to={"/task/" + this.props.location.state.projectTaskId}
+                        to={"/task/" + this.state.master.projectTaskId}
                         style={{ fontSize: "10px" }}
                       >
                         [查看详情]
@@ -118,7 +128,7 @@ class MasterPay extends React.Component {
                       {this.props.location.state.projectDetail}
                     </Descriptions.Item>
                     <Descriptions.Item label="周期">
-                      <p style={{ color: "#00FF00", display: "inline" }}></p>
+                      <p style={{ color: "#00FF00", display: "inline" }}>{this.state.master.cycle}</p>
                       天
                     </Descriptions.Item>
                     <Descriptions.Item label="价格">
@@ -130,7 +140,7 @@ class MasterPay extends React.Component {
                           fontWeight: "bold"
                         }}
                       >
-                        ￥{this.props.location.state.price}
+                        ￥{this.props.location.state.commodityPrice}
                       </p>
                     </Descriptions.Item>
                   </Descriptions>
@@ -143,7 +153,7 @@ class MasterPay extends React.Component {
             <div style={{ padding: "0px 30px" }}>
               <h6>支付方式：</h6>
               <div style={{ textAlign: "center" }}>
-                <p>微信扫码，支付{this.props.location.state.price}元</p>
+                <p>微信扫码，支付{this.props.location.state.commodityPrice}元</p>
                 <QRCode value={this.state.payURL} />
               </div>
             </div>

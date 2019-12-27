@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Descriptions, Breadcrumb, Row, Col, Layout, Steps } from "antd";
 import "./Master.css";
 import photo from "../../images/author.jpg";
-import { Link, withRouter } from "react-router-dom";
+import { withRouter } from "react-router-dom";
 import {} from "../../fetch";
 const { Sider, Content } = Layout;
 const { Step } = Steps;

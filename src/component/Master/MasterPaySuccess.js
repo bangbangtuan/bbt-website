@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, withRouter} from "react-router-dom";
 import {
   Row,
   Col,
@@ -8,23 +8,29 @@ import {
   Breadcrumb
 } from "antd";
 import "./Master.css";
+import {  getMasterDetail} from "../../fetch";
 const { Sider, Content } = Layout;
 
 class MasterPaySuccess extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      master:''
     };
-    console.log('this.props',this.props)
   }
 
   componentDidMount() {
-    this.getMasterPay();
+    this.getMasterDetail(this.props.location.state.commodityId);
   }
-
-  getMasterPay = () => {
-
-  };
+  getMasterDetail = (id) => {
+    getMasterDetail(id).then(res => {
+      this.setState({
+        master:res
+      })
+      console.log(res)
+    })
+    
+  }
   render() {
     document.body.style.backgroundColor = "#f8fbfd";
     return (
@@ -43,7 +49,7 @@ class MasterPaySuccess extends React.Component {
             <Breadcrumb.Item>
               <a href="/master">师徒计划</a>
             </Breadcrumb.Item>
-            <Breadcrumb.Item>支付页面</Breadcrumb.Item>
+            <Breadcrumb.Item>支付成功</Breadcrumb.Item>
           </Breadcrumb>
           <div style={{ background: "#fff", marginTop:"80px"}}>
             <Layout
@@ -54,9 +60,9 @@ class MasterPaySuccess extends React.Component {
               <Sider theme="light" width="360px" style={{backgroundColor:"#8bc34a", textAlign:"center"}}>
               <div className="pay">
                 <h2 >支付成功</h2>
-                <p>￥10.0</p>
+                <p>￥{this.props.location.state.commodityPrice}</p>
                 <div className="seeDetailContent">
-                    <Link to={"/MasterDetail/1"} className="seeDetail">查看订单详情</Link>
+                    <Link to={"/masterOrderDetails/"+this.props.location.state.id} className="seeDetail">查看订单详情</Link>
                 </div>
                 <p className="payNote">本公司不会用任何理由要求您登录银行卡信息或支付额外费用 请谨防钓鱼链接或诈骗电话</p>
               </div>
@@ -64,11 +70,11 @@ class MasterPaySuccess extends React.Component {
               <Layout style={{ backgroundColor: "#fff" }}>
                 <Content style={{ margin: 0, padding: "40px"}}>
                   <Descriptions column={1}>
-                    <Descriptions.Item label="订单编号">哈哈哈哈</Descriptions.Item>
-                    <Descriptions.Item label="下单时间">哈哈哈</Descriptions.Item>
-                    <Descriptions.Item label="任务名称">还好</Descriptions.Item>
-                    <Descriptions.Item label="师傅昵称">哈哈哈</Descriptions.Item>
-                    <Descriptions.Item label="周期">哈哈哈</Descriptions.Item>
+                    <Descriptions.Item label="订单编号">{this.props.location.state.id}</Descriptions.Item>
+                    <Descriptions.Item label="下单时间">{this.props.location.state.createTime}</Descriptions.Item>
+                    <Descriptions.Item label="任务名称">{this.state.master.projectTaskName}</Descriptions.Item>
+                    <Descriptions.Item label="师傅昵称">{this.state.master.userName}</Descriptions.Item>
+                    <Descriptions.Item label="周期">{this.state.master.cycle}天</Descriptions.Item>
                   </Descriptions>
                 </Content>
               </Layout>
@@ -81,4 +87,4 @@ class MasterPaySuccess extends React.Component {
   }
 }
 
-export default MasterPaySuccess;
+export default withRouter(MasterPaySuccess);

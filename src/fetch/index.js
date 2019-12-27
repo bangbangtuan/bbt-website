@@ -151,12 +151,19 @@ export const masterPay = (body) => post({
 
 export const getMasterOrder = (id) => get({
     url: config.ORDER + '/details/' + id,
-    hearder:{
+    headers:{
         'Content-Type': 'application/json',
         'Authorization': 'Bearer ' + storage.get('token')
     }
 })
 
+export const getNewMessage = () => get({
+    url: config.MessagePush,
+    headers:{
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + storage.get('token'),
+    },
+})
 
 /* 师徒相关 */
 export const getAllMasterList = () => get({

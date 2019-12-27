@@ -11,7 +11,6 @@ export default class MasterRecommend extends Component {
       visible: false,
       data:[]
     };
-    //console.log("recommend props",this.props.match.params.id)
   }
 
   componentDidMount() {
@@ -50,7 +49,7 @@ export default class MasterRecommend extends Component {
     return (
       <div>
         <Divider />
-        <p>看下我给你的推荐吧</p>        
+        <p>看下我给你的推荐吧</p><Link to="/recommendMasterList">查看更多</Link>      
         <List
           grid={{ gutter: 16, column: 3 }}
           dataSource={this.state.data}

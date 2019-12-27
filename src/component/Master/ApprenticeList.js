@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { List, Card, Descriptions, Breadcrumb, Row, Col, Layout, Divider, Icon} from "antd";
 import "./Master.css";
 import photo from "../../images/author.jpg"
-import { getMasterOrApprenticeList } from "../../fetch";
+import { getMasterOrApprenticeList,getMasterDetail,getProjectTaskDetail } from "../../fetch";
 const { Sider, Content } = Layout;
 
 export default class ApprenticeList extends Component {
@@ -21,13 +21,24 @@ export default class ApprenticeList extends Component {
 
     getMasterOrApprenticeList = (type) => {
       getMasterOrApprenticeList(type).then((res) => {
-          if(res){
-            this.setState({
-              data: [res]
+        if(res){
+          res.forEach(function(item){
+            item['image'] = '';
+            getMasterDetail(item.commodityId).then(master =>{
+              if(master){
+                getProjectTaskDetail(master.projectTaskId).then(projectTask =>{
+                  item['projectDetail'] = projectTask.details;
+                })
+              }
             })
-          }
-          console.log(res);
+          })
+          this.setState({
+            data:res
+          })
+          console.log('res',this.state.data)
+        }
       })
+      
     }
 
   showModal = () => {
@@ -77,7 +88,6 @@ export default class ApprenticeList extends Component {
                 <List.Item>
                   <Card
                     style={{ background: "#fff", border: "none" }}
-                    onClick={this.showModal}
                   >
                     <Layout
                       style={{ background: "#fff", padding: "0px 10px", margin:"0"}}
@@ -89,13 +99,13 @@ export default class ApprenticeList extends Component {
                       >
                         <img
                           className="master-image"
-                          src={photo}
+                          src={item.commodityImage}
                           alt="师傅带徒"
                         />
                       </Sider>
                       <Layout style={{ backgroundColor: "#fff" }}>
                         <Content style={{ paddingLeft: "10px", margin: 0 }}>
-                          <Descriptions title="是生生世世任务" column={1}>
+                          <Descriptions title={item.commodityName} column={1}>
                             <Descriptions.Item>
                               <p
                                 style={{
@@ -104,7 +114,7 @@ export default class ApprenticeList extends Component {
                                   fontSize: "24px"
                                 }}
                               >
-                                ￥10
+                                ￥{item.commodityPrice}
                               </p>
                             </Descriptions.Item>
                             <Descriptions.Item>

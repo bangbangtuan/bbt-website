@@ -1,9 +1,9 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { Row, Col, Card } from "antd";
+import { Row, Col, Card, Icon } from "antd";
 import { AirPlane, BusinessMan, Student } from "./svgIcon";
 import "./Master.css";
-import { getMasterAndApprentice } from "../../fetch";
+import { getMasterAndApprentice, getNewMessage } from "../../fetch";
 
 class Master extends React.Component {
     constructor(props) {
@@ -11,14 +11,40 @@ class Master extends React.Component {
         this.state = {
             apprentice:0,
             masterWorker:0,
-            post:1
+            post:1,
+            timer:null,
+            newMessage:''
         }
     }
 
     componentDidMount() {
+        this.getNewMessagePush();
         this.getMasterAndApprentice();
+        this.setState({
+            timer:setInterval(this.getNewMessagePush, 15000)})
     }
 
+    componentWillUnmount(){
+        if(this.state.timer!= null) {
+            clearInterval(this.state.timer);
+        }
+    }
+    getNewMessagePush = () => {        
+        getNewMessage().then((res) => {
+            var newMessage = [];
+            if(res){
+                res.forEach((currentValue) => {
+                    if(currentValue.type === '2'){
+                        newMessage.push(currentValue)
+                    }
+                }, this)
+                this.setState({
+                    newMessage: newMessage
+                })
+            }
+            console.log('new', this.state.newMessage)
+        })
+    };
     getMasterAndApprentice = () => {
         getMasterAndApprentice().then((res) => {
             if(res){
@@ -35,7 +61,10 @@ class Master extends React.Component {
       <Row>
         <Col md={4} />
         <Col md={16}>
-          <div className="con-header">师徒计划</div>
+          <div className="con-header">师徒计划
+            <div style={{height:"100%", lineHeight:"100%", float:"right"}}><Icon type="notification" /></div>
+          </div>
+          
           <div className="MasterProfileContext">
               <Card
                   title="成为师傅"
