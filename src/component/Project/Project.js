@@ -172,11 +172,11 @@ class Project extends Component{
                                                         <Descriptions.Item label="组队">
                                                             <div className='project-team-members'>
                                                                 {
-                                                                    item.teamMembers && item.teamMembers.map((member, index) => {
+                                                                    item.teamMembers?item.teamMembers.map((member, index) => {
                                                                         return <div key={index} className='team-members'>
                                                                             <img src={member.headPortrait} alt={member.name} />
                                                                         </div>
-                                                                    })
+                                                                    }):null
                                                                 }
                                                                 <div><Icon type="plus-circle" className='add-team' style={{ fontSize: 34, color: '#999'}} onClick={this.showModal} /></div>
                                                             </div>

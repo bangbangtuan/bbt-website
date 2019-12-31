@@ -3,7 +3,6 @@ import { Row, Col, Upload, Icon, message, Input, Form, Button } from 'antd';
 import { withRouter } from 'react-router-dom';
 import storage from "../storage";
 import './UserProfile.css';
-import { getUserInfo, changeUserInfo } from '../../fetch'
 const { TextArea } = Input;
 
 class UserProfile extends Component{
@@ -22,12 +21,20 @@ class UserProfile extends Component{
     };
 
     getUserInfo = () => {
-        getUserInfo().then((res) => {
-            console.log(res)
-            this.setState({
-                userInfo: res,
-            });
-        })
+        fetch('https://api.bangneedu.com/user', {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                "Authorization": "Bearer " + this.state.token
+            }})
+            .then((res) => res.json())
+            .then( res => {
+                console.log(res.data);
+                this.setState({
+                    userInfo: res.data,
+                });
+            })
+            .catch( err => console.log(err));
     };
 
     handleChange = (info, record) => {
@@ -44,14 +51,24 @@ class UserProfile extends Component{
                 "id": record.id,
                 "headPortrait": info.file.response.data
             };
-            changeUserInfo(data).then((res) => {
-                console.log(res)
-                this.setState({
-                    imgLoading: false,
-                });
-                this.getUserInfo();
-                message.success("修改成功", 1);
+            fetch('https://api.bangneedu.com/user', {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    "Authorization": "Bearer " + this.state.token
+                },
+                body: JSON.stringify(data)
             })
+                .then((res) => res.json())
+                .then( res => {
+                    console.log(res);
+                    this.setState({
+                        imgLoading: false,
+                    });
+                    this.getUserInfo();
+                    message.success("修改成功", 1);
+                })
+                .catch( err => console.log(err));
         }
     };
 
@@ -61,11 +78,21 @@ class UserProfile extends Component{
             if (!err) {
                 values.id = this.state.userInfo.id;
                 console.log('Received values of form: ', values);
-                changeUserInfo(values).then((res) => {
-                    console.log(res)
-                    this.getUserInfo();
-                    message.success("修改成功", 1);
+                fetch('https://api.bangneedu.com/user', {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        "Authorization": "Bearer " + this.state.token
+                    },
+                    body: JSON.stringify(values)
                 })
+                    .then((res) => res.json())
+                    .then( res => {
+                        console.log(res.data);
+                        this.getUserInfo();
+                        message.success("修改成功", 1);
+                    })
+                    .catch( err => console.log(err));
             }
         })
     };

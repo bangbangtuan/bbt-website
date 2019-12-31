@@ -1,4 +1,4 @@
-import { get, post, put } from './tool';
+import { get, post } from './tool';
 import * as config from './config';
 import storage from "../component/storage";
 
@@ -52,31 +52,6 @@ export const getUserArticles = () => get({
     }
 });
 
-export const getArticleDetails = (id) => get({
-    url: config.ARTICLE + '/' + id,
-    headers: {
-        'Content-Type': 'application/json',
-        "Authorization": storage.get('token') ? "Bearer " + storage.get('token') : ''
-    }
-});
-
-export const getArticleComments = (id) => get({
-    url: config.ARTICLE_COMMENT + '/' + id,
-    headers: {
-        'Content-Type': 'application/json',
-        "Authorization": storage.get('token') ? "Bearer " + storage.get('token') : ''
-    }
-});
-
-export const postArticleComment = (body) => post({
-    url: config.ARTICLE_COMMENT,
-    body,
-    headers: {
-        'Content-Type': 'application/json',
-        "Authorization": storage.get('token')
-    }
-});
-
 /* 学习路径相关 */
 export const getStudyPaths = (current) => get({
     url: config.PATH + '?current=' + current +'&size=10',
@@ -98,7 +73,97 @@ export const getPathDetail = (id) => get({
         'Content-Type': 'application/json',
     }
 });
+/*师徒模块相关*/
+export const getMasterAndApprentice = () => get({
+    url: config.ORDER + '/masterAndApprentice',
+    headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + storage.get('token')
+    }    
+})
+export const getMasterOrApprenticeList = (type) => get({
+    url: config.ORDER + '/type/'+type,
+    headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + storage.get('token')
+    }    
+})
 
+export const getPostList = () => get({
+    url: config.MASTER+'/user',
+    headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + storage.get('token')
+    } 
+})
+
+export const getMasterWorkDetail = (id) => get({
+    url: config.MASTER + '/' + id,
+    headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + storage.get('token')
+    } 
+})
+
+export const getProjectTaskDetail = (id) => get({
+    url: config.ProjectTask + '/task?id=' + id,
+    headers: {
+        'Content-Type': 'application/json'
+    } 
+})
+
+export const getProjectDetail = (id) => get({
+    url: config.Project + '/' + id,
+    headers: {
+        'Content-Type': 'application/json'
+    } 
+})
+
+export const getMasterList = (size, current) => get({
+    url: config.MASTER + '?size=' + size +"&current="+current,
+    headers: {
+        'Content-Type': 'application/json'
+    } 
+})
+export const getMasterDetail = (id) => get({
+    url: config.MASTER + '/' + id,
+    headers: {
+        'Content-Type': 'application/json',
+    }     
+})
+export const postAddMaster = (body) => post({
+    url: config.ORDER,
+    body,
+    headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + storage.get('token')
+    } 
+})
+
+export const masterPay = (body) => post({
+    url: config.CreateOrder,
+    body,
+    headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + storage.get('token')
+    } 
+})
+
+export const getMasterOrder = (id) => get({
+    url: config.ORDER + '/details/' + id,
+    headers:{
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + storage.get('token')
+    }
+})
+
+export const getNewMessage = () => get({
+    url: config.MessagePush,
+    headers:{
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + storage.get('token'),
+    },
+})
 
 /* 师徒相关 */
 export const getAllMasterList = () => get({
@@ -119,15 +184,6 @@ export const getTags = () => get({
 /* 用户相关 */
 export const getUserInfo = () => get({
     url: config.USER,
-    headers: {
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer ' + storage.get('token')
-    }
-});
-
-export const changeUserInfo = (body) => put({
-    url: config.USER,
-    body,
     headers: {
         'Content-Type': 'application/json',
         'Authorization': 'Bearer ' + storage.get('token')
