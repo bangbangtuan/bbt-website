@@ -1,20 +1,10 @@
 import React, { Component } from 'react';
-<<<<<<< HEAD
-import {Row, Col, Comment, List, Input, Button, message, Modal} from 'antd';
-=======
 import {Row, Col, Comment, List, Input, Button, message, Modal, Icon} from 'antd';
->>>>>>> e64fa9f756e370b171037334fe0ac12077d52db7
 import { withRouter } from 'react-router-dom';
 import storage from "../storage";
 import noAuthor from "../../images/no-author.png";
 import ReactMarkdown from 'react-markdown';
 import { getArticleDetails, getArticleComments, postArticleComment,  getMyLikeArtilce, addLike, cancelLike} from '../../fetch';
-<<<<<<< HEAD
-import shareLogo from '../../images/share.png';
-import like from '../../images/like.png';
-import likeAct from '../../images/like-act.png';
-=======
->>>>>>> e64fa9f756e370b171037334fe0ac12077d52db7
 import QRCode  from 'qrcode.react';
 
 class ArticleDetails extends Component{
@@ -23,12 +13,7 @@ class ArticleDetails extends Component{
         this.state = {
             usercomment: '',
             articleId: this.props.match.params.id,
-            myLikeArtilce: [],
-<<<<<<< HEAD
-            like: like
-=======
-            like: {background: "#ccc5c5"}
->>>>>>> e64fa9f756e370b171037334fe0ac12077d52db7
+            isMyLike: false
         }
     }
 
@@ -37,11 +22,7 @@ class ArticleDetails extends Component{
         this.getArticleDetails(this.state.articleId);
         this.getArticleComments(this.state.articleId);
         // 如果已经登录，则显示likeAct, 如果没有登录，则显示普通的图片
-        this.getMyLikeArtilce();
-<<<<<<< HEAD
-        this.getLikePic(this.state.myLikeArtilce)
-=======
->>>>>>> e64fa9f756e370b171037334fe0ac12077d52db7
+        this.isMyLikeArticle();
     };
 
     getArticleDetails = (id) => {
@@ -54,26 +35,13 @@ class ArticleDetails extends Component{
     };
 
     addLike = () => {
-<<<<<<< HEAD
-      // 对文章进行点赞
-      // 捕获异常
-      // 还差一个请求体
-=======
->>>>>>> e64fa9f756e370b171037334fe0ac12077d52db7
       addLike(
         {"articleId": this.state.articleId}
       ).then((res) => {
         console.log('对文章进行点赞')
         this.setState({
-<<<<<<< HEAD
-          like: likeAct
-=======
-          like: {background: "#ff6e37"}
->>>>>>> e64fa9f756e370b171037334fe0ac12077d52db7
+          isMyLike: true
         })
-        this.getArticleDetails(this.state.articleId)
-        // 重新获取我喜欢的文章
-        this.getMyLikeArtilce()
       })
     }
 
@@ -84,16 +52,8 @@ class ArticleDetails extends Component{
       ).then((res) => {
         console.log('取消对文章的点赞')
         this.setState({
-<<<<<<< HEAD
-          like: like
-=======
-          like: {background: "#ccc5c5"}
->>>>>>> e64fa9f756e370b171037334fe0ac12077d52db7
+          isMyLike: false
         })
-        this.getArticleDetails(this.state.articleId)
-        // 重新获取我喜欢的文章
-        this.getMyLikeArtilce()
-
       })
     }
 
@@ -106,19 +66,21 @@ class ArticleDetails extends Component{
         })
     };
 
-    getMyLikeArtilce = () => {
+    isMyLikeArticle = () => {
       if (storage.get('token')) {
         // 获取我喜欢的文章  并 显示 点赞状态
         getMyLikeArtilce().then((res) => {
-          console.log('我喜欢的文章: ', res)
-          this.setState({
-              myLikeArtilce: res
-          })
-<<<<<<< HEAD
-=======
-        }).then ((res) => {
-          this.getLikePic(this.state.myLikeArtilce)
->>>>>>> e64fa9f756e370b171037334fe0ac12077d52db7
+          if (this.isMyLike(res)) {
+            console.log('确实是我喜欢')
+            this.setState({
+              isMyLike: true
+            })
+          } else {
+            console.log('不是我喜欢的文章')
+            this.setState({
+              isMyLike: false
+            })
+          }
         })
       }
     }
@@ -167,50 +129,27 @@ class ArticleDetails extends Component{
 
     showShare = () => {
       let path = window.location.href
-<<<<<<< HEAD
-      let articlePath = path.replace("localhost", "10.48.84.226")
-      console.log('wx二维码链接: ', articlePath)
-=======
->>>>>>> e64fa9f756e370b171037334fe0ac12077d52db7
 
       Modal.info({
           title: '打开微信“扫一扫”，打开网页后点击屏幕右上角分享按钮',
           content: (
               <div className='share-modal'>
                   <QRCode
-<<<<<<< HEAD
-                      value = {articlePath}  //value参数为生成二维码的链接
-=======
                       value = {path}  //value参数为生成二维码的链接
->>>>>>> e64fa9f756e370b171037334fe0ac12077d52db7
                       size = {100} //二维码的宽高尺寸
                       fgColor = "#000000"  //二维码的颜色
                  />
               </div>
           ),
-<<<<<<< HEAD
-          onOk() {},
-=======
           onCancel() {},
->>>>>>> e64fa9f756e370b171037334fe0ac12077d52db7
       });
     };
 
     Like = () => {
-<<<<<<< HEAD
-      console.log('点赞/取消点赞')
-      if (!storage.get('token')) {
-        // 提示请登录
-        message.error("请登陆后再点赞", 2);
-      } else {
-        // 可以进行点赞 或者 取消点赞
-        if (this.isInMyLike(this.state.myLikeArtilce)) {
-=======
       if (!storage.get('token')) {
         message.error("请登陆后再点赞", 2);
       } else {
-        if (this.isMyLike(this.state.myLikeArtilce)) {
->>>>>>> e64fa9f756e370b171037334fe0ac12077d52db7
+        if (this.state.isMyLike) {
           console.log('取消点赞')
           this.cancelLike()
         } else {
@@ -220,20 +159,7 @@ class ArticleDetails extends Component{
       }
     };
 
-<<<<<<< HEAD
-    isInMyLike = (myLikeArtilce) => {
-      // 判断是不是我喜欢的文章
-      console.log('myLikeArtilce: ', myLikeArtilce)
-      // console.log('this.state.articleId: ',  this.state.articleId)
-      // myLikeArtilce.forEach((item) => {
-      //   if (item.articleId === this.state.articleId) {
-      //     console.log('成功判断这文章是不是自己喜欢的')
-      //     return true
-      //   }
-      // })
-=======
     isMyLike = (myLikeArtilce) => {
->>>>>>> e64fa9f756e370b171037334fe0ac12077d52db7
       for (let item of myLikeArtilce) {
         if (item.articleId === this.state.articleId) {
           return true
@@ -242,35 +168,9 @@ class ArticleDetails extends Component{
       return false
     };
 
-    getLikePic = (myLikeArtilce) => {
-      // 判断是不是自己点赞的文章
-<<<<<<< HEAD
-      // 判断文章是否能作为新的时代
-      if (this.isInMyLike(myLikeArtilce)) {
-        console.log('确实是我喜欢')
-        this.setState({
-          like: likeAct
-=======
-      if (this.isMyLike(myLikeArtilce)) {
-        console.log('确实是我喜欢')
-        this.setState({
-          like: {background: "#ff6e37"}
->>>>>>> e64fa9f756e370b171037334fe0ac12077d52db7
-        })
-      } else {
-        console.log('不是我喜欢的文章')
-        this.setState({
-<<<<<<< HEAD
-          like: like
-=======
-          like: {background: "#ccc5c5"}
->>>>>>> e64fa9f756e370b171037334fe0ac12077d52db7
-        })
-      }
-    };
-
     render() {
         let article = this.state.article;
+        let isMyLike = this.state.isMyLike
         return (
             <div>
                 <Row>
@@ -303,26 +203,16 @@ class ArticleDetails extends Component{
                                     <img src={this.state.headPortrait ? this.state.headPortrait : noAuthor} alt='' />
                                     <Input onChange={this.onFieldChange} value={this.state.usercomment} placeholder='说点什么...'/>
                                     <Button onClick={() => this.commentSubmit()}>评论</Button>
-<<<<<<< HEAD
-                                    <img className="like" src={this.state.like} onClick={this.Like} style={{width: '22px', height: '22px'}}></img>
-                                    {
-                                        article && <span className="like-count">{article && article.praiseNumber}</span>
-                                    }
-                                    <img className="article-share" src={shareLogo} onClick={this.showShare}></img>
-=======
                                     {
                                         article &&
-                                        <Button icon="like" onClick={this.Like} style={this.state.like}>
-                                          <span class="text">点赞</span>
-                                          <span className="like-count">{article && article.praiseNumber}</span>
-                                        </Button>
-
+                                        !this.state.isMyLike?
+                                        (
+                                          <Icon type="like"  onClick={this.Like} style={{fontSize: '25px', padding: '0px 10px'}} />
+                                        ):(
+                                          <Icon type="like"  onClick={this.Like} style={{fontSize: '25px', padding: '0px 10px', color: 'rgba(25, 131, 218, 1)'}} />
+                                        )
                                     }
-                                    <Button type="primary" onClick={this.showShare} class="share" style={{background: "#ccc5c5"}}>
-                                      <Icon type="share-alt" />
-                                      分享
-                                    </Button>
->>>>>>> e64fa9f756e370b171037334fe0ac12077d52db7
+                                    <Icon type="share-alt" onClick={this.showShare} class="share"  style={{fontSize: '25px'}}/>
                                 </div>
                                 <div className='comment-list'>
                                     {

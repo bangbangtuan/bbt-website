@@ -72,19 +72,11 @@
 }
 
 .share-modal {
-<<<<<<< HEAD
-  width: 300px;
-  height: 300px;
-}
-
-.like {
-  margin-left: 10px;
-=======
   width: 100px;
   height: 100px;
 }
 
-.ant-btn .like .share{
+.ant-btn  .share{
   background: #ccc5c5
 }
 
@@ -99,5 +91,4 @@
 
 .comment-input button {
   width: 105px
->>>>>>> e64fa9f756e370b171037334fe0ac12077d52db7
 }
