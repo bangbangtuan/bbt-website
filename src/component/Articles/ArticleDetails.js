@@ -104,8 +104,8 @@ class ArticleDetails extends Component{
             "articleId": this.state.articleId
         };
         if(!this.state.token) {
-            toast.error("请登陆后再评论", {
-                position: toast.POSITION.TOP_CENTER,
+            message.error("请登陆后再评论", {
+                position: message.POSITION.TOP_CENTER,
                 autoClose: 2000
             });
             if(this.timer){
@@ -215,12 +215,12 @@ class ArticleDetails extends Component{
                                         article &&
                                         !this.state.isMyLike?
                                         (
-                                          <Icon type="like"  onClick={this.Like} style={{fontSize: '25px', padding: '0px 10px'}} />
+                                          <Icon type="like"  onClick={this.Like} style={{fontSize: '20px', padding: '0px 10px'}} />
                                         ):(
-                                          <Icon type="like"  onClick={this.Like} style={{fontSize: '25px', padding: '0px 10px', color: 'rgba(25, 131, 218, 1)'}} />
+                                          <Icon type="like"  onClick={this.Like} style={{fontSize: '20px', padding: '0px 10px', color: 'rgba(25, 131, 218, 1)'}} />
                                         )
                                     }
-                                    <Icon type="share-alt" onClick={this.showShare} class="share"  style={{fontSize: '25px'}}/>
+                                    <Icon type="share-alt" onClick={this.showShare} class="share"  style={{fontSize: '20px'}}/>
                                 </div>
                                 <div className='comment-list'>
                                     {
