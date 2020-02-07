@@ -1,4 +1,4 @@
-import { get, post } from './tool';
+import { get, post, put } from './tool';
 import * as config from './config';
 import storage from "../component/storage";
 
@@ -112,14 +112,14 @@ export const getMasterAndApprentice = () => get({
     headers: {
         'Content-Type': 'application/json',
         'Authorization': 'Bearer ' + storage.get('token')
-    }    
+    }
 })
 export const getMasterOrApprenticeList = (type) => get({
     url: config.ORDER + '/type/'+type,
     headers: {
         'Content-Type': 'application/json',
         'Authorization': 'Bearer ' + storage.get('token')
-    }    
+    }
 })
 
 export const getPostList = () => get({
@@ -127,7 +127,7 @@ export const getPostList = () => get({
     headers: {
         'Content-Type': 'application/json',
         'Authorization': 'Bearer ' + storage.get('token')
-    } 
+    }
 })
 
 export const getMasterWorkDetail = (id) => get({
@@ -135,34 +135,34 @@ export const getMasterWorkDetail = (id) => get({
     headers: {
         'Content-Type': 'application/json',
         'Authorization': 'Bearer ' + storage.get('token')
-    } 
+    }
 })
 
 export const getProjectTaskDetail = (id) => get({
     url: config.ProjectTask + '/task?id=' + id,
     headers: {
         'Content-Type': 'application/json'
-    } 
+    }
 })
 
 export const getProjectDetail = (id) => get({
     url: config.Project + '/' + id,
     headers: {
         'Content-Type': 'application/json'
-    } 
+    }
 })
 
 export const getMasterList = (size, current) => get({
     url: config.MASTER + '?size=' + size +"&current="+current,
     headers: {
         'Content-Type': 'application/json'
-    } 
+    }
 })
 export const getMasterDetail = (id) => get({
     url: config.MASTER + '/' + id,
     headers: {
         'Content-Type': 'application/json',
-    }     
+    }
 })
 export const postAddMaster = (body) => post({
     url: config.ORDER,
@@ -170,7 +170,7 @@ export const postAddMaster = (body) => post({
     headers: {
         'Content-Type': 'application/json',
         'Authorization': 'Bearer ' + storage.get('token')
-    } 
+    }
 })
 
 export const masterPay = (body) => post({
@@ -179,7 +179,7 @@ export const masterPay = (body) => post({
     headers: {
         'Content-Type': 'application/json',
         'Authorization': 'Bearer ' + storage.get('token')
-    } 
+    }
 })
 
 export const getMasterOrder = (id) => get({
