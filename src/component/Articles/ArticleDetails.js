@@ -11,6 +11,7 @@ class ArticleDetails extends Component{
     constructor(props){
         super(props);
         this.state = {
+            token: storage.get('token'),
             usercomment: '',
             articleId: this.props.match.params.id,
             isMyLike: false
@@ -58,12 +59,20 @@ class ArticleDetails extends Component{
     }
 
     getArticleComments = (id) => {
-        getArticleComments(id).then((res) => {
-            console.log(res)
-            this.setState({
-                comments: res
-            });
-        })
+        fetch('https://api.bangneedu.com/articleComment/' + id, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                "Authorization": this.state.token ? "Bearer " + this.state.token : ''
+            }})
+            .then((res) => res.json())
+            .then( res => {
+                console.log("comments: " + res.data);
+                this.setState({
+                    comments: res.data
+                });
+            })
+            .catch( err => console.log(err));
     };
 
     isMyLikeArticle = () => {
@@ -94,8 +103,11 @@ class ArticleDetails extends Component{
             "content": this.state.usercomment,
             "articleId": this.state.articleId
         };
-        if(!storage.get('token')) {
-            message.error("请登陆后再评论", 2);
+        if(!this.state.token) {
+            toast.error("请登陆后再评论", {
+                position: toast.POSITION.TOP_CENTER,
+                autoClose: 2000
+            });
             if(this.timer){
                 clearTimeout(this.timer);
             }
@@ -103,26 +115,22 @@ class ArticleDetails extends Component{
                 this.props.history.push("/login")
             },1500);
         } else {
-            postArticleComment(body).then((res) => {
-                console.log(res)
-                if(res.status === 200) {
-                    this.getArticleComments(this.state.articleId);
-                }
+            fetch('https://api.bangneedu.com/articleComment', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    "Authorization": "Bearer " + this.state.token
+                },
+                body: JSON.stringify(body)
             })
-            // fetch('https://api.bangneedu.com/articleComment', {
-            //     method: 'POST',
-            //     headers: {
-            //         'Content-Type': 'application/json',
-            //         "Authorization": "Bearer " + this.state.token
-            //     },
-            //     body: JSON.stringify(body)
-            // })
-            //     .then((res) => res.json())
-            //     .then( res => {
-            //         console.log(res);
-            //
-            //     })
-            //     .catch( err => console.log(err));
+                .then((res) => res.json())
+                .then( res => {
+                    console.log(res);
+                    if(res.status === 200) {
+                        this.getArticleComments(this.state.articleId);
+                    }
+                })
+                .catch( err => console.log(err));
         }
     };
 

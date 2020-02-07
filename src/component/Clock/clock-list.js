@@ -243,8 +243,8 @@ class ClockItem extends Component{
                                     <div className='comments' style={{display: item.display}}>
                                         <div className='comment-input'>
                                             <img src={this.state.headPortrait ? this.state.headPortrait : noAuthor} alt='' />
-                                            <Input onChange={this.onFieldChange} value={this.state.usercomment}/>
-                                            <Button onClick={() => this.commentSubmit(index)}>评论</Button>
+                                            <input onChange={this.onFieldChange} value={this.state.usercomment}/>
+                                            <button onClick={() => this.commentSubmit(index)}>评论</button>
                                         </div>
                                         <div className='comment-list'>
                                             {

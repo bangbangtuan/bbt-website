@@ -64,7 +64,6 @@ export default class Navigation extends React.Component {
         let headPortrait = storage.get('headPortrait');
         let navRight;
         if(token) {
-            console.log("这个是token:"+token)
             if (!this.state.loginStatus) {
                 navRight = null
             } else {

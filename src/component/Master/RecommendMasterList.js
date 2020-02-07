@@ -11,43 +11,31 @@ import {
   Icon
 } from "antd";
 import "./Master.css";
-import photo from "../../images/author.jpg";
 import { Link, withRouter } from "react-router-dom";
-import { getMasterOrApprenticeList,getMasterDetail, getProjectTaskDetail, } from "../../fetch";
+import { getMasterList } from "../../fetch";
 const { Sider, Content } = Layout;
 
-class MasterList extends Component {
+class RecommendMasterList extends Component {
   constructor(props) {
     super(props);
     this.state = {
       visible: false,
-      type: 2,
-      data: '',
-      projectDetail:''
-    }; 
+      data:[]
+    };
   }
   componentDidMount() {
-    this.getMasterOrApprenticeList(this.state.type);
+    this.getMasterList(10, 1);
   }
-  getMasterOrApprenticeList = type => {
-    getMasterOrApprenticeList(type).then(res => {
-      if (res) {
-       res.forEach(function(item){
-          getMasterDetail(item.commodityId).then(master =>{           
-            if(master){
-              getProjectTaskDetail(master.projectTaskId).then(projectTask =>{
-              item['projectDetail'] = projectTask.details;
-            })
-            }
-          })
-        })
+  getMasterList = (size, current) => {
+    getMasterList(size, current).then(res=>{
+      if(res){
         this.setState({
-          data:res
-        })
-        console.log('res',this.state.data)
+        data:res.records
+      })
       }
-    });
-  };
+      console.log(res)
+    })
+  }
 
   showModal = () => {
     this.setState({
@@ -88,10 +76,7 @@ class MasterList extends Component {
               marginBottom: 30
             }}
           >
-            <Breadcrumb.Item>
-              <a href="/master">师徒计划</a>
-            </Breadcrumb.Item>
-            <Breadcrumb.Item>我拜师的</Breadcrumb.Item>
+            <Breadcrumb.Item>师徒计划师傅列表</Breadcrumb.Item>
           </Breadcrumb>
           <div>
             <List
@@ -117,32 +102,18 @@ class MasterList extends Component {
                       >
                         <img
                           className="master-image"
-                          src={item.commodityImage}
+                          src={item.image}
                           alt="师傅带徒"
                         />
                       </Sider>
                       <Layout style={{ backgroundColor: "#fff" }}>
                         <Content style={{ paddingLeft: "10px", margin: 0 }}>
-                          <Descriptions title={item.commodityName} column={1}>
-                            <Descriptions.Item>
-                              <p
-                                style={{
-                                  color: "#FFD700",
-                                  display: "inline",
-                                  fontSize: "24px"
-                                }}
-                              >
-                                ￥{item.commodityPrice}
-                              </p>
+                          <Descriptions title={item.projectTaskName} column={1}>
+                            <Descriptions.Item label="周期">
+                                <p style={{ color: "blue", display: "inline" }}>{item.cycle}</p>天
                             </Descriptions.Item>
-                            <Descriptions.Item>
-                              <p
-                                style={{ display: "inline", fontSize: "14px" }}
-                              >
-                                {item.orderFormStatus==='1'?'等待付款'
-                                :item.orderFormStatus==='2'?'拜师成功'
-                                :item.orderFormStatus==='3'?'等待师傅收徒':'拜师失败'}
-                              </p>
+                            <Descriptions.Item label="定价">
+                                <p style={{ color: "red", display: "inline" }}>￥{item.price}</p>
                             </Descriptions.Item>
                           </Descriptions>
                         </Content>
@@ -150,17 +121,6 @@ class MasterList extends Component {
                     </Layout>
                     <Divider />
                     <div style={{ margin: "0 auto" }}>
-                      <div style={{ width: "100px", float: "left" }}>
-                        <Icon
-                          type="message"
-                          style={{
-                            fontSize: "24px",
-                            margin: "0 auto",
-                            marginRight: "10px"
-                          }}
-                        />
-                        联系师傅
-                      </div>
                       <div
                         style={{
                           float: "right",
@@ -171,11 +131,10 @@ class MasterList extends Component {
                         <div
                           style={{
                             float: "right",
-                            border: "1px solid #000",
+                            border: "1px solid #ddd",
                             width: "80px"
                           }}>
-                          {item.orderFormStatus==='1'?<Link to={{pathname: '/masterPay/'+item.id, state:item}}>付款</Link>
-                          :<Link to={{pathname: '/masterOrderDetails/'+item.id, state:item}}>订单详情</Link>}
+                          <Link to={"/masterDetail/"+item.id}>查看详情</Link>
                         </div>
                         
                       </div>
@@ -192,4 +151,4 @@ class MasterList extends Component {
   }
 }
 
-export default withRouter(MasterList)
+export default withRouter(RecommendMasterList)

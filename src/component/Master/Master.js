@@ -2,49 +2,69 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { Row, Col, Card, Icon } from "antd";
 import { AirPlane, BusinessMan, Student } from "./svgIcon";
-import storage from "../storage";
 import "./Master.css";
+import { getMasterAndApprentice, getNewMessage } from "../../fetch";
 
 class Master extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {};
-  }
+    constructor(props) {
+        super(props);
+        this.state = {
+            apprentice:0,
+            masterWorker:0,
+            post:1,
+            timer:null,
+            newMessage:''
+        }
+    }
 
-  componentDidMount() {
-    this.getApprentices();
-    this.getMasters();
-    this.getPosts();
-  }
+    componentDidMount() {
+        this.getNewMessagePush();
+        this.getMasterAndApprentice();
+        this.setState({
+            timer:setInterval(this.getNewMessagePush, 15000)})
+    }
 
-  getApprentices = () => {
-    let token = storage.get("token");
-    fetch()
-      .then(res => res.json())
-      .then(res => {})
-      .catch(err => console.log(err));
-  };
-  getMasters = () => {
-    let token = storage.get("token");
-    fetch()
-      .then(res => res.json())
-      .then(res => {})
-      .catch(err => console.log(err));
-  };
-  getPosts = () => {
-    let token = storage.get("token");
-    fetch()
-      .then(res => res.json())
-      .then(res => {})
-      .catch(err => console.log(err));
-  };
+    componentWillUnmount(){
+        if(this.state.timer!= null) {
+            clearInterval(this.state.timer);
+        }
+    }
+    getNewMessagePush = () => {        
+        getNewMessage().then((res) => {
+            var newMessage = [];
+            if(res){
+                res.forEach((currentValue) => {
+                    if(currentValue.type === '2'){
+                        newMessage.push(currentValue)
+                    }
+                }, this)
+                this.setState({
+                    newMessage: newMessage
+                })
+            }
+            console.log('new', this.state.newMessage)
+        })
+    };
+    getMasterAndApprentice = () => {
+        getMasterAndApprentice().then((res) => {
+            if(res){
+              this.setState({
+                apprentice: res.apprentice,
+                masterWorker: res.masterWorker
+              })
+            }
+        })
+    };
   render() {
     document.body.style.backgroundColor = "#f8fbfd";
     return (
       <Row>
         <Col md={4} />
         <Col md={16}>
-          <div className="con-header">师徒计划</div>
+          <div className="con-header">师徒计划
+            <div style={{height:"100%", lineHeight:"100%", float:"right"}}><Icon type="notification" /></div>
+          </div>
+          
           <div className="MasterProfileContext">
               <Card
                   title="成为师傅"
@@ -58,7 +78,7 @@ class Master extends React.Component {
                                   <AirPlane />
                               </div>
                               <p className="infoTitle">我发布的</p>
-                              <p className="infoNumber">5</p>
+                              <p className="infoNumber">{this.state.post}</p>
                           </div>
                       </Link>
                       <Link to={"/apprenticeList"}>
@@ -67,7 +87,7 @@ class Master extends React.Component {
                                   <BusinessMan />
                               </div>
                               <p className="infoTitle">我收徒的</p>
-                              <p className="infoNumber">5</p>
+                              <p className="infoNumber">{this.state.apprentice}</p>
                           </div>
                       </Link>
                   </div>
@@ -84,7 +104,7 @@ class Master extends React.Component {
                                   <Student />
                               </div>
                               <p className="infoTitle">我拜师的</p>
-                              <p className="infoNumber">5</p>
+                              <p className="infoNumber">{this.state.masterWorker}</p>
                           </div>
                       </Link>
                   </div>
