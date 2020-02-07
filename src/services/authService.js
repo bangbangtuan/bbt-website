@@ -5,7 +5,7 @@ const authService = {
         //let status = false;
         let token = storage.get('token');
         if(token) {
-            let res = await fetch('https://api.bangneedu.com/user', {
+            let res = await fetch('https://testapi.bangneedu.com/user', {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',

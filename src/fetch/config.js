@@ -1,7 +1,8 @@
-const URL = 'https://api.bangneedu.com';
+const URL = 'https://testapi.bangneedu.com';
 export const CLOCK = URL + '/punchTheClock';
 export const ARTICLE = URL + '/article';
 export const ARTICLE_COMMENT = URL + '/articleComment';
+export const ARTICLE_COLLECTION = URL + '/articleCollection'
 export const PATH = URL + '/learningPath';
 export const PATH_INFO = URL + '/learningPathDetails';
 export const PATH_DETAILS = URL + '/learningPathDetails/details';
@@ -11,3 +12,5 @@ export const USER = URL + '/user';
 export const INVITE_CODE = URL + '/invitationCode';
 export const REGISTER = URL + '/register';
 export const VALID_CODE = URL + '/captcha';
+export const FRIEND = URL + '/friend';
+export const PUNCHTHEClOCKCOMMENT = URL + '/punchTheClockComment'

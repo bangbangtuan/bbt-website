@@ -21,7 +21,7 @@ class Shop extends Component{
 
     componentWillMount() {
         if(storage.get('token')) {
-            fetch('https://api.bangneedu.com/user', {
+            fetch('https://testapi.bangneedu.com/user', {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -116,5 +116,3 @@ class Shop extends Component{
 }
 
 export default withRouter(Shop);
-
-

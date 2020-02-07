@@ -18,7 +18,7 @@ class ArticleDetails extends Component{
     }
 
     componentWillMount() {
-        console.log(this.props.match.params.id);
+        console.log('文章id: ', this.props.match);
         this.getArticleDetails(this.state.articleId);
         this.getArticleComments(this.state.articleId);
         // 如果已经登录，则显示likeAct, 如果没有登录，则显示普通的图片

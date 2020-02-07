@@ -1,21 +1,33 @@
 import React, { Component } from 'react';
 import './Profile.css';
-import { Row, Col, Descriptions, Breadcrumb,Tabs } from 'antd';
+import { Row, Col, Descriptions, Breadcrumb,Tabs, Input as Search } from 'antd';
 import '../Clock/Clock.css';
 import ClockItem from '../Clock/clock-list';
 import ArticleItem from '../Articles/article-list';
 import storage from '../storage';
-import { withRouter } from 'react-router-dom';
+import { withRouter, Link } from 'react-router-dom';
 import UserTasks from "../Project/userTasks";
 import UserOrderList from "../Shop/UserOrderList";
-import { getUserClocks, getUserArticles, getUserInfo, getInvitationCode } from '../../fetch'
+import { getCollectedArticles, getOtherUserInfo, getFriendNumber, getOtherUserFriendNumber, getUserClocks, getOtherUserClocks, getUserArticles, getUserInfo, getInvitationCode, getOtherUserArticles } from '../../fetch'
+import { getArticles, searchCollectedArtciles, searchMyCollectedArticles, follow, cancelFollow, getOtherUserFollowList, getOtherUserFansList, getMyUserFollowList } from "../../fetch";
 const { TabPane } = Tabs;
 
 class Profile extends Component{
     constructor(props, context) {
         super(props, context);
         this.state = {
-            key: 'home'
+            key: 'home',
+            collectedArtcile: [],
+            otherUserId: this.props.match.params.id,
+            friendNumber: {
+              folow: 0,
+              fans: 0
+            },
+            type: '',
+            current: 1,
+            userArticle: [],
+            isFollow: false,
+            loginUserInfo: ''
         };
     }
 
@@ -24,55 +36,260 @@ class Profile extends Component{
         this.setState({
             token: token
         });
-        if (token) {
-            getUserInfo().then((res) => {
-                console.log(res);
-                this.setState({
-                    userInfo: res
-                });
-            });
-            getInvitationCode().then((res) => {
-                console.log(res);
-                this.setState({
-                    inviteCode: res
-                });
-            });
-            getUserClocks().then((res) => {
-                console.log(res);
-                this.setState({
-                    userDaka: res.records
-                });
-            });
-            getUserArticles().then((res) => {
-                console.log(res);
-                this.setState({
-                    userArticle: res.records
-                });
-            });
-
-            fetch('https://api.bangneedu.com/orderForm/0', {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json',
-                    "Authorization": "Bearer " + token
-                }})
-                .then((res) => res.json())
-                .then( res => {
-                    console.log(res.data);
-                    this.setState({
-                        allOrders: res.data
-                    });
-                })
-                .catch( err => console.log(err))
-        } else {
-            storage.set('token', false);
-        }
-
+        getUserInfo().then((res) => {
+          console.log('res: ', res)
+          this.setState({
+            loginUserInfo: res
+          }, () => {
+            console.log('loginUserInfo: ', this.state.loginUserInfo.id)
+          })
+        }).then((res) => {
+          console.log('2')    // this
+          this.getData(token)
+          // 判断用户ID 是否在我的关注列表当中
+        })
     }
 
+    getData (token) {
+      if (token && this.isMyProfile()) {
+        getUserInfo().then((res) => {
+          this.setState({
+              userInfo: res
+          })
+        })
+
+          getInvitationCode().then((res) => {
+              this.setState({
+                  inviteCode: res
+              });
+          });
+
+          getUserClocks().then((res) => {
+              console.log(res);
+              this.setState({
+                  userDaka: res.records
+              });
+          });
+
+          getUserArticles().then((res) => {
+              console.log(res);
+              this.setState({
+                  userArticle: res.records
+              });
+          });
+
+          this.getCollectedArticles();
+
+          getFriendNumber().then((res) => {
+            this.setState({
+              friendNumber: res
+            }, () => {
+              console.log('friendNumber', this.state.friendNumber)
+            })
+          })
+
+          fetch('https://api.bangneedu.com/orderForm/0', {
+              method: 'GET',
+              headers: {
+                  'Content-Type': 'application/json',
+                  "Authorization": "Bearer " + token
+              }})
+              .then((res) => res.json())
+              .then( res => {
+                  console.log(res.data);
+                  this.setState({
+                      allOrders: res.data
+                  });
+              })
+              .catch( err => console.log(err))
+
+      } else if (token && !this.isMyProfile()) {
+        getOtherUserInfo(this.state.otherUserId).then((res) => {
+          this.setState({
+            userInfo: res
+          }, () => {
+            console.log('getOtherUserInfo: ', this.state.userInfo)
+          })
+        })
+
+        //  根据token 获取该用户的该关注列表
+        //  判断ID 是否存在于该列表当中 isFollow: true
+
+        getMyUserFollowList().then((res) => {
+          let followList = res
+          let isFollow = ''
+          console.log('followList: ', followList)
+          console.log('this.state.otherUserId: ', this.state.otherUserId)
+          for (let i = 0; i < followList.length; i++) {
+              if (followList[i].bbtUserId === this.state.otherUserId) {
+                isFollow = true
+              }
+          }
+
+          if (isFollow) {
+            this.setState({
+              isFollow: true
+            }, () => {
+              console.log('isFollow:: ', this.state.isFollow)
+            })
+          } else {
+            this.setState({
+              isFollow: false
+            })
+          }
+        })
+
+        getOtherUserClocks(this.state.otherUserId).then((res) => {
+          this.setState({
+            userDaka: res
+          })
+        })
+
+        getOtherUserFriendNumber(this.state.otherUserId).then((res) => {
+          this.setState({
+            friendNumber: res
+          })
+        })
+
+        getOtherUserArticles (this.state.otherUserId).then((res) => {
+          this.setState({
+            userArticle: res
+          }, () => {
+            console.log('学习日记: ', this.state.userArticle)
+          })
+        })
+
+      } else {
+          storage.set('token', false);
+          getOtherUserInfo(this.state.otherUserId).then((res) => {
+            this.setState({
+              userInfo: res
+            })
+          })
+          getOtherUserClocks(this.state.otherUserId).then((res) => {
+            this.setState({
+              userDaka: res
+            }, () => {
+              console.log('getOtherUserClocks: ', this.state.userDaka)
+            })
+          })
+
+          getOtherUserFriendNumber(this.state.otherUserId).then((res) => {
+            this.setState({
+              friendNumber: res
+            })
+          })
+      }
+    }
+
+    isMyProfile () {
+      if (this.state.otherUserId === undefined) {
+        return true
+      } else if (this.state.loginUserInfo.id === this.state.otherUserId) {
+        return true
+      } else {
+        return false
+      }
+    }
+
+    callback () {
+      console.log('取消分享')
+    }
+
+    getCollectedArticles () {
+      getCollectedArticles().then((res) => {
+        console.log('我收藏的文章: ', res)
+        this.setState({
+          collectedArtcile: res
+        })
+      })
+    }
 
     handleClick = (id) => {
-        this.props.history.push("/userProfile/" + id)
+      this.props.history.push("/userProfile/" + id)
+    };
+
+    handleFollow = (id) => {
+      // 点击关注之后，变成取消关注
+      // 取消关注之后，就会变成关注某人的状态 之中发生、
+      console.log('关注')
+      //
+      follow({fid: id}).then((res) => {
+        this.setState({
+          isFollow: true
+        })
+      }).then((res) => {
+        if (this.isMyProfile()) {
+          getFriendNumber().then((res) => {
+            // 回调函数执行的顺序
+            this.setState({
+              friendNumber: res
+            }, () => {
+              console.log('friendNumber', this.state.friendNumber)
+            })
+          })
+        } else {
+          getOtherUserFriendNumber(this.state.otherUserId).then((res) => {
+            this.setState({
+              friendNumber: res
+            })
+          })
+        }
+      })
+    }
+
+    handleCancelFollow = (id) => {
+      // 取消关注之后，更新该用的粉丝数量 ，演示 变成关注
+      cancelFollow(id).then((res) => {
+        this.setState({
+          isFollow: false
+        })
+      }).then((res) => {
+        if (this.isMyProfile()) {
+          getFriendNumber().then((res) => {
+            this.setState({
+              friendNumber: res
+            }, () => {
+              console.log('friendNumber', this.state.friendNumber)
+            })
+          })
+        } else {
+          getOtherUserFriendNumber(this.state.otherUserId).then((res) => {
+            this.setState({
+              friendNumber: res
+            })
+          })
+        }
+      })
+    }
+
+    getArticles = (page, type) => {
+      getArticles(page, type).then((res) => {
+          console.log('个人主页查看文章: ', res);
+          this.setState({
+              userArticle: res.records,
+              pages: parseInt(res.pages),
+              changed: true
+          })
+      })
+    };
+
+    getSearchArticle (value, event) {
+      console.log('获取搜索出来的文章： ', value)
+      let content = value
+      if (this.isMyProfile()) {
+        searchMyCollectedArticles().then((res) => {
+          this.setState({
+            collectedArtcile: res
+          })
+        })
+      } else {
+        searchCollectedArtciles(this.state.otherUserId, content).then((res) => {
+          this.setState({
+            collectedArtcile: res
+          })
+        })
+      }
     };
 
     render() {
@@ -85,11 +302,38 @@ class Profile extends Component{
                             {
                                 (this.state.userInfo && (
                                 <div className='head-container'>
+                                  <div className='head-wrapper'>
                                     <img src={this.state.userInfo.headPortrait} alt='' onClick={() => this.handleClick(this.state.userInfo.id)} style={{cursor: 'pointer'}}/>
+                                    {
+                                      (!this.isMyProfile() &&
+                                        (!this.state.isFollow
+                                          ?(<div className="follow-container">
+                                              <span className="follow" onClick={() => this.handleFollow(this.state.userInfo.id)}>+关注</span>
+                                            </div>)
+                                          :(<div className="cancel-button">
+                                              <span className="cancel-follow" onClick={() => this.handleCancelFollow(this.state.userInfo.id)}>已关注</span>
+                                            </div>)
+                                        ))
+                                    }
+                                  </div>
+                                  <div className="userinfo-wrapper">
                                     <Descriptions title={this.state.userInfo.name} className='user-info' column={1}>
                                         <Descriptions.Item label="微信号 ">{this.state.userInfo.weixin}</Descriptions.Item>
                                         <Descriptions.Item label="个人简介 ">{this.state.userInfo.description ? this.state.userInfo.description : '什么都没有'}</Descriptions.Item>
                                     </Descriptions>
+                                    <div className="fans-wrapper">
+                                      <span className="fans">粉丝 </span>
+                                      <Link to={{pathname: '/follow', query: {id: this.state.userInfo.id, type: 1}}}>
+                                        <span className="fans-number">{this.state.friendNumber.fans}</span>
+                                      </Link>
+                                    </div>
+                                    <div className="followers-wrapper">
+                                      <span className="followers">关注 </span>
+                                      <Link to={{pathname: '/follow', query: {id: this.state.userInfo.id, type: 2}}}>
+                                        <span className="followers-number">{this.state.friendNumber.follow}</span>
+                                      </Link>
+                                    </div>
+                                  </div>
                                 </div>
                                 ))
                             }
@@ -116,65 +360,125 @@ class Profile extends Component{
                             <Col md={16}>
                                 {
                                     (this.state.userArticle &&
-                                        <ArticleItem articles={this.state.userArticle} />)
+                                        <ArticleItem articles={this.state.userArticle} getArticles={this.getArticles.bind(this, this.state.current, this.state.type)}/>)
                                 }
                             </Col>
                             <Col md={4}/>
                         </Row>
                     </TabPane>
-                    <TabPane tab="个人中心" key="3">
-                        <Row>
-                            <Col md={4}/>
-                            <Col md={16}>
-                                <Breadcrumb className='con-header' style={{ paddingLeft: 10, fontSize: 14, marginTop: 30, marginBottom: 30}}>
-                                    <Breadcrumb.Item>个人中心</Breadcrumb.Item>
-                                    <Breadcrumb.Item>我的任务</Breadcrumb.Item>
-                                </Breadcrumb>
-                                <UserTasks />
-                            </Col>
-                            <Col md={4}/>
-                        </Row>
-                    </TabPane>
-                    <TabPane tab="积分商城" key="4">
-                        <Row>
-                            <Col md={4}/>
-                            <Col md={16}>
-                                <Breadcrumb className='con-header' style={{ paddingLeft: 10, fontSize: 14, marginTop: 30, marginBottom: 30}}>
-                                    <Breadcrumb.Item>个人中心</Breadcrumb.Item>
-                                    <Breadcrumb.Item>积分商城</Breadcrumb.Item>
-                                </Breadcrumb>
-                                <Tabs defaultActiveKey="1" className='order-tab'>
-                                    <TabPane tab="所有订单" key="1">
-                                        <UserOrderList orders={this.state.allOrders} />
-                                    </TabPane>
-                                    <TabPane tab="待兑换" key="2">
-                                        Content of Tab Pane 2
-                                    </TabPane>
-                                    <TabPane tab="待发货" key="3">
-                                        Content of Tab Pane 3
-                                    </TabPane>
-                                    <TabPane tab="待收货" key="4">
-                                        Content of Tab Pane 3
-                                    </TabPane>
-                                </Tabs>
-                            </Col>
-                            <Col md={4}/>
-                        </Row>
-                    </TabPane>
-                    <TabPane tab="我的邀请码" key="5">
-                        <Row>
-                            <Col md={4}/>
-                            <Col md={16}>
-                                {
-                                    this.state.inviteCode && <div className='invite-code'>
-                                        <div>我的邀请码: {this.state.inviteCode}</div>
-                                        <div>邀请好友注册，既可获赠积分，积分可到积分商城兑换学习课程或精美礼品。</div>
-                                    </div>
-                                }
-                            </Col>
-                            <Col md={4}/>
-                        </Row>
-                    </TabPane>
+                    {
+                      (this.isMyProfile() &&
+                                        <TabPane tab="个人中心" key="3">
+                                              <Row>
+                                                  <Col md={4}/>
+                                                  <Col md={16}>
+                                                      <Breadcrumb className='con-header' style={{ paddingLeft: 10, fontSize: 14, marginTop: 30, marginBottom: 30}}>
+                                                          <Breadcrumb.Item>个人中心</Breadcrumb.Item>
+                                                          <Breadcrumb.Item>我的任务</Breadcrumb.Item>
+                                                      </Breadcrumb>
+                                                      <UserTasks />
+                                                  </Col>
+                                                  <Col md={4}/>
+                                              </Row>
+                                          </TabPane>)
+                    }
+                    {
+                      (this.isMyProfile() &&
+                      <TabPane tab="积分商城" key="4">
+                          <Row>
+                              <Col md={4}/>
+                              <Col md={16}>
+                                  <Breadcrumb className='con-header' style={{ paddingLeft: 10, fontSize: 14, marginTop: 30, marginBottom: 30}}>
+                                      <Breadcrumb.Item>个人中心</Breadcrumb.Item>
+                                      <Breadcrumb.Item>积分商城</Breadcrumb.Item>
+                                  </Breadcrumb>
+                                  <Tabs defaultActiveKey="1" className='order-tab'>
+                                      <TabPane tab="所有订单" key="1">
+                                          <UserOrderList orders={this.state.allOrders} />
+                                      </TabPane>
+                                      <TabPane tab="待兑换" key="2">
+                                          Content of Tab Pane 2
+                                      </TabPane>
+                                      <TabPane tab="待发货" key="3">
+                                          Content of Tab Pane 3
+                                      </TabPane>
+                                      <TabPane tab="待收货" key="4">
+                                          Content of Tab Pane 3
+                                      </TabPane>
+                                  </Tabs>
+                              </Col>
+                              <Col md={4}/>
+                          </Row>
+                      </TabPane>)
+                    }
+                    {(this.isMyProfile() &&
+                      <TabPane tab="我的邀请码" key="5">
+                          <Row>
+                              <Col md={4}/>
+                              <Col md={16}>
+                                  {
+                                      this.state.inviteCode && <div className='invite-code'>
+                                          <div>我的邀请码: {this.state.inviteCode}</div>
+                                          <div>邀请好友注册，既可获赠积分，积分可到积分商城兑换学习课程或精美礼品。</div>
+                                      </div>
+                                  }
+                              </Col>
+                              <Col md={4}/>
+                          </Row>
+                      </TabPane>)
+                    }
+                    {
+                      this.isMyProfile()
+                      ?(                    <TabPane tab="我的收藏" key="6">
+                                            <Row>
+                                                <Col md={4}/>
+                                                <Col md={16}>
+                                                      <div className="collect-number">
+                                                        收藏 {this.state.collectedArtcile.length} 条
+                                                      </div>
+                                                      <div className="search">
+                                                        <Search
+                                                          placeholder="搜索你的收藏"
+                                                          enterButton="Search"
+                                                          style={{width: "300px", height: "40px", border: "solid 1px #dddddd", backgroundColor: "#ffffff", borderRadius: "4px"}}
+                                                          onSearch={value => console.log(value)}
+                                                          />
+                                                      </div>
+                                                    {
+                                                        (this.state.collectedArtcile &&
+                                                            <ArticleItem articles={this.state.collectedArtcile} />)
+                                                    }
+                                                </Col>
+                                                <Col md={4}/>
+                                            </Row>
+
+                                          </TabPane>)
+                      :(                    <TabPane tab="TA的收藏" key="6">
+                                            <Row>
+                                                <Col md={4}/>
+                                                <Col md={16}>
+                                                      <div className="collect-number">
+                                                        收藏 {this.state.collectedArtcile.length} 条
+                                                      </div>
+                                                      <div className="search">
+                                                        <Search
+                                                          placeholder="搜索你的收藏"
+                                                          enterButton="Search"
+                                                          style={{width: "300px", height: "40px", border: "solid 1px #dddddd", backgroundColor: "#ffffff", borderRadius: "4px"}}
+                                                          onSearch={value => console.log(value)}
+                                                          />
+                                                      </div>
+                                                    {
+                                                        (this.state.collectedArtcile &&
+                                                            <ArticleItem articles={this.state.collectedArtcile} />)
+                                                    }
+                                                </Col>
+                                                <Col md={4}/>
+                                            </Row>
+
+                                          </TabPane>)
+                    }
+
                 </Tabs>
             </div>
         )

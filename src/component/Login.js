@@ -20,7 +20,7 @@ class Login extends Component{
             if (!err) {
                 console.log('Received values of form: ', values);
             }
-            fetch('https://api.bangneedu.com/login', {
+            fetch('https://testapi.bangneedu.com/login', {
                 method: 'POST',
                 headers: {
                     'Accept': 'application/json, text/plain, */*',
