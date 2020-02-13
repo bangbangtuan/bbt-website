@@ -54,7 +54,7 @@ class Register extends Component{
                 userRegister(values).then((res) => {
                     console.log(res);
                     if(res.status === 200) {
-                        message.success("登陆成功");
+                        message.success("注册成功");
                         this.props.history.push("/login")
                     } else {
                         message.error(res.msg);
