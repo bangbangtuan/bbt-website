@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import './Login.css';
 import {Row, Col, message, Form, Input, Icon, Button, Divider} from 'antd';
 import {  withRouter } from 'react-router-dom';
-import {  getValidCode } from '../fetch'
+import {  getValidCode, resetPWD } from '../fetch'
 const { Search } = Input;
 
 class ResetPassword extends Component{
@@ -50,16 +50,7 @@ class ResetPassword extends Component{
             if (!err) {
                 delete values.password1;
                 console.log('Received values of form: ', values);
-            }
-            fetch('https://api.bangneedu.com/password', {
-                method: 'PUT',
-                headers: {
-                    'Accept': 'application/json, text/plain, */*',
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(values)})
-                .then((res) => res.json())
-                .then(res => {
+                resetPWD(values).then((res) => {
                     console.log(res);
                     if(res.status === 200) {
                         message.success("重置成功", 2);
@@ -69,8 +60,8 @@ class ResetPassword extends Component{
                     } else {
                         message.error("重置失败");
                     }
-
                 });
+            }
         });
     };
 
@@ -139,7 +130,7 @@ class ResetPassword extends Component{
                                     )}
                                 </Form.Item>
                                 <Form.Item>
-                                    <Button type="primary" htmlType="submit">登陆</Button>
+                                    <Button type="primary" htmlType="submit">重置密码</Button>
                                 </Form.Item>
                             </Form>
                         </div>
