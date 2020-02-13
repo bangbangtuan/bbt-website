@@ -156,3 +156,19 @@ export const getValidCode = (phone) => get({
         'Content-Type': 'application/json',
     }
 });
+
+export const userLogin = (body) => post({
+    url: config.LOGIN,
+    body,
+    headers: {
+        'Content-Type': 'application/json',
+    }
+});
+
+export const resetPWD = (body) => put({
+    url: config.PASSWORD,
+    body,
+    headers: {
+        'Content-Type': 'application/json'
+    }
+});
