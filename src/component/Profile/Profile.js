@@ -15,6 +15,7 @@ const { TabPane } = Tabs;
 class Profile extends Component{
     constructor(props, context) {
         super(props, context);
+        console.log('参数: ', props.location.search)
         this.state = {
             key: 'home',
             collectedArtcile: [],
@@ -27,7 +28,8 @@ class Profile extends Component{
             current: 1,
             userArticle: [],
             isFollow: false,
-            loginUserInfo: ''
+            loginUserInfo: '',
+            defaultActiveKey: props.location.search.indexOf('defaultActiveKey') === -1? '1':'3'
         };
     }
 
@@ -343,7 +345,7 @@ class Profile extends Component{
                         <Col md={4}/>
                     </Row>
                 </div>
-                <Tabs defaultActiveKey="1" className='profile-tabs'>
+                <Tabs defaultActiveKey={this.state.defaultActiveKey} className='profile-tabs'>
                     <TabPane tab="动态" key="1">
                         <Row>
                             <Col md={4}/>
@@ -370,19 +372,19 @@ class Profile extends Component{
                     </TabPane>
                     {
                       (this.isMyProfile() &&
-                                        <TabPane tab="个人中心" key="3">
-                                              <Row>
-                                                  <Col md={4}/>
-                                                  <Col md={16}>
-                                                      <Breadcrumb className='con-header' style={{ paddingLeft: 10, fontSize: 14, marginTop: 30, marginBottom: 30}}>
-                                                          <Breadcrumb.Item>个人中心</Breadcrumb.Item>
-                                                          <Breadcrumb.Item>我的任务</Breadcrumb.Item>
-                                                      </Breadcrumb>
-                                                      <UserTasks />
-                                                  </Col>
-                                                  <Col md={4}/>
-                                              </Row>
-                                          </TabPane>)
+                          <TabPane tab="个人中心" key="3">
+                                <Row>
+                                    <Col md={4}/>
+                                    <Col md={16}>
+                                        <Breadcrumb className='con-header' style={{ paddingLeft: 10, fontSize: 14, marginTop: 30, marginBottom: 30}}>
+                                            <Breadcrumb.Item>个人中心</Breadcrumb.Item>
+                                            <Breadcrumb.Item>我的任务</Breadcrumb.Item>
+                                        </Breadcrumb>
+                                        <UserTasks />
+                                    </Col>
+                                    <Col md={4}/>
+                                </Row>
+                            </TabPane>)
                     }
                     {
                       (this.isMyProfile() &&
