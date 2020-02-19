@@ -1,19 +1,18 @@
 import React, { Component } from 'react';
-import './Follow.css';
+import './Friend.css';
 import { Link } from 'react-router-dom';
 import { Row, Col, Descriptions, Breadcrumb,Tabs, Input as Search } from 'antd';
 import ReactMarkdown from 'react-markdown';
-import FollowItem from './FollowItem';
-import { getFriendNumber, getOtherUserFollowList,  getOtherUserFansList, getMyUserFollowList} from '../../fetch'
+import FriendItem from './FriendItem';
+import { getFriendNumber, getOtherUserFollowList,  getOtherUserFansList, getMyUserFollowList, getUserInfo} from '../../fetch'
 
 
 const FANS = 1
 const FOLLOW = 2
 
-class Follow extends Component{
+class Friend extends Component{
     constructor(props) {
         super(props);
-        console.log('type: ',  props.location.query.type)
         this.state = {
           visible: false,
           friends: [],
@@ -24,42 +23,60 @@ class Follow extends Component{
 
     componentWillMount () {
       if (this.state.type === FANS) {
-        Promise.all([this.getMyUserFollowList(), this.getOtherUserFansList()]) // 查看他的粉丝有没有在我的关注列表当中
+        Promise.all([this.getMyUserFollowList(), this.getOtherUserFansList(), this.getUserInfo()])
         .then((res) => {
           let fansList = res[1]
           let followList = res[0]
-          console.log('fansList: ', fansList)
-          console.log('followList: ', followList)
+          let userInfo = res[2]
+
           for (let i = 0; i < fansList.length; i++) {
-            // 如果是自己的id 则不显示关注
-            if (this.isFollowed(fansList[i], followList)) {
-              fansList[i].isFollow = true // 有问题
+            if (this.hasLoginUserId(fansList[i], userInfo.id)) {
+                fansList[i].isFollow = undefined
             } else {
-              fansList[i].isFollow = false // 这个罗炯
+              if (this.isFollowed(fansList[i], followList)) {
+                fansList[i].isFollow = true
+              } else {
+                fansList[i].isFollow = false
+              }
             }
           }
+
           this.setState({
             friends: fansList
-          }, () => {
-            console.log('关注失败: ', this.state.friends)
           })
         })
       } else if (this.state.type === FOLLOW) {
-        getOtherUserFollowList(this.state.userId).then((res) => {
-          // 遍历设置isFollow 的值为false
-          for (let i = 0; i < res.length; i ++) {
-            res[i].isFollow = true
+        Promise.all([this.getMyUserFollowList(), this.getOtherUserFollowList()])
+        .then((res) => {
+          let myFollowers = res[0]
+          let otherUserFollowers = res[1]
+
+          for (let i = 0; i < otherUserFollowers.length; i++) {
+            if (this.isFollowed(otherUserFollowers[i], myFollowers)) {
+              otherUserFollowers[i].isFollow = true
+            } else {
+              otherUserFollowers[i].isFollow = false
+            }
           }
+
           this.setState({
-            friends: res
+            friends: otherUserFollowers
           })
         })
       }
     }
 
+    hasLoginUserId (fan, loginUserId) {
+      if (fan.bbtUserId === loginUserId) {
+        return true
+      } else {
+        return false
+      }
+    }
+
     isFollowed (fan, followList) {
       for (let i =0; i < followList.length; i++) {
-        if (followList[i].id === fan.id) {
+        if (followList[i].bbtUserId === fan.bbtUserId) {
           return true
         }
       }
@@ -73,6 +90,15 @@ class Follow extends Component{
       })
       return p
     }
+
+    getUserInfo () {
+      let p = new Promise( (resolve, reject) => {
+        let userInfo = getUserInfo()
+        resolve(userInfo)
+      })
+      return p
+    }
+
 
     getOtherUserFollowList() {
       let p = new Promise( (resolve, reject) => {
@@ -112,7 +138,7 @@ class Follow extends Component{
             <div className="item-wrapper">
               {
                 this.state.friends && this.state.friends.map((item, index) => {
-                    return <FollowItem follower = {item} key={index} />
+                    return <FriendItem follower = {item} key={index} />
                 })
               }
             </div>
@@ -124,4 +150,4 @@ class Follow extends Component{
 
   }
 
-  export default Follow;
+  export default Friend;

@@ -41,8 +41,7 @@ class Login extends Component{
                     } else {
                         message.error("登陆失败");
                     }
-
-                });
+                })
         });
     };
 

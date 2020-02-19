@@ -42,7 +42,7 @@
 
 .follower {
   display: inline-block;
-  width: 46px;
+  width: 30px;
   height: 12px;
   font-family: MicrosoftYaHei;
   font-size: 12px;
@@ -70,7 +70,7 @@
 
 .fan {
   display: inline-block;
-  width: 46px;
+  width: 30px;
   height: 12px;
   font-family: MicrosoftYaHei;
   font-size: 12px;

@@ -41,7 +41,7 @@ import MasterPostList from "./Master/MasterPostList"
 import ApprenticeList from "./Master/ApprenticeList"
 import MasterList from "./Master/MasterList"
 import AllMasterList from "./Master/AllMasterList";
-import Follow from "./Profile/Follow";
+import Friend from "./Profile/Friend";
 import MasterOrderDetails from "./Master/MasterOrderDetails"
 import RecommendMasterList from "./Master/RecommendMasterList"
 
@@ -173,7 +173,7 @@ class App extends React.Component {
                         <Route path="/allMasterList" render={() => {
                             return <AllMasterList/>
                         }}/>
-                        <Route path="/follow" component={Follow}/>
+                        <Route path="/follow" component={Friend}/>
 
 
                         <Route component={PageNotFound}/>

@@ -9,7 +9,7 @@ import { withRouter, Link } from 'react-router-dom';
 import UserTasks from "../Project/userTasks";
 import UserOrderList from "../Shop/UserOrderList";
 import { getCollectedArticles, getOtherUserInfo, getFriendNumber, getOtherUserFriendNumber, getUserClocks, getOtherUserClocks, getUserArticles, getUserInfo, getInvitationCode, getOtherUserArticles } from '../../fetch'
-import { getArticles, searchCollectedArtciles, searchMyCollectedArticles, follow, cancelFollow, getOtherUserFollowList, getOtherUserFansList, getMyUserFollowList } from "../../fetch";
+import { getArticles, searchCollectedArtcles, searchMyCollectedArticles, follow, cancelFollow, getOtherUserFollowList, getOtherUserFansList, getMyUserFollowList, getOtherUserCollectedArticles } from "../../fetch";
 const { TabPane } = Tabs;
 
 class Profile extends Component{
@@ -44,7 +44,6 @@ class Profile extends Component{
             console.log('loginUserInfo: ', this.state.loginUserInfo.id)
           })
         }).then((res) => {
-          console.log('2')    // this
           this.getData(token)
           // 判断用户ID 是否在我的关注列表当中
         })
@@ -52,11 +51,11 @@ class Profile extends Component{
 
     getData (token) {
       if (token && this.isMyProfile()) {
-        getUserInfo().then((res) => {
-          this.setState({
-              userInfo: res
+          getUserInfo().then((res) => {
+            this.setState({
+                userInfo: res
+            })
           })
-        })
 
           getInvitationCode().then((res) => {
               this.setState({
@@ -159,6 +158,8 @@ class Profile extends Component{
           })
         })
 
+        this.getCollectedArticles()
+
       } else {
           storage.set('token', false);
           getOtherUserInfo(this.state.otherUserId).then((res) => {
@@ -169,8 +170,6 @@ class Profile extends Component{
           getOtherUserClocks(this.state.otherUserId).then((res) => {
             this.setState({
               userDaka: res
-            }, () => {
-              console.log('getOtherUserClocks: ', this.state.userDaka)
             })
           })
 
@@ -179,6 +178,8 @@ class Profile extends Component{
               friendNumber: res
             })
           })
+          this.getCollectedArticles()
+
       }
     }
 
@@ -197,12 +198,19 @@ class Profile extends Component{
     }
 
     getCollectedArticles () {
-      getCollectedArticles().then((res) => {
-        console.log('我收藏的文章: ', res)
-        this.setState({
-          collectedArtcile: res
+      if (this.isMyProfile()) {
+        getCollectedArticles().then((res) => {
+          this.setState({
+            collectedArtcile: res
+          })
         })
-      })
+      } else {
+        getOtherUserCollectedArticles(this.state.otherUserId).then((res) => {
+          this.setState({
+            collectedArtcile: res
+          })
+        })
+      }
     }
 
     handleClick = (id) => {
@@ -212,7 +220,6 @@ class Profile extends Component{
     handleFollow = (id) => {
       // 点击关注之后，变成取消关注
       // 取消关注之后，就会变成关注某人的状态 之中发生、
-      console.log('关注')
       //
       follow({fid: id}).then((res) => {
         this.setState({
@@ -224,8 +231,6 @@ class Profile extends Component{
             // 回调函数执行的顺序
             this.setState({
               friendNumber: res
-            }, () => {
-              console.log('friendNumber', this.state.friendNumber)
             })
           })
         } else {
@@ -249,8 +254,6 @@ class Profile extends Component{
           getFriendNumber().then((res) => {
             this.setState({
               friendNumber: res
-            }, () => {
-              console.log('friendNumber', this.state.friendNumber)
             })
           })
         } else {
@@ -265,7 +268,6 @@ class Profile extends Component{
 
     getArticles = (page, type) => {
       getArticles(page, type).then((res) => {
-          console.log('个人主页查看文章: ', res);
           this.setState({
               userArticle: res.records,
               pages: parseInt(res.pages),
@@ -274,23 +276,23 @@ class Profile extends Component{
       })
     };
 
-    getSearchArticle (value, event) {
-      console.log('获取搜索出来的文章： ', value)
-      let content = value
+    getSearchArticle (event) {
+      let content =  event.target.value
       if (this.isMyProfile()) {
-        searchMyCollectedArticles().then((res) => {
+        searchMyCollectedArticles(content).then((res) => {
           this.setState({
             collectedArtcile: res
           })
         })
       } else {
-        searchCollectedArtciles(this.state.otherUserId, content).then((res) => {
+        searchCollectedArtcles(this.state.otherUserId, content).then((res) => {
           this.setState({
             collectedArtcile: res
           })
         })
       }
     };
+
 
     render() {
         return (
@@ -430,27 +432,26 @@ class Profile extends Component{
                     {
                       this.isMyProfile()
                       ?(                    <TabPane tab="我的收藏" key="6">
-                                            <Row>
-                                                <Col md={4}/>
-                                                <Col md={16}>
-                                                      <div className="collect-number">
-                                                        收藏 {this.state.collectedArtcile.length} 条
-                                                      </div>
-                                                      <div className="search">
-                                                        <Search
-                                                          placeholder="搜索你的收藏"
-                                                          enterButton="Search"
-                                                          style={{width: "300px", height: "40px", border: "solid 1px #dddddd", backgroundColor: "#ffffff", borderRadius: "4px"}}
-                                                          onSearch={value => console.log(value)}
-                                                          />
-                                                      </div>
-                                                    {
-                                                        (this.state.collectedArtcile &&
-                                                            <ArticleItem articles={this.state.collectedArtcile} />)
-                                                    }
-                                                </Col>
-                                                <Col md={4}/>
-                                            </Row>
+                          <Row>
+                              <Col md={4}/>
+                              <Col md={16}>
+                                    <div className="collect-number">
+                                      收藏 {this.state.collectedArtcile.length} 条
+                                    </div>
+                                    <div className="search">
+                                    <Search
+                                      placeholder="搜索你的收藏"
+                                      style={{width: "300px", height: "40px", border: "solid 1px #dddddd", backgroundColor: "#ffffff", borderRadius: "4px"}}
+                                      onPressEnter={(e) => {this.getSearchArticle(e)}}
+                                      />
+                                    </div>
+                                  {
+                                      (this.state.collectedArtcile &&
+                                          <ArticleItem articles={this.state.collectedArtcile} getArticles={this.getCollectedArticles.bind(this)} />)
+                                  }
+                              </Col>
+                              <Col md={4}/>
+                          </Row>
 
                                           </TabPane>)
                       :(                    <TabPane tab="TA的收藏" key="6">
@@ -463,19 +464,17 @@ class Profile extends Component{
                                                       <div className="search">
                                                         <Search
                                                           placeholder="搜索你的收藏"
-                                                          enterButton="Search"
                                                           style={{width: "300px", height: "40px", border: "solid 1px #dddddd", backgroundColor: "#ffffff", borderRadius: "4px"}}
-                                                          onSearch={value => console.log(value)}
+                                                          onPressEnter={(e) => {this.getSearchArticle(e)}}
                                                           />
                                                       </div>
                                                     {
                                                         (this.state.collectedArtcile &&
-                                                            <ArticleItem articles={this.state.collectedArtcile} />)
+                                                            <ArticleItem articles={this.state.collectedArtcile} getArticles={this.getCollectedArticles.bind(this)}/>)
                                                     }
                                                 </Col>
                                                 <Col md={4}/>
                                             </Row>
-
                                           </TabPane>)
                     }
 

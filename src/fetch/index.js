@@ -136,8 +136,16 @@ export const getArticleDetails = (id) => get({
     }
 });
 
-export const searchCollectedArtciles = (id, content) => get({
+export const searchCollectedArtcles = (id, content) => get({
   url: config.ARTICLE_COLLECTION + '/' + id + '?search=' + content,
+  headers: {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ' + storage.get('token')
+  }
+})
+
+export const getOtherUserCollectedArticles = (id) => get({
+  url: config.ARTICLE_COLLECTION + '/' + id,
   headers: {
       'Content-Type': 'application/json',
       'Authorization': 'Bearer ' + storage.get('token')
