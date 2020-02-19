@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { Row, Col, Descriptions, Layout, Breadcrumb,message } from "antd";
+import { Row, Col, Descriptions, Layout, Breadcrumb,message, Modal } from "antd";
 import "./Master.css";
 import { withRouter} from 'react-router-dom';
 import {getMasterDetail, getProjectTaskDetail, postAddMaster} from '../../fetch'
@@ -32,6 +32,17 @@ class MasterDetail extends React.Component {
       })
     })
   };
+  success(data) {
+    Modal.success({
+      content: data,
+    });
+  }
+  error(data) {
+    Modal.error({
+      title: '错误提示',
+      content: data,
+    });
+  }
   addMasterWork = () => {
     const body = {};
     body['commodityName'] = this.state.data.name;
@@ -49,15 +60,15 @@ class MasterDetail extends React.Component {
     if(storage.get('token')){
      postAddMaster(body).then(res => {
       if (res.status === 200 && res.msg === '添加成功') {
-        message.success('拜师成功，请到师徒计划中支付');
+        this.success('拜师成功，请到师徒计划中支付');
       }
       else{
-        message.error(res.msg);
+        this.error(res.msg);
       }
     })
     }
     else{
-      message.error('用户未登录');
+      this.error('用户未登录');
     }
 
   }

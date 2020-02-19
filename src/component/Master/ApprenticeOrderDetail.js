@@ -6,25 +6,15 @@ import {} from "../../fetch";
 const { Sider, Content } = Layout;
 const { Step } = Steps;
 
-class MasterOrderDetails extends Component {
+class ApprenticeOrderDetail extends Component {
   constructor(props) {
     super(props);
     this.state = {
       visible: false,
       type: 2,
-      data: "",
-      current:"",
+      data: ""
     };
-    if(parseInt(this.state.current) > 3){
-      this.setState({
-        current: parseInt(this.state.current) -1
-      })
-    }
-    else{
-      this.setState({
-        current: 3
-      })
-    }
+    console.log('state',this.props.location.state)
   }
   componentDidMount() {}
   render() {
@@ -47,11 +37,11 @@ class MasterOrderDetails extends Component {
             <Breadcrumb.Item>订单信息</Breadcrumb.Item>
           </Breadcrumb>
           <div style={{"padding":"20px 80px"}}>
-            <Steps current={4-1}>
-              <Step title="等待付款"/>
-              <Step title="拜师成功"/>
-              <Step title="等待师傅收徒"/>
-              <Step title="交易结束"/>
+            <Steps current={3}>
+              <Step title="已拜师"/>
+              <Step title="已收款"/>
+              <Step title="已收徒"/>
+              <Step title="交易成功"/>
             </Steps>
           </div>
           <div>
@@ -78,14 +68,13 @@ class MasterOrderDetails extends Component {
                       >
                         ￥{this.props.location.state.commodityPrice}
                       </p>
-                    </Descriptions.Item> 
+                    </Descriptions.Item>
                     <Descriptions.Item>
                       <p style={{ display: "inline", fontSize: "14px" }}>
                         {this.props.location.state.orderFormStatus==='1'?'等待付款'
                         :this.props.location.state.orderFormStatus==='2'?'拜师成功'
-                        :this.props.location.state.orderFormStatus==='3'?'等待师傅收徒'
-                        :this.props.location.state.orderFormStatus==='5'?'师傅已收徒':
-                        "拜师已取消"}
+                        :this.props.location.state.orderFormStatus==='3'?'已收徒'
+                        :"拜师已取消"}
                       </p>
                     </Descriptions.Item>
                   </Descriptions>
@@ -100,4 +89,4 @@ class MasterOrderDetails extends Component {
   }
 }
 
-export default withRouter(MasterOrderDetails);
+export default withRouter(ApprenticeOrderDetail);

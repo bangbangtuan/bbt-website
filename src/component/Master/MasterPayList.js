@@ -7,29 +7,30 @@ import {
   Row,
   Col,
   Layout,
-  Divider,
-  Icon, Modal
+  Divider, Modal
 } from "antd";
 import "./Master.css";
 import { Link, withRouter } from "react-router-dom";
-import { getMasterOrApprenticeList,getMasterDetail, getProjectTaskDetail, payRefund, cancelOrder, getMasterOrder} from "../../fetch";
+import { getMasterPayOrder,getMasterDetail, getProjectTaskDetail, cancelOrder, closeOrder, getMasterOrder} from "../../fetch";
 const { Sider, Content } = Layout;
 
-class MasterList extends Component {
+class MasterPayList extends Component {
   constructor(props) {
     super(props);
     this.state = {
       visible: false,
       type: 2,
       data: '',
-      projectDetail:''
+      projectDetail:'',
+      orderFormStatus:1,
     }; 
   }
   componentDidMount() {
-    this.getMasterOrApprenticeList(this.state.type);
+    this.getMasterPayOrder(this.state.orderFormStatus);
   }
-  getMasterOrApprenticeList = type => {
-    getMasterOrApprenticeList(type).then(res => {
+  getMasterPayOrder = orderFormStatus => {
+    getMasterPayOrder(orderFormStatus).then(res => {
+      console.log('res:::',res)
       if (res) {
        res.forEach(function(item){
           getMasterDetail(item.commodityId).then(master =>{           
@@ -43,7 +44,7 @@ class MasterList extends Component {
         this.setState({
           data:res
         })
-        console.log('res11',this.state.data)
+        console.log('res',this.state.data)
       }
     });
   };
@@ -67,34 +68,22 @@ class MasterList extends Component {
       visible: false
     });
   };
+  success(data) {
+    Modal.success({
+      content: data,
+    });
+  }
   checkOrderSatus = (type, id) => {
     console.log('付款type',type)
     if(type === '1'){
       return <Link to={'/masterPay/'+id}>付款</Link>
     }
   }
-  success(data) {
-    Modal.success({
-      content: data,
-    });
-  }
-  error(data) {
-    Modal.error({
-      title: '错误提示',
-      content: data,
-    });
-  }
-  cancelOrder = (price, transactionId, id) => {
-    const body = {};
-    body['totalFee'] = price * 100;
-    body['refundFee'] = price * 100;
-    
-    
+    cancelOrder = (price, transactionId, id) => {
     getMasterOrder(id).then(res => {
-        body['transactionId'] = res.paymentOrderNo;
-        console.log('body', body)
-        payRefund(body).then(res => {
-          this.success('退款成功');
+        closeOrder(res.paymentOrderNo).then(res => {
+          console.log(res)
+          this.success('取消成功');
         })
     })
     const orderBody = {};
@@ -120,7 +109,7 @@ class MasterList extends Component {
             <Breadcrumb.Item>
               <a href="/master">师徒计划</a>
             </Breadcrumb.Item>
-            <Breadcrumb.Item>我拜师的</Breadcrumb.Item>
+            <Breadcrumb.Item>待支付的</Breadcrumb.Item>
           </Breadcrumb>
           <div>
             <List
@@ -170,9 +159,7 @@ class MasterList extends Component {
                               >
                                 {item.orderFormStatus==='1'?'等待付款'
                                 :item.orderFormStatus==='2'?'拜师成功'
-                                :item.orderFormStatus==='3'?'等待师傅收徒'
-                                :item.orderFormStatus==='5'?'师傅已收徒':
-                                "拜师已取消"}
+                                :item.orderFormStatus==='3'?'等待师傅收徒':'拜师失败'}
                               </p>
                             </Descriptions.Item>
                           </Descriptions>
@@ -180,18 +167,7 @@ class MasterList extends Component {
                       </Layout>
                     </Layout>
                     <Divider />
-                    <div style={{ margin: "0 auto" }}>                   
-                      {item.orderFormStatus==='1'?
-                      <div style={{ width: "100px", float: "left" }}>
-                        <Icon
-                          type="message"
-                          style={{
-                            fontSize: "24px",
-                            margin: "0 auto",
-                            marginRight: "10px"
-                          }}/>联系师傅
-                      </div>:''}
-                      
+                    <div style={{ margin: "0 auto" }}>
                       <div
                         style={{
                           float: "right",
@@ -205,11 +181,9 @@ class MasterList extends Component {
                             border: "1px solid #000",
                             width: "80px"
                           }}>
-                          {item.orderFormStatus==='1'?<Link to={{pathname: '/masterPay/'+item.id, state:item}}>付款</Link>
-                          :<Link to={{pathname: '/masterOrderDetails/'+item.id, state:item}}>订单详情</Link>}
+                          <Link to={{pathname: '/masterPay/'+item.id, state:item}}>付款</Link>
                         </div>
-                        
-                          {item.orderFormStatus==='3'?
+                        {item.orderFormStatus==='1'?
                           <div
                           style={{
                             float: "left",
@@ -217,8 +191,9 @@ class MasterList extends Component {
                             width: "80px", height:'23px'
                           }}>
                           <button onClick={this.cancelOrder.bind(this, item.commodityPrice, item.transactionId, item.id)} style={{border:'none', background:'none', height:'23px', width:'80px'}}>
-                          退款</button></div>
+                          取消拜师</button></div>
                           :''}
+                        
                       </div>
                     </div>
                   </Card>
@@ -233,4 +208,4 @@ class MasterList extends Component {
   }
 }
 
-export default withRouter(MasterList)
+export default withRouter(MasterPayList)

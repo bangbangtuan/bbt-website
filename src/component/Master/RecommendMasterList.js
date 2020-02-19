@@ -7,8 +7,7 @@ import {
   Row,
   Col,
   Layout,
-  Divider,
-  Icon
+  Divider
 } from "antd";
 import "./Master.css";
 import { Link, withRouter } from "react-router-dom";

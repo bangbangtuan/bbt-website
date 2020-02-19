@@ -43,6 +43,8 @@ import MasterList from "./Master/MasterList"
 import AllMasterList from "./Master/AllMasterList";
 import MasterOrderDetails from "./Master/MasterOrderDetails"
 import RecommendMasterList from "./Master/RecommendMasterList"
+import MasterPayList from "./Master/MasterPayList"
+import ApprenticeOrderDetail from "./Master/ApprenticeOrderDetail"
 
 class App extends React.Component {
 
@@ -161,6 +163,12 @@ class App extends React.Component {
                         }}/>
                         <Route path="/masterOrderDetails/:id" render={() => {
                             return <MasterOrderDetails/>
+                        }}/>
+                        <Route path="/masterPayList" render={() => {
+                            return <MasterPayList/>
+                        }}/>
+                        <Route path="/apprenticeOrderDetail" render={() => {
+                            return <ApprenticeOrderDetail/>
                         }}/>
                         <Route path='/recommendMasterList' render={() => {
                             return <RecommendMasterList/>

@@ -57,13 +57,14 @@ class FinishTaskModal extends Component {
         })
           .then(res => res.json())
           .then(res => {
-            if (res.status === 200 && res.msg === true) {
-              message.success("提交成功");
+            console.log(res)
+            if (res.status === 200 && res.msg === '只能发布一个') {
+              message.error("只能提交一个");
               form.resetFields();
               this.setState({ visible: false });
             }
             else{
-              message.error("只能提交一个");
+              message.success("提交成功");
               form.resetFields();
               this.setState({ visible: false });
             }

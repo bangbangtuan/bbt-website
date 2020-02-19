@@ -1,4 +1,4 @@
-import { get, post } from './tool';
+import { get, post, put } from './tool';
 import * as config from './config';
 import storage from "../component/storage";
 
@@ -165,6 +165,48 @@ export const getNewMessage = () => get({
     },
 })
 
+export const acceptApprentice = (body) => put({
+    url: config.MASTER +'/agree',
+    body,
+    headers:{
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + storage.get('token'),
+    },
+})
+
+export const getMasterPayOrder = (orderFormStatus) => get({
+    url: config.ORDER + '/mentor/'+orderFormStatus,
+    headers:{
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + storage.get('token'),
+    },   
+})
+
+export const payRefund = (body) => post({
+    url: config.PAY + '/refund/',
+    body,
+    headers:{
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + storage.get('token'),
+    },      
+})
+
+export const cancelOrder = (body) => put({
+    url: config.ORDER,
+    body,
+    headers:{
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + storage.get('token'),
+    },     
+})
+
+export const closeOrder = (outTradeNo) => get({
+    url: config.ORDER + '/closeOrder/' + outTradeNo,
+    headers:{
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + storage.get('token'),
+    }, 
+})
 /* 师徒相关 */
 export const getAllMasterList = () => get({
     url: config.MASTER,
