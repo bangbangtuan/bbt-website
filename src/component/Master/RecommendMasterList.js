@@ -7,8 +7,7 @@ import {
   Row,
   Col,
   Layout,
-  Divider,
-  Icon
+  Divider
 } from "antd";
 import "./Master.css";
 import { Link, withRouter } from "react-router-dom";
@@ -136,7 +135,7 @@ class RecommendMasterList extends Component {
                           }}>
                           <Link to={"/masterDetail/"+item.id}>查看详情</Link>
                         </div>
-                        
+
                       </div>
                     </div>
                   </Card>

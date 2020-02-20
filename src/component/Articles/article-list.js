@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import './Article.css';
 import { Link } from 'react-router-dom';
-import { Comment, Icon, Modal} from 'antd';
+import { Comment, Icon} from 'antd';
 import ReactMarkdown from 'react-markdown';
 import QRCode  from 'qrcode.react';
 import Close  from '../../images/close.svg';
@@ -38,7 +38,8 @@ class ArticleItem extends Component{
     showShare (articleId) {
       let path = window.location.host + '/article/' + articleId
       this.setState({
-        visible: true
+        visible: true,
+        path: path
       })
     }
 
@@ -103,19 +104,18 @@ class ArticleItem extends Component{
     }
 
     modal () {
-      console.log('大家好')
-      return <div class="background-modal" onClick={this.handleCancel.bind(this)}>
-      <div class="qrcode-modal" onClick={(e) => this.handleClick(e)}>
+      return <div className="background-modal" onClick={this.handleCancel.bind(this)}>
+      <div className="qrcode-modal" onClick={(e) => this.handleClick(e)}>
         <img src={Close} className="close-modal" alt="logo" onClick={(e) => {this.handleCancel(e)}} />
-        <div class="title-modal">
+        <div className="title-modal">
           微信分享
         </div>
-        <div class="detail-modal">
+        <div className="detail-modal">
           打开微信"扫一扫",打开网页后点击屏幕右上角分享按钮
         </div>
-        <div class="share-modal">
+        <div className="share-modal">
           <QRCode
-              value = "123"  //value参数为生成二维码的链接
+              value = {this.state.path}  //value参数为生成二维码的链接
               size = {200} //二维码的宽高尺寸
               fgColor = "#000000"  //二维码的颜色
          />

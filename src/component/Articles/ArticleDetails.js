@@ -4,7 +4,7 @@ import { withRouter } from 'react-router-dom';
 import storage from "../storage";
 import noAuthor from "../../images/no-author.png";
 import ReactMarkdown from 'react-markdown';
-import { getArticleDetails, getArticleComments, postArticleComment,  getMyLikeArtilce, addLike, cancelLike} from '../../fetch';
+import { getArticleDetails,  getMyLikeArtilce, addLike, cancelLike} from '../../fetch';
 import QRCode  from 'qrcode.react';
 
 class ArticleDetails extends Component{
@@ -178,7 +178,6 @@ class ArticleDetails extends Component{
 
     render() {
         let article = this.state.article;
-        let isMyLike = this.state.isMyLike
         return (
             <div>
                 <Row>

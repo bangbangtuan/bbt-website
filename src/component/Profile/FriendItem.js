@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import './FriendItem.css';
 import { Link } from 'react-router-dom';
-import { Row, Col, Descriptions, Breadcrumb,Tabs, Input as Search } from 'antd';
 import ReactMarkdown from 'react-markdown';
 import { follow, cancelFollow, getOtherUserFriendNumber } from '../../fetch';
 
@@ -10,7 +9,7 @@ import { follow, cancelFollow, getOtherUserFriendNumber } from '../../fetch';
 class FriendItem extends Component{
     constructor(props) {
         super(props);
-        
+
         this.state = {
           fansNumber: 0,
           followerNumber: 0,

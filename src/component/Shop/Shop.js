@@ -9,6 +9,9 @@ import noAuthor from '../../images/no-author.png';
 import './Shop.css';
 import { withRouter } from 'react-router-dom';
 import ExchangeActivity from "./ExchangeActivity";
+import { getUserInfo } from '../../fetch/index.js'
+
+
 const { Meta } = Card;
 
 class Shop extends Component{
@@ -21,14 +24,9 @@ class Shop extends Component{
 
     componentWillMount() {
         if(storage.get('token')) {
-            fetch('https://testapi.bangneedu.com/user', {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json',
-                    "Authorization": "Bearer " + storage.get('token')
-                }})
-                .then((res) => res.json())
+              getUserInfo()
                 .then( res => {
+                  console.log('积分商城: ', res)
                     this.setState({
                         userInfo: res.data
                     });

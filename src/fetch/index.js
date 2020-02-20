@@ -343,7 +343,7 @@ export const getValidCode = (phone) => get({
 
 /* 好友关系 */
 export const getFriendNumber = () => get({
-  url: config.FRIEND + '?' + 'type=1',
+  url: config.FRIEND + '?type=1',
   headers: {
       'Content-Type': 'application/json',
       'Authorization': 'Bearer ' + storage.get('token')
@@ -351,7 +351,7 @@ export const getFriendNumber = () => get({
 });
 
 export const getOtherUserFriendNumber = (id) => get({
-  url: config.FRIEND + '?id=' + id + '&' + 'type=2',
+  url: config.FRIEND + '?id=' + id + '&type=2',
   headers: {
       'Content-Type': 'application/json',
       'Authorization': 'Bearer ' + storage.get('token')
@@ -359,7 +359,7 @@ export const getOtherUserFriendNumber = (id) => get({
 })
 
 export const getOtherUserFollowList = (id) => get({
-  url: config.FRIEND + '/follow?id=' + id + '&' + 'type=2',
+  url: config.FRIEND + '/follow?id=' + id + '&type=2',
   headers: {
       'Content-Type': 'application/json',
       'Authorization': 'Bearer ' + storage.get('token')
@@ -367,7 +367,7 @@ export const getOtherUserFollowList = (id) => get({
 })
 
 export const getMyUserFollowList = () => get({
-  url: config.FRIEND + '/follow?' + 'type=1',
+  url: config.FRIEND + '/follow?type=1',
   headers: {
       'Content-Type': 'application/json',
       'Authorization': 'Bearer ' + storage.get('token')
@@ -398,5 +398,27 @@ export const cancelFollow = (id) => del({
   headers: {
       'Content-Type': 'application/json',
       'Authorization': 'Bearer ' + storage.get('token')
+  }
+})
+
+
+/* 登录 */
+export const login = (body) => post({
+  url: config.LOGIN,
+  body,
+  headers: {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json, text/plain, */*'
+  }
+})
+
+
+/* 还没纳入分类 */
+export const projectTaskUser = (body) => post({
+  url: config.TaskUser,
+  body,
+  headers: {
+    'Content-Type': 'application/json',
+    "Authorization": "Bearer " + storage.get('token')
   }
 })

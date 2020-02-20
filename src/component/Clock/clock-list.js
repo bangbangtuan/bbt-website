@@ -4,7 +4,7 @@ import noAuthor from '../../images/no-author.png';
 import countImg from '../../images/count.png';
 import storage from "../storage";
 import { withRouter, Link } from 'react-router-dom';
-import {message, Comment, Avatar, Icon, List, Input, Button} from "antd";
+import {message, Comment, Avatar, Icon, List} from "antd";
 import { getMyLikeArtilce, getPunchTheClockComment } from '../../fetch'
 
 class ClockItem extends Component{

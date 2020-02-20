@@ -9,7 +9,7 @@ import { withRouter, Link } from 'react-router-dom';
 import UserTasks from "../Project/userTasks";
 import UserOrderList from "../Shop/UserOrderList";
 import { getCollectedArticles, getOtherUserInfo, getFriendNumber, getOtherUserFriendNumber, getUserClocks, getOtherUserClocks, getUserArticles, getUserInfo, getInvitationCode, getOtherUserArticles } from '../../fetch'
-import { getArticles, searchCollectedArtcles, searchMyCollectedArticles, follow, cancelFollow, getOtherUserFollowList, getOtherUserFansList, getMyUserFollowList, getOtherUserCollectedArticles } from "../../fetch";
+import { getArticles, searchCollectedArtcles, searchMyCollectedArticles, follow, cancelFollow, getMyUserFollowList, getOtherUserCollectedArticles } from "../../fetch";
 const { TabPane } = Tabs;
 
 class Profile extends Component{

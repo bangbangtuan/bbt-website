@@ -1,10 +1,8 @@
 import React, { Component } from 'react';
 import './Friend.css';
-import { Link } from 'react-router-dom';
-import { Row, Col, Descriptions, Breadcrumb,Tabs, Input as Search } from 'antd';
-import ReactMarkdown from 'react-markdown';
+import { Row, Col } from 'antd';
 import FriendItem from './FriendItem';
-import { getFriendNumber, getOtherUserFollowList,  getOtherUserFansList, getMyUserFollowList, getUserInfo} from '../../fetch'
+import {getOtherUserFollowList,  getOtherUserFansList, getMyUserFollowList, getUserInfo} from '../../fetch'
 
 
 const FANS = 1
