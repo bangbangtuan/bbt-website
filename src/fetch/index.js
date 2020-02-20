@@ -341,6 +341,7 @@ export const getValidCode = (phone) => get({
     }
 });
 
+
 /* 好友关系 */
 export const getFriendNumber = () => get({
   url: config.FRIEND + '?type=1',
@@ -401,18 +402,6 @@ export const cancelFollow = (id) => del({
   }
 })
 
-
-/* 登录 */
-export const login = (body) => post({
-  url: config.LOGIN,
-  body,
-  headers: {
-      'Content-Type': 'application/json',
-      'Accept': 'application/json, text/plain, */*'
-  }
-})
-
-
 /* 还没纳入分类 */
 export const projectTaskUser = (body) => post({
   url: config.TaskUser,
@@ -422,3 +411,19 @@ export const projectTaskUser = (body) => post({
     "Authorization": "Bearer " + storage.get('token')
   }
 })
+
+export const userLogin = (body) => post({
+    url: config.LOGIN,
+    body,
+    headers: {
+        'Content-Type': 'application/json',
+    }
+});
+
+export const resetPWD = (body) => put({
+    url: config.PASSWORD,
+    body,
+    headers: {
+        'Content-Type': 'application/json'
+    }
+});

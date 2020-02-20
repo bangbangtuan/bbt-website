@@ -4,9 +4,7 @@ import { Row, Col, message, Tabs, Form, Input, Icon, Button, Radio } from 'antd'
 import storage from './storage';
 import {  withRouter } from 'react-router-dom';
 import Register from "./Register";
-import { login } from '../fetch/index.js'
-
-
+import {userLogin, userRegister} from '../fetch';
 const { TabPane } = Tabs;
 
 class Login extends Component{
@@ -22,24 +20,17 @@ class Login extends Component{
         this.props.form.validateFields((err, values) => {
             if (!err) {
                 console.log('Received values of form: ', values);
+                userLogin(values).then((res) => {
+                    console.log(res);
+                    if(res.data) {
+                        message.success("登陆成功");
+                        storage.set('token',res.data.toString());
+                        this.props.history.push("/profile")
+                    } else {
+                        message.error("登陆失败");
+                    }
+                });
             }
-            console.log('typeof values: ', typeof values)
-            login(values)
-              .then(res => {
-                  console.log(res.data);
-                  this.setState({
-                      token: res.data
-                  });
-                  if(res.data) {
-                      message.success("登陆成功", 2);
-                      storage.set('token',res.data.toString());
-                      // localStorage.setItem('token', res.data);
-                      this.props.history.push("/profile");
-                  } else {
-                      message.error("登陆失败");
-                  }
-              })
-              .catch( err => console.log(err))
         });
     };
 
