@@ -21,8 +21,8 @@ export default class MasterRecommend extends Component {
     getMasterList(size, current).then(res=>{
       if(true){
         this.setState({
-        data:res.records
-      })
+          data:res.data.records
+        })
       }
     })
   }

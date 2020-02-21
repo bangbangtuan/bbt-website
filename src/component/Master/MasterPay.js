@@ -29,9 +29,9 @@ class MasterPay extends React.Component {
   }
   getMasterDetail = (id) => {
     getMasterDetail(id).then(res => {
-      if(res){
+      if(res.data){
         this.setState({
-          master:res
+          master:res.data
         })
       }
     })

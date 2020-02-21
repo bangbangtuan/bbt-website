@@ -28,12 +28,12 @@ class RecommendMasterList extends Component {
   }
   getMasterList = (size, current) => {
     getMasterList(size, current).then(res=>{
-      if(res){
+      if(res.data){
         this.setState({
-        data:res.records
-      })
+          data:res.data.records
+        })
       }
-      console.log(res)
+      console.log(res.data)
     })
   }
 

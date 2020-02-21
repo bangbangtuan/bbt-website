@@ -30,10 +30,10 @@ class FinishTaskModal extends Component {
   getUserInfo = () =>{
     getUserInfo().then(res => {
       this.setState({
-        userId: res.id
+        userId: res.data.id
       })
     })
-  }
+  };
   showModal = () => {
     this.setState({ visible: true });
   };

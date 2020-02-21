@@ -29,10 +29,10 @@ class Clock extends Component{
 
     getDakaList = (page) => {
         getClocks(page).then((res) => {
-            console.log(res)
+            console.log(res.data)
             this.setState({
-                dakaList: res.records,
-                pages: parseInt(res.pages),
+                dakaList: res.data.records,
+                pages: parseInt(res.data.pages),
                 changed: true
             });
         })
@@ -40,9 +40,9 @@ class Clock extends Component{
 
     getTags = () => {
         getTags().then((res) => {
-            console.log(res);
+            console.log(res.data);
             this.setState({
-                tags: res.records
+                tags: res.data.records
             });
         })
     };

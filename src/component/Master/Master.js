@@ -32,8 +32,8 @@ class Master extends React.Component {
     getNewMessagePush = () => {        
         getNewMessage().then((res) => {
             var newMessage = [];
-            if(res){
-                res.forEach((currentValue) => {
+            if(res.data){
+                res.data.forEach((currentValue) => {
                     if(currentValue.type === '2'){
                         newMessage.push(currentValue)
                     }
@@ -47,10 +47,10 @@ class Master extends React.Component {
     };
     getMasterAndApprentice = () => {
         getMasterAndApprentice().then((res) => {
-            if(res){
+            if(res.data){
               this.setState({
-                apprentice: res.apprentice,
-                masterWorker: res.masterWorker
+                apprentice: res.data.apprentice,
+                masterWorker: res.data.masterWorker
               })
             }
         })

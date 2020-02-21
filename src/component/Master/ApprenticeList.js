@@ -21,19 +21,19 @@ export default class ApprenticeList extends Component {
 
     getMasterOrApprenticeList = (type) => {
       getMasterOrApprenticeList(type).then((res) => {
-        if(res){
-          res.forEach(function(item){
+        if(res.data){
+          res.data.forEach(function(item){
             item['image'] = '';
             getMasterDetail(item.commodityId).then(master =>{
-              if(master){
-                getProjectTaskDetail(master.projectTaskId).then(projectTask =>{
-                  item['projectDetail'] = projectTask.details;
+              if(master.data){
+                getProjectTaskDetail(master.data.projectTaskId).then(projectTask =>{
+                  item['projectDetail'] = projectTask.data.details;
                 })
               }
             })
           })
           this.setState({
-            data:res
+            data:res.data
           })
           console.log('res',this.state.data)
         }
