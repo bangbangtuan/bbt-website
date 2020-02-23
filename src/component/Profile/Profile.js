@@ -26,27 +26,27 @@ class Profile extends Component{
         });
         if (token) {
             getUserInfo().then((res) => {
-                console.log(res);
+                console.log(res.data);
                 this.setState({
-                    userInfo: res
+                    userInfo: res.data
                 });
             });
             getInvitationCode().then((res) => {
-                console.log(res);
+                console.log(res.data);
                 this.setState({
-                    inviteCode: res
+                    inviteCode: res.data
                 });
             });
             getUserClocks().then((res) => {
-                console.log(res);
+                console.log(res.data);
                 this.setState({
-                    userDaka: res.records
+                    userDaka: res.data.records
                 });
             });
             getUserArticles().then((res) => {
-                console.log(res);
+                console.log(res.data);
                 this.setState({
-                    userArticle: res.records
+                    userArticle: res.data.records
                 });
             });
 

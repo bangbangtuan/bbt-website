@@ -18,9 +18,9 @@ class PathInfo extends Component{
 
     getPathInfo = (id) => {
         getPathInfo(id).then((res) => {
-            console.log(res)
+            console.log(res.data)
             this.setState({
-                pathInfo: res.length > 2 ? res.slice(0,2) : res
+                pathInfo: res.data.length > 2 ? res.data.slice(0,2) : res
             });
         })
     };

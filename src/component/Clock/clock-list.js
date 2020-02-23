@@ -4,7 +4,7 @@ import noAuthor from '../../images/no-author.png';
 import countImg from '../../images/count.png';
 import storage from "../storage";
 import { withRouter } from 'react-router-dom';
-import {message, Comment, Avatar, Icon, List, Input, Button} from "antd";
+import { message, Comment, Avatar, Icon, List } from "antd";
 
 class ClockItem extends Component{
     constructor(props) {
@@ -249,8 +249,8 @@ class ClockItem extends Component{
                                     <div className='comments' style={{display: item.display}}>
                                         <div className='comment-input'>
                                             <img src={this.state.headPortrait ? this.state.headPortrait : noAuthor} alt='' />
-                                            <Input onChange={this.onFieldChange} value={this.state.usercomment}/>
-                                            <Button onClick={() => this.commentSubmit(index)}>评论</Button>
+                                            <input onChange={this.onFieldChange} value={this.state.usercomment}/>
+                                            <button onClick={() => this.commentSubmit(index)}>评论</button>
                                         </div>
                                         <div className='comment-list'>
                                             {

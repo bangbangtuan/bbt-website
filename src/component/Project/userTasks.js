@@ -3,6 +3,7 @@ import { Descriptions, Tabs, Divider } from "antd";
 import storage from "../storage";
 import './userTask.css';
 import FinishTaskModal from "../Profile/FinishTaskModal";
+import MasterModal from "../Master/MasterModal"
 const { TabPane } = Tabs;
 
 class UserTasks extends Component{
@@ -119,6 +120,7 @@ class UserTasks extends Component{
                                     <Descriptions.Item label="项目来自">{item.projectName}</Descriptions.Item>
                                     <Descriptions.Item label="任务评价">{item.evaluate ? item.evaluate : '稍后给出作业评价'}</Descriptions.Item>
                                 </Descriptions>
+                                <MasterModal projectTask={item}/>
                                 <Divider className='custom-divider'/>
                             </div>
                         })

@@ -21,9 +21,9 @@ class StudyPath extends Component{
 
     getStudyPaths = (current) => {
         getStudyPaths(current).then((res) => {
-            console.log(res)
+            console.log(res.data)
             this.setState({
-                path: res.records,
+                path: res.data.records,
             });
         })
     };

@@ -1,45 +1,45 @@
 import React, { Component } from "react";
 import { List, Card, Descriptions, Breadcrumb, Row, Col, Layout, Divider, Icon} from "antd";
 import "./Master.css";
-import storage from "../storage";
 import photo from "../../images/author.jpg"
+import { getMasterOrApprenticeList,getMasterDetail,getProjectTaskDetail } from "../../fetch";
 const { Sider, Content } = Layout;
-
-const data = [
-  {
-    title: "Title 1"
-  },
-  {
-    title: "Title 2"
-  },
-  {
-    title: "Title 3"
-  },
-  {
-    title: "Title 4"
-  }
-];
 
 export default class ApprenticeList extends Component {
       constructor(props) {
         super(props);
         this.state = {
-            visible: false
+            visible: false,
+            type:3,
+            data:[]
         }
     }
 
     componentDidMount() {
-        this.getApprenticeList();
+        this.getMasterOrApprenticeList(this.state.type);
     }
 
-    getApprenticeList = () => {
-        let token = storage.get('token');
-        fetch()
-            .then((res) => res.json())
-            .then( res => {
+    getMasterOrApprenticeList = (type) => {
+      getMasterOrApprenticeList(type).then((res) => {
+        if(res.data){
+          res.data.forEach(function(item){
+            item['image'] = '';
+            getMasterDetail(item.commodityId).then(master =>{
+              if(master.data){
+                getProjectTaskDetail(master.data.projectTaskId).then(projectTask =>{
+                  item['projectDetail'] = projectTask.data.details;
+                })
+              }
             })
-            .catch( err => console.log(err))
-    };
+          })
+          this.setState({
+            data:res.data
+          })
+          console.log('res',this.state.data)
+        }
+      })
+      
+    }
 
   showModal = () => {
     this.setState({
@@ -76,19 +76,18 @@ export default class ApprenticeList extends Component {
             }}
           >
             <Breadcrumb.Item>
-              <a href="/userProfile/1">个人中心</a>
+              <a href="/master">师徒计划</a>
             </Breadcrumb.Item>
             <Breadcrumb.Item>我收徒的</Breadcrumb.Item>
           </Breadcrumb>
           <div>
             <List
               grid={{ gutter: 16, column: 2 }}
-              dataSource={data}
+              dataSource={this.state.data}
               renderItem={item => (
                 <List.Item>
                   <Card
                     style={{ background: "#fff", border: "none" }}
-                    onClick={this.showModal}
                   >
                     <Layout
                       style={{ background: "#fff", padding: "0px 10px", margin:"0"}}
@@ -100,13 +99,13 @@ export default class ApprenticeList extends Component {
                       >
                         <img
                           className="master-image"
-                          src={photo}
+                          src={item.commodityImage}
                           alt="师傅带徒"
                         />
                       </Sider>
                       <Layout style={{ backgroundColor: "#fff" }}>
                         <Content style={{ paddingLeft: "10px", margin: 0 }}>
-                          <Descriptions title="是生生世世任务" column={1}>
+                          <Descriptions title={item.commodityName} column={1}>
                             <Descriptions.Item>
                               <p
                                 style={{
@@ -115,7 +114,7 @@ export default class ApprenticeList extends Component {
                                   fontSize: "24px"
                                 }}
                               >
-                                ￥10
+                                ￥{item.commodityPrice}
                               </p>
                             </Descriptions.Item>
                             <Descriptions.Item>

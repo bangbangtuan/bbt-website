@@ -64,7 +64,6 @@ export default class Navigation extends React.Component {
         let headPortrait = storage.get('headPortrait');
         let navRight;
         if(token) {
-            console.log("这个是token:"+token)
             if (!this.state.loginStatus) {
                 navRight = null
             } else {
@@ -105,7 +104,7 @@ export default class Navigation extends React.Component {
                             <Nav.Link href="/projects">实战演练</Nav.Link>
                             <Nav.Link href="/path">学习路径</Nav.Link>
                             <Nav.Link href="/allMasterList">师徒列表</Nav.Link>
-                            {/*<Nav.Link href="/shop">积分商城</Nav.Link>*/}
+                            <Nav.Link href="/shop">积分商城</Nav.Link>
                         </Nav>
                         {navRight}
                     </Navbar.Collapse>

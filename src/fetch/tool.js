@@ -13,7 +13,6 @@ export const get = ({url, msg = '接口异常', headers}) =>
         headers: headers
     })
         .then((res) => res.json())
-        .then( res => res.data)
         .catch( err => {
             console.log(err);
             message.warn(msg);
@@ -40,7 +39,7 @@ export const post = ({url, body, msg = '接口异常', headers}) =>
         });
 
 /**
- * 公用put请求
+ * 公用post请求
  * @param url       接口地址
  * @param body      接口参数
  * @param msg       接口异常提示

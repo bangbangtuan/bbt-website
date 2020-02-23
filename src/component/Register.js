@@ -19,9 +19,9 @@ class Register extends Component{
         if (value && this.state.count === 60) {
             this.tick();
             getValidCode(value).then((res) => {
-                console.log(res);
-                if(res.message !== "OK") {
-                    message.error(res.message)
+                console.log(res.data);
+                if(res.data.message !== "OK") {
+                    message.error(res.data.message)
                 }
             });
         } else if (!this.state.phone) {

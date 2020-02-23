@@ -19,9 +19,9 @@ class PathDetails extends Component{
 
     getPathDetail = (id) => {
         getPathDetail(id).then((res) => {
-            console.log(res)
+            console.log(res.data);
             this.setState({
-                pathDetail: res[0],
+                pathDetail: res.data[0],
             });
         })
     };

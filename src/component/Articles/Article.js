@@ -22,10 +22,10 @@ class Article extends Component{
 
     getArticles = (page, type) => {
         getArticles(page, type).then((res) => {
-            console.log(res);
+            console.log(res.data);
             this.setState({
-                articles: res.records,
-                pages: parseInt(res.pages),
+                articles: res.data.records,
+                pages: parseInt(res.data.pages),
                 changed: true
             })
         })
