@@ -13,7 +13,6 @@ export const get = ({url, msg = '接口异常', headers}) =>
         headers: headers
     })
         .then((res) => res.json())
-        .then( res => res.data)
         .catch( err => {
             console.log(err);
             message.warn(msg);

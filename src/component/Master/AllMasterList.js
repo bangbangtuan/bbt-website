@@ -18,9 +18,9 @@ class AllMasterList extends React.Component{
 
     getAllMasterList = () => {
         getAllMasterList().then((res) => {
-            console.log(res)
+            console.log(res.data);
             this.setState({
-                allMasters: res.records,
+                allMasters: res.data.records,
             });
         })
     };

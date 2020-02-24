@@ -19,9 +19,9 @@ class Register extends Component{
         if (value && this.state.count === 60) {
             this.tick();
             getValidCode(value).then((res) => {
-                console.log(res);
-                if(res.message !== "OK") {
-                    message.error(res.message)
+                console.log(res.data);
+                if(res.data.message !== "OK") {
+                    message.error(res.data.message)
                 }
             });
         } else if (!this.state.phone) {
@@ -54,7 +54,7 @@ class Register extends Component{
                 userRegister(values).then((res) => {
                     console.log(res);
                     if(res.status === 200) {
-                        message.success("登陆成功");
+                        message.success("注册成功");
                         this.props.history.push("/login")
                     } else {
                         message.error(res.msg);

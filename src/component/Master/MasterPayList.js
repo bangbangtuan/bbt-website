@@ -30,19 +30,18 @@ class MasterPayList extends Component {
   }
   getMasterPayOrder = orderFormStatus => {
     getMasterPayOrder(orderFormStatus).then(res => {
-      console.log('res:::',res)
-      if (res) {
-       res.forEach(function(item){
+      if (res.data) {
+       res.data.forEach(function(item){
           getMasterDetail(item.commodityId).then(master =>{           
             if(master){
-              getProjectTaskDetail(master.projectTaskId).then(projectTask =>{
-              item['projectDetail'] = projectTask.details;
+              getProjectTaskDetail(master.data.projectTaskId).then(projectTask =>{
+              item['projectDetail'] = projectTask.data.details;
             })
             }
           })
         })
         this.setState({
-          data:res
+          data:res.data
         })
         console.log('res',this.state.data)
       }

@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { Row, Col, Card, Icon, Modal, List, message } from "antd";
 import { AirPlane, BusinessMan, Student } from "./svgIcon";
 import "./Master.css";
-import { getMasterAndApprentice, getNewMessage, acceptApprentice, getMasterPayOrder, getPostList } from "../../fetch";
+import { getMasterAndApprentice, getNewMessage, getMasterPayOrder, acceptApprentice,getPostList } from "../../fetch";
 
 class Master extends React.Component {
     constructor(props) {
@@ -11,13 +11,13 @@ class Master extends React.Component {
         this.state = {
             apprentice:0,
             masterWorker:0,
-            post:0,
             timer:null,
-            newMessage:[],
             visible: false,
             orderFormStatus: 1,
             payAccount:0,
             newMessageAccount:'',
+            post:0,
+            newMessage:''
         }
     }
 
@@ -38,26 +38,24 @@ class Master extends React.Component {
     getNewMessagePush = () => {        
         getNewMessage().then((res) => {
             var newMessage = [];
-            if(res){
-                res.forEach((currentValue) => {
+            if(res.data){
+                res.data.forEach((currentValue) => {
                     if(currentValue.type === '2'){
                         newMessage.push(currentValue)
                     }
                 }, this)
                 this.setState({
-                    newMessage: newMessage,
-                    newMessageAccount: newMessage.length
+                    newMessage: newMessage
                 })
             }
-            console.log('new', this.state.newMessage)
         })
     };
     getMasterAndApprentice = () => {
         getMasterAndApprentice().then((res) => {
-            if(res){
+            if(res.data){
               this.setState({
-                apprentice: res.apprentice,
-                masterWorker: res.masterWorker
+                apprentice: res.data.apprentice,
+                masterWorker: res.data.masterWorker
               })
             }
         })
@@ -66,7 +64,7 @@ class Master extends React.Component {
     const body={};
     body['id'] = id;
     acceptApprentice(body).then((res) => {
-        if(res.msg==='修改成功'){
+        if(res.data.msg==='修改成功'){
             const data = parseInt(this.state.newMessageAccount) -1;
             this.setState({
                 visible: false,
@@ -76,22 +74,22 @@ class Master extends React.Component {
             this.getMasterAndApprentice();
         }
         else{
-            message.error(res.msg);
+            message.error(res.data.msg);
         }
     })
   }
   getMasterPayOrder = () => {
       getMasterPayOrder(this.state.orderFormStatus).then((res) => {
-        if(res){
+        if(res.data){
             this.setState({
-                payAccount: res.length,
+                payAccount: res.data.length,
             })
         }
       })
   }
   getPostList = () => {
       getPostList().then((res) => {
-          if(res){
+          if(res.data){
               this.setState({
                   post:1
               })
@@ -116,8 +114,8 @@ class Master extends React.Component {
         <Col md={4} />
         <Col md={16}>
           <div className="con-header">师徒计划
-            <div onClick={this.showModal} style={{height:"100%", lineHeight:"100%", float:"right"}}><Icon type="notification" />{this.state.newMessageAccount}</div>
-          </div>
+            <div onClick={this.showModal} style={{height:"100%", lineHeight:"100%", float:"right"}}>拜师信息<Icon type="notification" />{this.state.newMessageAccount}</div>
+          
         <Modal
           title="新消息"
           visible={this.state.visible}
@@ -139,6 +137,8 @@ class Master extends React.Component {
             )}
         ></List>
         </Modal>
+        </div>
+          
           <div className="MasterProfileContext">
               <Card
                   title="成为师傅"

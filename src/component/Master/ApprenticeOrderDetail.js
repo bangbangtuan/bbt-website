@@ -41,7 +41,7 @@ class ApprenticeOrderDetail extends Component {
               <Step title="已拜师"/>
               <Step title="已收款"/>
               <Step title="已收徒"/>
-              <Step title="交易成功"/>
+              <Step title="交易完成"/>
             </Steps>
           </div>
           <div>

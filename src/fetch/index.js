@@ -52,6 +52,39 @@ export const getUserArticles = () => get({
     }
 });
 
+export const getMyLikeArtilce = () => get({
+    url: config.ARTICLE + '/allLike',
+    headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + storage.get('token')
+    }
+});
+
+export const addLike = (body) => put({
+    url: config.ARTICLE + '/like',
+    body,
+    headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + storage.get('token')
+    }
+});
+
+export const cancelLike = (body) => put({
+    url: config.ARTICLE + '/not_like',
+    body,
+    headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + storage.get('token')
+    }
+});
+
+export const getArticleDetails = (id) => get({
+    url: config.ARTICLE + '/' + id,
+    headers: {
+        'Content-Type': 'application/json',
+    }
+});
+
 /* 学习路径相关 */
 export const getStudyPaths = (current) => get({
     url: config.PATH + '?current=' + current +'&size=10',
@@ -252,5 +285,21 @@ export const getValidCode = (phone) => get({
     url: config.VALID_CODE + '/' + phone,
     headers: {
         'Content-Type': 'application/json',
+    }
+});
+
+export const userLogin = (body) => post({
+    url: config.LOGIN,
+    body,
+    headers: {
+        'Content-Type': 'application/json',
+    }
+});
+
+export const resetPWD = (body) => put({
+    url: config.PASSWORD,
+    body,
+    headers: {
+        'Content-Type': 'application/json'
     }
 });

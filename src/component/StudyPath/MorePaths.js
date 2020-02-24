@@ -19,9 +19,9 @@ class MorePaths extends Component{
 
     getPathInfo = (id) => {
         getPathInfo(id).then((res) => {
-            console.log(res)
+            console.log(res.data);
             this.setState({
-                pathInfo: res
+                pathInfo: res.data
             });
         })
     };

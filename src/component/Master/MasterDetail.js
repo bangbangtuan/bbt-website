@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { Row, Col, Descriptions, Layout, Breadcrumb,message, Modal } from "antd";
+import { Row, Col, Descriptions, Layout, Breadcrumb, Modal } from "antd";
 import "./Master.css";
 import { withRouter} from 'react-router-dom';
 import {getMasterDetail, getProjectTaskDetail, postAddMaster} from '../../fetch'
@@ -23,21 +23,21 @@ class MasterDetail extends React.Component {
   getMasterDetail = (id) => {
     getMasterDetail(id).then(res =>{
       this.setState({
-        data:res
+        data: res.data
       })      
-      getProjectTaskDetail(res.projectTaskId).then(projectTask =>{
+      getProjectTaskDetail(res.data.projectTaskId).then(projectTask =>{
           this.setState({
-            projectDetail:  projectTask.details
+            projectDetail: projectTask.data.details
           })
       })
     })
   };
-  success(data) {
+  acceptSuccess(data) {
     Modal.success({
       content: data,
     });
   }
-  error(data) {
+  acceptError(data) {
     Modal.error({
       title: '错误提示',
       content: data,
@@ -60,15 +60,16 @@ class MasterDetail extends React.Component {
     if(storage.get('token')){
      postAddMaster(body).then(res => {
       if (res.status === 200 && res.msg === '添加成功') {
-        this.success('拜师成功，请到师徒计划中支付');
+
+        this.acceptSuccess('拜师成功，请到师徒计划中支付');
       }
       else{
-        this.error(res.msg);
+        this.acceptError(res.msg);
       }
     })
     }
     else{
-      this.error('用户未登录');
+      this.acceptError('用户未登录');
     }
 
   }

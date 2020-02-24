@@ -8,11 +8,12 @@ import {
   Col,
   Layout,
   Divider,
-  Icon, Modal
+  Icon,
+  Modal
 } from "antd";
 import "./Master.css";
 import { Link, withRouter } from "react-router-dom";
-import { getMasterOrApprenticeList,getMasterDetail, getProjectTaskDetail, payRefund, cancelOrder, getMasterOrder} from "../../fetch";
+import { getMasterOrApprenticeList,getMasterDetail, getProjectTaskDetail, getMasterOrder, payRefund, cancelOrder} from "../../fetch";
 const { Sider, Content } = Layout;
 
 class MasterList extends Component {
@@ -30,20 +31,19 @@ class MasterList extends Component {
   }
   getMasterOrApprenticeList = type => {
     getMasterOrApprenticeList(type).then(res => {
-      if (res) {
-       res.forEach(function(item){
+      if (res.data) {
+       res.data.forEach(function(item){
           getMasterDetail(item.commodityId).then(master =>{           
-            if(master){
-              getProjectTaskDetail(master.projectTaskId).then(projectTask =>{
-              item['projectDetail'] = projectTask.details;
+            if(master.data){
+              getProjectTaskDetail(master.data.projectTaskId).then(projectTask =>{
+              item['projectDetail'] = projectTask.data.details;
             })
             }
           })
         })
         this.setState({
-          data:res
+          data: res.data
         })
-        console.log('res11',this.state.data)
       }
     });
   };
@@ -92,7 +92,6 @@ class MasterList extends Component {
     
     getMasterOrder(id).then(res => {
         body['transactionId'] = res.paymentOrderNo;
-        console.log('body', body)
         payRefund(body).then(res => {
           this.success('退款成功');
         })
@@ -171,8 +170,7 @@ class MasterList extends Component {
                                 {item.orderFormStatus==='1'?'等待付款'
                                 :item.orderFormStatus==='2'?'拜师成功'
                                 :item.orderFormStatus==='3'?'等待师傅收徒'
-                                :item.orderFormStatus==='5'?'师傅已收徒':
-                                "拜师已取消"}
+                                :item.orderFormStatus==='5'?'师傅已收徒':'拜师已取消'}
                               </p>
                             </Descriptions.Item>
                           </Descriptions>
@@ -180,8 +178,7 @@ class MasterList extends Component {
                       </Layout>
                     </Layout>
                     <Divider />
-                    <div style={{ margin: "0 auto" }}>                   
-                      {item.orderFormStatus==='1'?
+                    <div style={{ margin: "0 auto" }}>
                       <div style={{ width: "100px", float: "left" }}>
                         <Icon
                           type="message"
@@ -189,9 +186,10 @@ class MasterList extends Component {
                             fontSize: "24px",
                             margin: "0 auto",
                             marginRight: "10px"
-                          }}/>联系师傅
-                      </div>:''}
-                      
+                          }}
+                        />
+                        联系师傅
+                      </div>
                       <div
                         style={{
                           float: "right",

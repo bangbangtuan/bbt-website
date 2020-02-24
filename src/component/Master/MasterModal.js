@@ -30,10 +30,10 @@ class FinishTaskModal extends Component {
   getUserInfo = () =>{
     getUserInfo().then(res => {
       this.setState({
-        userId: res.id
+        userId: res.data.id
       })
     })
-  }
+  };
   showModal = () => {
     this.setState({ visible: true });
   };
@@ -57,14 +57,13 @@ class FinishTaskModal extends Component {
         })
           .then(res => res.json())
           .then(res => {
-            console.log(res)
-            if (res.status === 200 && res.msg === '只能发布一个') {
-              message.error("只能提交一个");
+            if (res.status === 200 && res.msg === true) {
+              message.success("提交成功");
               form.resetFields();
               this.setState({ visible: false });
             }
             else{
-              message.success("提交成功");
+              message.error("只能提交一个");
               form.resetFields();
               this.setState({ visible: false });
             }

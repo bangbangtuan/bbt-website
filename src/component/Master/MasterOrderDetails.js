@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Descriptions, Breadcrumb, Row, Col, Layout, Steps } from "antd";
 import "./Master.css";
+import photo from "../../images/author.jpg";
 import { withRouter } from "react-router-dom";
 import {} from "../../fetch";
 const { Sider, Content } = Layout;
@@ -25,7 +26,8 @@ class MasterOrderDetails extends Component {
         current: 3
       })
     }
-  }
+    };
+
   componentDidMount() {}
   render() {
     return (
@@ -44,14 +46,15 @@ class MasterOrderDetails extends Component {
             <Breadcrumb.Item>
               <a href="/master">师徒计划</a>
             </Breadcrumb.Item>
+            <Breadcrumb.Item>我拜师的</Breadcrumb.Item>
             <Breadcrumb.Item>订单信息</Breadcrumb.Item>
           </Breadcrumb>
           <div style={{"padding":"20px 80px"}}>
-            <Steps current={4-1}>
-              <Step title="等待付款"/>
-              <Step title="拜师成功"/>
-              <Step title="等待师傅收徒"/>
-              <Step title="交易结束"/>
+            <Steps current={3}>
+              <Step title="已拜师"/>
+              <Step title="已收款"/>
+              <Step title="已收徒"/>
+              <Step title="交易完成"/>
             </Steps>
           </div>
           <div>
@@ -63,11 +66,11 @@ class MasterOrderDetails extends Component {
               }}
             >
               <Sider theme="light" width="120px" style={{ height: "120px" }}>
-                <img className="master-image" src={this.props.location.state.commodityImage} alt="师傅带徒" />
+                <img className="master-image" src={photo} alt="师傅带徒" />
               </Sider>
               <Layout style={{ backgroundColor: "#fff" }}>
                 <Content style={{ paddingLeft: "10px", margin: 0 }}>
-                  <Descriptions title={this.props.location.state.commodityName} column={1}>
+                  <Descriptions title={this.state.commodityName} column={1}>
                     <Descriptions.Item>
                       <p
                         style={{
@@ -76,7 +79,7 @@ class MasterOrderDetails extends Component {
                           fontSize: "24px"
                         }}
                       >
-                        ￥{this.props.location.state.commodityPrice}
+                      ￥{this.props.location.state.commodityPrice}
                       </p>
                     </Descriptions.Item> 
                     <Descriptions.Item>
