@@ -20,17 +20,17 @@ class MasterPostList extends React.Component {
 
   getPostList = () => {
     getPostList().then(async (res) => {      
-      if (res) {
-        await getMasterWorkDetail(res.id).then( master => {
-          res['master'] = master.userName;
+      if (res.data) {
+        await getMasterWorkDetail(res.data.id).then( master => {
+          res.data['master'] = master.data.userName;
         })
-        getProjectTaskDetail(res.projectTaskId).then(projectTask =>{
+        getProjectTaskDetail(res.data.projectTaskId).then(projectTask =>{
           this.setState({
-            projectDetail: projectTask.details
+            projectDetail: projectTask.data.details
           })
           getProjectDetail(projectTask.projectId).then(project =>{
             this.setState({
-              projectImage: project.image
+              projectImage: project.data.image
             })
           })
         })

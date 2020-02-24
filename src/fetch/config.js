@@ -1,4 +1,4 @@
-const URL = 'https://api.bangneedu.com';
+const URL = 'https://testapi.bangneedu.com';
 export const CLOCK = URL + '/punchTheClock';
 export const ARTICLE = URL + '/article';
 export const ARTICLE_COMMENT = URL + '/articleComment';

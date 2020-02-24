@@ -27,8 +27,8 @@ class FriendItem extends Component{
       getOtherUserFriendNumber(userId).then((res) => {
         console.log()
         this.setState({
-          fansNumber: res.follow,
-          followerNumber: res.fans
+          fansNumber: res.data.follow,
+          followerNumber: res.data.fans
         })
       })
     }

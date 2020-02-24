@@ -28,9 +28,9 @@ class ArticleDetails extends Component{
 
     getArticleDetails = (id) => {
         getArticleDetails(id).then((res) => {
-            console.log('文章内容: ', res)
+            console.log('文章内容: ', res.data)
             this.setState({
-                article: res[0]
+                article: res.data[0]
             });
         })
     };
@@ -79,7 +79,8 @@ class ArticleDetails extends Component{
       if (storage.get('token')) {
         // 获取我喜欢的文章  并 显示 点赞状态
         getMyLikeArtilce().then((res) => {
-          if (this.isMyLike(res)) {
+          console.log(res.data)
+          if (this.isMyLike(res.data)) {
             console.log('确实是我喜欢')
             this.setState({
               isMyLike: true
@@ -219,7 +220,7 @@ class ArticleDetails extends Component{
                                           <Icon type="like"  onClick={this.Like} style={{fontSize: '20px', padding: '0px 10px', color: 'rgba(25, 131, 218, 1)'}} />
                                         )
                                     }
-                                    <Icon type="share-alt" onClick={this.showShare} class="share"  style={{fontSize: '20px'}}/>
+                                    <Icon type="share-alt" onClick={this.showShare} className="share"  style={{fontSize: '20px'}}/>
                                 </div>
                                 <div className='comment-list'>
                                     {

@@ -30,7 +30,7 @@ class ArticleItem extends Component{
       getCollectedArticles().then((res) => {
         console.log('查看自己收藏的文章: ', res)
         this.setState({
-          collectedArtcile: res
+          collectedArtcile: res.data
         })
       })
     }

@@ -181,21 +181,24 @@ export const getPathDetail = (id) => get({
         'Content-Type': 'application/json',
     }
 });
+
 /*师徒模块相关*/
+
 export const getMasterAndApprentice = () => get({
     url: config.ORDER + '/masterAndApprentice',
     headers: {
         'Content-Type': 'application/json',
         'Authorization': 'Bearer ' + storage.get('token')
     }
-})
+});
+
 export const getMasterOrApprenticeList = (type) => get({
     url: config.ORDER + '/type/'+type,
     headers: {
         'Content-Type': 'application/json',
         'Authorization': 'Bearer ' + storage.get('token')
     }
-})
+});
 
 export const getPostList = () => get({
     url: config.MASTER+'/user',
@@ -203,7 +206,7 @@ export const getPostList = () => get({
         'Content-Type': 'application/json',
         'Authorization': 'Bearer ' + storage.get('token')
     }
-})
+});
 
 export const getMasterWorkDetail = (id) => get({
     url: config.MASTER + '/' + id,
@@ -211,34 +214,36 @@ export const getMasterWorkDetail = (id) => get({
         'Content-Type': 'application/json',
         'Authorization': 'Bearer ' + storage.get('token')
     }
-})
+});
 
 export const getProjectTaskDetail = (id) => get({
     url: config.ProjectTask + '/task?id=' + id,
     headers: {
         'Content-Type': 'application/json'
     }
-})
+});
 
 export const getProjectDetail = (id) => get({
     url: config.Project + '/' + id,
     headers: {
         'Content-Type': 'application/json'
     }
-})
+});
 
 export const getMasterList = (size, current) => get({
     url: config.MASTER + '?size=' + size +"&current="+current,
     headers: {
         'Content-Type': 'application/json'
     }
-})
+});
+
 export const getMasterDetail = (id) => get({
     url: config.MASTER + '/' + id,
     headers: {
         'Content-Type': 'application/json',
     }
-})
+});
+
 export const postAddMaster = (body) => post({
     url: config.ORDER,
     body,
@@ -246,7 +251,7 @@ export const postAddMaster = (body) => post({
         'Content-Type': 'application/json',
         'Authorization': 'Bearer ' + storage.get('token')
     }
-})
+});
 
 export const masterPay = (body) => post({
     url: config.CreateOrder,
@@ -255,7 +260,7 @@ export const masterPay = (body) => post({
         'Content-Type': 'application/json',
         'Authorization': 'Bearer ' + storage.get('token')
     }
-})
+});
 
 export const getMasterOrder = (id) => get({
     url: config.ORDER + '/details/' + id,
@@ -263,7 +268,7 @@ export const getMasterOrder = (id) => get({
         'Content-Type': 'application/json',
         'Authorization': 'Bearer ' + storage.get('token')
     }
-})
+});
 
 export const getNewMessage = () => get({
     url: config.MessagePush,
@@ -271,7 +276,7 @@ export const getNewMessage = () => get({
         'Content-Type': 'application/json',
         'Authorization': 'Bearer ' + storage.get('token'),
     },
-})
+});
 
 /* 师徒相关 */
 export const getAllMasterList = () => get({

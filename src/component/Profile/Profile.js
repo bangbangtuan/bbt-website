@@ -38,10 +38,11 @@ class Profile extends Component{
         this.setState({
             token: token
         });
+
         getUserInfo().then((res) => {
           console.log('res: ', res)
           this.setState({
-            loginUserInfo: res
+            loginUserInfo: res.data
           }, () => {
             console.log('loginUserInfo: ', this.state.loginUserInfo.id)
           })
@@ -55,27 +56,27 @@ class Profile extends Component{
       if (token && this.isMyProfile()) {
           getUserInfo().then((res) => {
             this.setState({
-                userInfo: res
+                userInfo: res.data
             })
           })
 
           getInvitationCode().then((res) => {
               this.setState({
-                  inviteCode: res
+                  inviteCode: res.data
               });
           });
 
           getUserClocks().then((res) => {
               console.log(res);
               this.setState({
-                  userDaka: res.records
+                  userDaka: res.data.records
               });
           });
 
           getUserArticles().then((res) => {
               console.log(res);
               this.setState({
-                  userArticle: res.records
+                  userArticle: res.data.records
               });
           });
 
@@ -83,7 +84,7 @@ class Profile extends Component{
 
           getFriendNumber().then((res) => {
             this.setState({
-              friendNumber: res
+              friendNumber: res.data
             }, () => {
               console.log('friendNumber', this.state.friendNumber)
             })
@@ -107,7 +108,7 @@ class Profile extends Component{
       } else if (token && !this.isMyProfile()) {
         getOtherUserInfo(this.state.otherUserId).then((res) => {
           this.setState({
-            userInfo: res
+            userInfo: res.data
           }, () => {
             console.log('getOtherUserInfo: ', this.state.userInfo)
           })
@@ -117,7 +118,7 @@ class Profile extends Component{
         //  判断ID 是否存在于该列表当中 isFollow: true
 
         getMyUserFollowList().then((res) => {
-          let followList = res
+          let followList = res.data
           let isFollow = ''
           console.log('followList: ', followList)
           console.log('this.state.otherUserId: ', this.state.otherUserId)
@@ -142,19 +143,19 @@ class Profile extends Component{
 
         getOtherUserClocks(this.state.otherUserId).then((res) => {
           this.setState({
-            userDaka: res
+            userDaka: res.data
           })
         })
 
         getOtherUserFriendNumber(this.state.otherUserId).then((res) => {
           this.setState({
-            friendNumber: res
+            friendNumber: res.data
           })
         })
 
         getOtherUserArticles (this.state.otherUserId).then((res) => {
           this.setState({
-            userArticle: res
+            userArticle: res.data
           }, () => {
             console.log('学习日记: ', this.state.userArticle)
           })
@@ -166,18 +167,18 @@ class Profile extends Component{
           storage.set('token', false);
           getOtherUserInfo(this.state.otherUserId).then((res) => {
             this.setState({
-              userInfo: res
+              userInfo: res.data
             })
           })
           getOtherUserClocks(this.state.otherUserId).then((res) => {
             this.setState({
-              userDaka: res
+              userDaka: res.data
             })
           })
 
           getOtherUserFriendNumber(this.state.otherUserId).then((res) => {
             this.setState({
-              friendNumber: res
+              friendNumber: res.data
             })
           })
           this.getCollectedArticles()
@@ -203,13 +204,13 @@ class Profile extends Component{
       if (this.isMyProfile()) {
         getCollectedArticles().then((res) => {
           this.setState({
-            collectedArtcile: res
+            collectedArtcile: res.data
           })
         })
       } else {
         getOtherUserCollectedArticles(this.state.otherUserId).then((res) => {
           this.setState({
-            collectedArtcile: res
+            collectedArtcile: res.data
           })
         })
       }
@@ -232,13 +233,13 @@ class Profile extends Component{
           getFriendNumber().then((res) => {
             // 回调函数执行的顺序
             this.setState({
-              friendNumber: res
+              friendNumber: res.data
             })
           })
         } else {
           getOtherUserFriendNumber(this.state.otherUserId).then((res) => {
             this.setState({
-              friendNumber: res
+              friendNumber: res.data
             })
           })
         }
@@ -255,13 +256,13 @@ class Profile extends Component{
         if (this.isMyProfile()) {
           getFriendNumber().then((res) => {
             this.setState({
-              friendNumber: res
+              friendNumber: res.data
             })
           })
         } else {
           getOtherUserFriendNumber(this.state.otherUserId).then((res) => {
             this.setState({
-              friendNumber: res
+              friendNumber: res.data
             })
           })
         }
@@ -271,8 +272,8 @@ class Profile extends Component{
     getArticles = (page, type) => {
       getArticles(page, type).then((res) => {
           this.setState({
-              userArticle: res.records,
-              pages: parseInt(res.pages),
+              userArticle: res.data.records,
+              pages: parseInt(res.data.pages),
               changed: true
           })
       })
@@ -283,13 +284,13 @@ class Profile extends Component{
       if (this.isMyProfile()) {
         searchMyCollectedArticles(content).then((res) => {
           this.setState({
-            collectedArtcile: res
+            collectedArtcile: res.data
           })
         })
       } else {
         searchCollectedArtcles(this.state.otherUserId, content).then((res) => {
           this.setState({
-            collectedArtcile: res
+            collectedArtcile: res.data
           })
         })
       }

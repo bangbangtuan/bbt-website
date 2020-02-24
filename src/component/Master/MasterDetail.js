@@ -23,11 +23,11 @@ class MasterDetail extends React.Component {
   getMasterDetail = (id) => {
     getMasterDetail(id).then(res =>{
       this.setState({
-        data:res
+        data: res.data
       })      
-      getProjectTaskDetail(res.projectTaskId).then(projectTask =>{
+      getProjectTaskDetail(res.data.projectTaskId).then(projectTask =>{
           this.setState({
-            projectDetail:  projectTask.details
+            projectDetail: projectTask.data.details
           })
       })
     })
