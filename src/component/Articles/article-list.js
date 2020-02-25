@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import './Article.css';
 import { Link } from 'react-router-dom';
-import { Comment, Icon} from 'antd';
+import { Comment, Icon, message} from 'antd';
 import ReactMarkdown from 'react-markdown';
 import QRCode  from 'qrcode.react';
 import Close  from '../../images/close.svg';
@@ -83,24 +83,30 @@ class ArticleItem extends Component{
       let body = {
         "articleId": articleId
       }
-      if (this.isCollected(articleId)) {
-        cancelCollection(body).then((res) => {
-          // 取消收藏
-          this.getCollectedArticles() // 获取已收藏的文章
-        }).then((res) => {
-          this.getArticles()
-        })
+      let token = storage.get('token');
+      if (!token) {
+        message.error("请登录后再收藏")
       } else {
-        // 调用进行收藏的接口
-        addCollection(body).then((res) => {
-          this.getCollectedArticles() // 获取已收藏的文章  但是
-        }).then(() => {
-          this.getArticles()
-        })
+        if (this.isCollected(articleId)) {
+          cancelCollection(body).then((res) => {
+            // 取消收藏
+            this.getCollectedArticles() // 获取已收藏的文章
+            message.success("取消收藏成功");
+          }).then((res) => {
+            this.getArticles()
+          })
+        } else {
+          // 调用进行收藏的接口
+          addCollection(body).then((res) => {
+            this.getCollectedArticles() // 获取已收藏的文章  但是
+            message.success("收藏成功");
+          }).then(() => {
+            this.getArticles()
+          })
+        }
+        // 重新获取所有文章
+        this.getArticles()
       }
-      // 重新获取所有文章
-      this.getArticles()
-      console.log('查看收藏商品')
     }
 
     modal () {
@@ -167,7 +173,7 @@ class ArticleItem extends Component{
                                                 <Icon type="like" style={{fontSize: 16}} />
                                                 <span style={{ paddingLeft: 8, cursor: 'auto', fontSize: 14 }}>{item.praiseNumber}</span>
                                             </div>
-                                            <div className='vertical-alain' >
+                                            <div className='vertical-alain' style={{position: 'relative', top: -2}}>
                                               {
                                                 this.isCollected(item.id)
                                                 ?(<img src={Collected} alt="logo"  className='collect' onClick={this.collect.bind(this, item.id)} />)
@@ -175,7 +181,7 @@ class ArticleItem extends Component{
                                               }
                                               <span style={{ paddingLeft: 8, cursor: 'auto', fontSize: 14 }}>{item.collectionNumber}</span>
                                             </div>
-                                            <div className='vertical-alain' onClick={this.showShare.bind(this, item.id)}>
+                                            <div className='vertical-alain' style={{position: 'relative', top: -2}} onClick={this.showShare.bind(this, item.id)}>
                                                 <img src={Share} alt="logo"  className='share'/>
                                             </div>
                                         </span>

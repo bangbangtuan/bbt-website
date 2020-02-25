@@ -73,7 +73,7 @@
 
 .share-modal {
   width: 200px;
-  height: 200px;
+  height: 300px;
 }
 
 .ant-btn  .share{
@@ -172,11 +172,11 @@
 }
 
 .share {
-  width: 16px;
-  height: 16px;
+  width: 18px;
+  height: 18px;
 }
 
 .collect {
-  width: 25px;
-  height: 32px;
+  width: 18px;
+  height: 18px;
 }

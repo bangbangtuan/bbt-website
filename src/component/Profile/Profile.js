@@ -336,18 +336,18 @@ class Profile extends Component{
                                         <Descriptions.Item label="微信号 ">{this.state.userInfo.weixin}</Descriptions.Item>
                                         <Descriptions.Item label="个人简介 ">{this.state.userInfo.description ? this.state.userInfo.description : '什么都没有'}</Descriptions.Item>
                                     </Descriptions>
+                                    <Link to={{pathname: '/follow', query: {id: this.state.userInfo.id, type: 1}}}>
                                     <div className="fans-wrapper">
                                       <span className="fans">粉丝 </span>
-                                      <Link to={{pathname: '/follow', query: {id: this.state.userInfo.id, type: 1}}}>
                                         <span className="fans-number">{this.state.friendNumber.fans}</span>
-                                      </Link>
                                     </div>
+                                      </Link>
+                                        <Link to={{pathname: '/follow', query: {id: this.state.userInfo.id, type: 2}}}>
                                     <div className="followers-wrapper">
                                       <span className="followers">关注 </span>
-                                      <Link to={{pathname: '/follow', query: {id: this.state.userInfo.id, type: 2}}}>
                                         <span className="followers-number">{this.state.friendNumber.follow}</span>
-                                      </Link>
                                     </div>
+                                      </Link>
                                   </div>
                                 </div>
                                 ))
