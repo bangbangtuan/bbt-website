@@ -337,7 +337,7 @@ class Profile extends Component{
                                         <Descriptions.Item label="个人简介 ">{this.state.userInfo.description ? this.state.userInfo.description : '什么都没有'}</Descriptions.Item>
                                     </Descriptions>
                                     <Link to={{pathname: '/follow', query: {id: this.state.userInfo.id, type: 1}}}>
-                                    <div className="fans-wrapper">
+                                    <div className="fans-wrapper" style={{position: 'relative', right: -2}}>
                                       <span className="fans">粉丝 </span>
                                         <span className="fans-number">{this.state.friendNumber.fans}</span>
                                     </div>

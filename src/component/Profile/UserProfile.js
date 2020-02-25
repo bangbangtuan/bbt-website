@@ -165,6 +165,7 @@ class UserProfile extends Component{
                                         {"Authorization": "Bearer " + storage.get('token')}
                                     }
                                     onChange={(value)=>{this.handleChange(value,userInfo)}}
+                                    disabled={!this.state.isMyProfile}
                                 >
                                     {userInfo.headPortrait ? <img src={userInfo.headPortrait} alt="avatar" style={{ width: '100%' }} /> : uploadButton}
                                 </Upload>
@@ -205,9 +206,15 @@ class UserProfile extends Component{
                                         <TextArea rows={3}  disabled={!this.state.isMyProfile}/>
                                     )}
                                 </Form.Item>
-                                <Form.Item className="sub-button">
-                                    <Button type="primary" htmlType="submit" disabled={!this.state.isMyProfile}>提交</Button>
-                                </Form.Item>
+                                {
+                                  this.state.isMyProfile? (
+                                    <Form.Item className="sub-button">
+                                        <Button type="primary" htmlType="submit" disabled={!this.state.isMyProfile}>提交</Button>
+                                    </Form.Item>
+                                  ):(
+                                    <div></div>
+                                  )
+                                }
                             </Form>
                         </div>
                     }
