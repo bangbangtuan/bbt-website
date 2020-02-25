@@ -3,6 +3,8 @@ import { Row, Col, Upload, Icon, message, Input, Form, Button } from 'antd';
 import { withRouter } from 'react-router-dom';
 import storage from "../storage";
 import './UserProfile.css';
+import { getOtherUserInfo, getUserInfo } from '../../fetch'
+
 const { TextArea } = Input;
 
 class UserProfile extends Component{
@@ -11,31 +13,47 @@ class UserProfile extends Component{
         this.state = {
             token: storage.get('token'),
             imgLoading: false,
-            userInfo: ''
+            userInfo: '',
+            isMyProfile: false
         }
     }
 
     componentWillMount() {
-        console.log(this.props.match.params.id);
         this.getUserInfo();
+        this.getOtherUserInfo();
+
     };
 
-    getUserInfo = () => {
-        fetch('https://api.bangneedu.com/user', {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-                "Authorization": "Bearer " + this.state.token
-            }})
-            .then((res) => res.json())
-            .then( res => {
-                console.log(res.data);
-                this.setState({
-                    userInfo: res.data,
-                });
-            })
-            .catch( err => console.log(err));
+    getOtherUserInfo = () => {
+        getOtherUserInfo(this.props.match.params.id)
+          .then( res => {
+              console.log('getOtherUserInfo then');
+              this.setState({
+                  userInfo: res.data,
+              }, () => {
+                console.log('getOtherUserInfo： ', '回调')
+              });
+          }).then((res) => {
+            this.isMyProfile()
+          })
+          .catch( err => console.log(err));
     };
+
+
+
+    getUserInfo = () => {
+      getUserInfo()
+      .then((res) => {
+        console.log('getUserInfo then')
+        this.setState({
+          loginUserInfo: res.data
+        }, () => {
+          console.log('getUserInfo ', '回调')
+        })
+      })
+      .catch(err => console.log(err))
+    }
+
 
     handleChange = (info, record) => {
         if (info.file.status === 'uploading') {
@@ -43,8 +61,6 @@ class UserProfile extends Component{
             return;
         }
         if (info.file.status !== 'uploading') {
-            console.log(info.file.response.data);
-            console.log(record)
         }
         if (info.file.status === 'done') {
             const data = {
@@ -61,7 +77,6 @@ class UserProfile extends Component{
             })
                 .then((res) => res.json())
                 .then( res => {
-                    console.log(res);
                     this.setState({
                         imgLoading: false,
                     });
@@ -88,7 +103,6 @@ class UserProfile extends Component{
                 })
                     .then((res) => res.json())
                     .then( res => {
-                        console.log(res.data);
                         this.getUserInfo();
                         message.success("修改成功", 1);
                     })
@@ -97,8 +111,24 @@ class UserProfile extends Component{
         })
     };
 
+
+    isMyProfile () {
+      console.log('this.props.match.params.id: ', this.props.match.params.id)
+      console.log(' this.state.loginUserInfo: ',  this.state.loginUserInfo.id)
+      if (this.props.match.params.id === this.state.loginUserInfo.id ) {
+        this.setState({
+          isMyProfile: true
+        })
+      } else {
+        this.setState({
+          isMyProfile: false
+        })
+      }
+    }
+
     render() {
         let userInfo = this.state.userInfo;
+        console.log('render')
         const uploadButton = (
             <div>
                 <Icon type={this.state.imgLoading ? 'loading' : 'plus'} />
@@ -144,39 +174,39 @@ class UserProfile extends Component{
                                     {getFieldDecorator('username', {
                                         initialValue: this.state.userInfo.username
                                     })(
-                                        <Input />,
+                                        <Input disabled={!this.state.isMyProfile} />,
                                     )}
                                 </Form.Item>
                                 <Form.Item label="昵称 ">
                                     {getFieldDecorator('name', {
                                         initialValue: this.state.userInfo.name
                                     })(
-                                        <Input />,
+                                        <Input disabled={!this.state.isMyProfile} />,
                                     )}
                                 </Form.Item>
                                 <Form.Item label="微信号 ">
                                     {getFieldDecorator('weixin', {
                                         initialValue: this.state.userInfo.weixin
                                     })(
-                                        <Input />
+                                        <Input disabled={!this.state.isMyProfile}/>
                                     )}
                                 </Form.Item>
                                 <Form.Item label="手机号 ">
                                     {getFieldDecorator('phone', {
                                         initialValue: this.state.userInfo.phone
                                     })(
-                                        <Input />
+                                        <Input disabled={!this.state.isMyProfile} />
                                     )}
                                 </Form.Item>
                                 <Form.Item label="个人简介 ">
                                     {getFieldDecorator('description', {
                                         initialValue: this.state.userInfo.description
                                     })(
-                                        <TextArea rows={3} />
+                                        <TextArea rows={3}  disabled={!this.state.isMyProfile}/>
                                     )}
                                 </Form.Item>
                                 <Form.Item className="sub-button">
-                                    <Button type="primary" htmlType="submit">提交</Button>
+                                    <Button type="primary" htmlType="submit" disabled={!this.state.isMyProfile}>提交</Button>
                                 </Form.Item>
                             </Form>
                         </div>

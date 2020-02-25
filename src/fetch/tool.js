@@ -12,7 +12,10 @@ export const get = ({url, msg = '接口异常', headers}) =>
         method: 'GET',
         headers: headers
     })
-        .then((res) => res.json())
+        .then((res) => {
+          console.log('发送get请求')
+          return res.json()
+        })
         .catch( err => {
             console.log(err);
             message.warn(msg);

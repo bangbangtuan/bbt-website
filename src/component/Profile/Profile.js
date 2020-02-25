@@ -216,8 +216,18 @@ class Profile extends Component{
       }
     }
 
-    handleClick = (id) => {
-      this.props.history.push("/userProfile/" + id)
+    handleClick = () => {
+
+      if (this.isMyProfile()) {
+        console.log('查看我自己的信息')
+        let id = this.state.userInfo.id
+        this.props.history.push("/userProfile/" + id)
+      } else {
+        console.log('查看别人的信息')
+        let id = this.state.otherUserId
+        this.props.history.push("/userProfile/" + id)
+      }
+
     };
 
     handleFollow = (id) => {
@@ -308,7 +318,7 @@ class Profile extends Component{
                                 (this.state.userInfo && (
                                 <div className='head-container'>
                                   <div className='head-wrapper'>
-                                    <img src={this.state.userInfo.headPortrait} alt='' onClick={() => this.handleClick(this.state.userInfo.id)} style={{cursor: 'pointer'}}/>
+                                    <img src={this.state.userInfo.headPortrait} alt='' onClick={() => this.handleClick()} style={{cursor: 'pointer'}}/>
                                     {
                                       (!this.isMyProfile() &&
                                         (!this.state.isFollow

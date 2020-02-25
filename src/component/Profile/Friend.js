@@ -23,9 +23,10 @@ class Friend extends Component{
       if (this.state.type === FANS) {
         Promise.all([this.getMyUserFollowList(), this.getOtherUserFansList(), this.getUserInfo()])
         .then((res) => {
-          let fansList = res.data[1]
-          let followList = res.data[0]
-          let userInfo = res.data[2]
+          console.log('fff: ', res)
+          let fansList = res[1].data
+          let followList = res[0].data
+          let userInfo = res[2].data
 
           for (let i = 0; i < fansList.length; i++) {
             if (this.hasLoginUserId(fansList[i], userInfo.id)) {
@@ -38,16 +39,18 @@ class Friend extends Component{
               }
             }
           }
-
+          console.log('fansList: ', fansList)
           this.setState({
             friends: fansList
+          }, () => {
+            console.log('friends: ', this.state.friends)
           })
         })
       } else if (this.state.type === FOLLOW) {
         Promise.all([this.getMyUserFollowList(), this.getOtherUserFollowList()])
         .then((res) => {
-          let myFollowers = res.data[0]
-          let otherUserFollowers = res.data[1]
+          let myFollowers = res[0].data
+          let otherUserFollowers = res[1].data
 
           for (let i = 0; i < otherUserFollowers.length; i++) {
             if (this.isFollowed(otherUserFollowers[i], myFollowers)) {
@@ -115,6 +118,7 @@ class Friend extends Component{
     }
 
     render () {
+      console.log('ppp：', this.state.friends)
       return (
         <Row>
           <Col md={4}/>
