@@ -5,6 +5,7 @@ import { AirPlane, BusinessMan, Student } from "./svgIcon";
 import "./Master.css";
 import { getMasterAndApprentice, getNewMessage, getMasterPayOrder, acceptApprentice,getPostList } from "../../fetch";
 
+
 class Master extends React.Component {
     constructor(props) {
         super(props);
@@ -107,6 +108,7 @@ class Master extends React.Component {
       visible: false,
     });
   };
+
   render() {
     document.body.style.backgroundColor = "#f8fbfd";
     return (
@@ -115,7 +117,6 @@ class Master extends React.Component {
         <Col md={16}>
           <div className="con-header">师徒计划
             <div onClick={this.showModal} style={{height:"100%", lineHeight:"100%", float:"right"}}>拜师信息<Icon type="notification" />{this.state.newMessageAccount}</div>
-          
         <Modal
           title="新消息"
           visible={this.state.visible}
@@ -196,6 +197,7 @@ class Master extends React.Component {
                               </div>
                               <p className="infoTitle">待支付的</p>
                               <p className="infoNumber">{this.state.payAccount}</p>
+
                           </div>
                       </Link>
                   </div>

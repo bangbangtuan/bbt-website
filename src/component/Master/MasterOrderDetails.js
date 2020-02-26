@@ -27,7 +27,6 @@ class MasterOrderDetails extends Component {
       })
     }
     };
-
   componentDidMount() {}
   render() {
     return (

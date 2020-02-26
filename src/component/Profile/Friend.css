@@ -1,0 +1,30 @@
+.title-wrapper {
+  padding: 16px 32px;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+
+.texts {
+  width: 116px;
+  height: 18px;
+  font-family: MicrosoftYaHei;
+  font-size: 18px;
+  font-weight: bold;
+  font-stretch: normal;
+  line-height: 18px;
+  letter-spacing: 0px;
+  color: #000000;
+  padding-right: 10px;
+}
+
+.item-wrapper {
+  padding: 0 32px;
+}
+
+.number {
+  font-family: ArialMT;
+  font-size: 18px;
+  font-weight: bold;
+  letter-spacing: 0px;
+  color: #000000;
+}

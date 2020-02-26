@@ -12,7 +12,10 @@ export const get = ({url, msg = '接口异常', headers}) =>
         method: 'GET',
         headers: headers
     })
-        .then((res) => res.json())
+        .then((res) => {
+          console.log('发送get请求')
+          return res.json()
+        })
         .catch( err => {
             console.log(err);
             message.warn(msg);
@@ -49,6 +52,25 @@ export const post = ({url, body, msg = '接口异常', headers}) =>
 export const put = ({url, body, msg = '接口异常', headers}) =>
     fetch(url, {
         method: 'PUT',
+        headers: headers,
+        body: JSON.stringify(body)
+    })
+        .then((res) => res.json())
+        .catch( err => {
+            console.log(err);
+            message.warn(msg);
+        });
+/**
+ * 公用del请求
+ * @param url       接口地址
+ * @param body      接口参数
+ * @param msg       接口异常提示
+ * @param headers   接口所需header配置
+ */
+
+export const del = ({url, body, msg = '接口异常', headers}) =>
+    fetch(url, {
+        method: 'DELETE',
         headers: headers,
         body: JSON.stringify(body)
     })

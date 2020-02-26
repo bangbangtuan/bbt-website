@@ -60,7 +60,6 @@ class MasterDetail extends React.Component {
     if(storage.get('token')){
      postAddMaster(body).then(res => {
       if (res.status === 200 && res.msg === '添加成功') {
-
         this.acceptSuccess('拜师成功，请到师徒计划中支付');
       }
       else{
@@ -70,6 +69,7 @@ class MasterDetail extends React.Component {
     }
     else{
       this.acceptError('用户未登录');
+
     }
 
   }

@@ -14,6 +14,7 @@ import {
 import "./Master.css";
 import { Link, withRouter } from "react-router-dom";
 import { getMasterOrApprenticeList,getMasterDetail, getProjectTaskDetail, getMasterOrder, payRefund, cancelOrder} from "../../fetch";
+
 const { Sider, Content } = Layout;
 
 class MasterList extends Component {
@@ -171,6 +172,7 @@ class MasterList extends Component {
                                 :item.orderFormStatus==='2'?'拜师成功'
                                 :item.orderFormStatus==='3'?'等待师傅收徒'
                                 :item.orderFormStatus==='5'?'师傅已收徒':'拜师已取消'}
+
                               </p>
                             </Descriptions.Item>
                           </Descriptions>
@@ -206,7 +208,6 @@ class MasterList extends Component {
                           {item.orderFormStatus==='1'?<Link to={{pathname: '/masterPay/'+item.id, state:item}}>付款</Link>
                           :<Link to={{pathname: '/masterOrderDetails/'+item.id, state:item}}>订单详情</Link>}
                         </div>
-                        
                           {item.orderFormStatus==='3'?
                           <div
                           style={{

@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { List, Card, Descriptions, Breadcrumb, Row, Col, Layout, Divider, Icon} from "antd";
 import "./Master.css";
+
 import { getMasterOrApprenticeList,getMasterDetail,getProjectTaskDetail } from "../../fetch";
 import { Link } from "react-router-dom";
 const { Sider, Content } = Layout;

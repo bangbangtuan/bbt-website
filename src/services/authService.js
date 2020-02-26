@@ -11,8 +11,10 @@ const authService = {
                     'Content-Type': 'application/json',
                     "Authorization": "Bearer " + token
                 }});
+
             let data = await res.json();
-            console.log(data)
+            console.log('data--: ', data)
+            // console.log(data)
             if(data.status === 200) {
                 storage.set('headPortrait', data.data.headPortrait);
                 return true;
