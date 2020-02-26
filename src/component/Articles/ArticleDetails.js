@@ -4,8 +4,9 @@ import { withRouter } from 'react-router-dom';
 import storage from "../storage";
 import noAuthor from "../../images/no-author.png";
 import ReactMarkdown from 'react-markdown';
-import { getArticleDetails, getArticleComments, postArticleComment,  getMyLikeArtilce, addLike, cancelLike} from '../../fetch';
+import { getArticleDetails,  getMyLikeArtilce, addLike, cancelLike} from '../../fetch';
 import QRCode  from 'qrcode.react';
+import Close  from '../../images/close.svg';
 
 class ArticleDetails extends Component{
     constructor(props){
@@ -14,12 +15,13 @@ class ArticleDetails extends Component{
             token: storage.get('token'),
             usercomment: '',
             articleId: this.props.match.params.id,
-            isMyLike: false
+            isMyLike: false,
+            visible: false
         }
     }
 
     componentWillMount() {
-        console.log(this.props.match.params.id);
+        console.log('文章id: ', this.props.match);
         this.getArticleDetails(this.state.articleId);
         this.getArticleComments(this.state.articleId);
         // 如果已经登录，则显示likeAct, 如果没有登录，则显示普通的图片
@@ -135,24 +137,65 @@ class ArticleDetails extends Component{
         }
     };
 
-
-    showShare = () => {
+    showShare () {
       let path = window.location.href
+      this.setState({
+        visible: true,
+        path: path
+      })
+    }
 
-      Modal.info({
-          title: '打开微信“扫一扫”，打开网页后点击屏幕右上角分享按钮',
-          content: (
-              <div className='share-modal'>
-                  <QRCode
-                      value = {path}  //value参数为生成二维码的链接
-                      size = {100} //二维码的宽高尺寸
-                      fgColor = "#000000"  //二维码的颜色
-                 />
-              </div>
-          ),
-          onCancel() {},
-      });
-    };
+    handleClick (e) {
+      // 阻止冒泡事件
+      e.stopPropagation();
+    }
+
+    handleCancel (e) {
+      console.log('测试是否执行了关闭modal')
+      e.stopPropagation();
+      this.setState({
+        visible: false
+      })
+    }
+
+    modal () {
+      return <div className="background-modal" onClick={this.handleCancel.bind(this)}>
+      <div className="qrcode-modal" onClick={(e) => this.handleClick(e)}>
+        <img src={Close} className="close-modal" alt="logo" onClick={(e) => {this.handleCancel(e)}} />
+        <div className="title-modal">
+          微信分享
+        </div>
+        <div className="detail-modal">
+          打开微信"扫一扫",打开网页后点击屏幕右上角分享按钮
+        </div>
+        <div className="share-modal">
+          <QRCode
+              value = {this.state.path}  //value参数为生成二维码的链接
+              size = {200} //二维码的宽高尺寸
+              fgColor = "#000000"  //二维码的颜色
+         />
+        </div>
+      </div>
+      </div>
+    }
+
+    // showShare = () => {
+    //   let path = window.location.href
+    //
+    //   Modal.info({
+    //       title: '打开微信“扫一扫”，打开网页后点击屏幕右上角分享按钮',
+    //       content: (
+    //           <div className='share-modal'>
+    //               <QRCode
+    //                   value = {path}  //value参数为生成二维码的链接
+    //                   size = {100} //二维码的宽高尺寸
+    //                   fgColor = "#000000"  //二维码的颜色
+    //              />
+    //           </div>
+    //       ),
+    //       onCancel() {},
+    //   });
+    // };
 
     Like = () => {
       if (!storage.get('token')) {
@@ -179,7 +222,6 @@ class ArticleDetails extends Component{
 
     render() {
         let article = this.state.article;
-        let isMyLike = this.state.isMyLike
         return (
             <div>
                 <Row>
@@ -221,7 +263,7 @@ class ArticleDetails extends Component{
                                           <Icon type="like"  onClick={this.Like} style={{fontSize: '20px', padding: '0px 10px', color: 'rgba(25, 131, 218, 1)'}} />
                                         )
                                     }
-                                    <Icon type="share-alt" onClick={this.showShare} className="share"  style={{fontSize: '20px'}}/>
+                                    <Icon type="share-alt" onClick={this.showShare.bind(this)} className="share"  style={{fontSize: '20px'}}/>
                                 </div>
                                 <div className='comment-list'>
                                     {
@@ -248,6 +290,10 @@ class ArticleDetails extends Component{
                     </Col>
                     <Col md={4} />
                 </Row>
+                {
+                  this.state.visible &&
+                  this.modal()
+                }
             </div>
         )
     }

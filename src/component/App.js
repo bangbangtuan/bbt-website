@@ -41,8 +41,12 @@ import MasterPostList from "./Master/MasterPostList"
 import ApprenticeList from "./Master/ApprenticeList"
 import MasterList from "./Master/MasterList"
 import AllMasterList from "./Master/AllMasterList";
+import Friend from "./Profile/Friend";
 import MasterOrderDetails from "./Master/MasterOrderDetails"
 import RecommendMasterList from "./Master/RecommendMasterList"
+import { Layout } from 'antd';
+
+const { Footer } = Layout;
 
 class App extends React.Component {
 
@@ -63,9 +67,13 @@ class App extends React.Component {
                         <Route path="/article/:id" render={(history, match) => {
                             return <ArticleDetails history={history} match={match} />
                         }} />
+                        <PrivateRoute  path="/profile/:id" render={(history, match) => {
+                            return <Profile history={history} match={match} />
+                        }} />
                         <PrivateRoute  path="/profile" render={(history, match) => {
                             return <Profile history={history} match={match} />
                         }} />
+
                         <Route path="/userProfile/:id" render={() => {
                             return <UserProfile />
                         }} />
@@ -168,16 +176,16 @@ class App extends React.Component {
                         <Route path="/allMasterList" render={() => {
                             return <AllMasterList/>
                         }}/>
-                    
+                        <Route path="/follow" component={Friend}/>
 
 
                         <Route component={PageNotFound}/>
                     </Switch>
                 </BrowserRouter>
-                <div className='footer'>
+                <Footer className='footer'>
                     <div>Copyright © bangneedu 黑龙江省马斯克网络科技有限责任公司</div>
                     <a href='http://www.beian.miit.gov.cn'>黑ICP备19001710号-1</a>
-                </div>
+                </Footer>
             </div>
         );
     }

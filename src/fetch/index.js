@@ -1,4 +1,4 @@
-import { get, post, put } from './tool';
+import { get, post, put, del } from './tool';
 import * as config from './config';
 import storage from "../component/storage";
 
@@ -9,6 +9,14 @@ export const getClocks = (current) => get({
         'Content-Type': 'application/json',
     }
 });
+
+export const getOtherUserClocks = (id) => get({
+  url: config.CLOCK + '/user/' + id,
+  headers: {
+    'Content-Type': 'application/json',
+    'Authorization': 'Bearer ' + storage.get('token')
+  }
+})
 
 export const postClock = (body) => post({
     url: config.CLOCK,
@@ -27,6 +35,14 @@ export const getUserClocks = () => get({
     }
 });
 
+export const getPunchTheClockComment = (id) => get({
+  url: config.PUNCHTHEClOCKCOMMENT + '/' + id,
+  headers: {
+    'Content-Type': 'application/json',
+    'Authorization': 'Bearer ' + storage.get('token')
+  }
+})
+
 /* 文章相关 */
 export const getArticles = (current, type="") => get({
     url: config.ARTICLE + '?current=' + current +'&size=10&type=' + type,
@@ -34,6 +50,14 @@ export const getArticles = (current, type="") => get({
         'Content-Type': 'application/json',
     }
 });
+
+export const getOtherUserArticles = (id) => get({
+  url: config.ARTICLE + '/user/' + id,
+  headers: {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ' + storage.get('token')
+  }
+})
 
 export const postArticles = (body) => post({
     url: config.ARTICLE,
@@ -43,6 +67,33 @@ export const postArticles = (body) => post({
         'Authorization': 'Bearer ' + storage.get('token')
     }
 });
+
+export const getCollectedArticles = () => get({
+  url: config.ARTICLE_COLLECTION,
+  headers: {
+    'Content-Type': 'application/json',
+    'Authorization': 'Bearer ' + storage.get('token')
+  }
+})
+
+export const cancelCollection = (body) => put({
+  url: config.ARTICLE + '/not_collection',
+  body,
+  headers: {
+    'Content-Type': 'application/json',
+    'Authorization': 'Bearer ' + storage.get('token')
+  }
+})
+
+
+export const addCollection = (body) => put({
+  url: config.ARTICLE + '/collection',
+  body,
+  headers: {
+    'Content-Type': 'application/json',
+    'Authorization': 'Bearer ' + storage.get('token')
+  }
+})
 
 export const getUserArticles = () => get({
     url: config.ARTICLE + '/user?current=0&size=10',
@@ -84,6 +135,30 @@ export const getArticleDetails = (id) => get({
         'Content-Type': 'application/json',
     }
 });
+
+export const searchCollectedArtcles = (id, content) => get({
+  url: config.ARTICLE_COLLECTION + '/' + id + '?search=' + content,
+  headers: {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ' + storage.get('token')
+  }
+})
+
+export const getOtherUserCollectedArticles = (id) => get({
+  url: config.ARTICLE_COLLECTION + '/' + id,
+  headers: {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ' + storage.get('token')
+  }
+})
+
+export const searchMyCollectedArticles = (content) => get({
+  url: config.ARTICLE_COLLECTION + '?search=' + content,
+  headers: {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ' + storage.get('token')
+  }
+})
 
 /* 学习路径相关 */
 export const getStudyPaths = (current) => get({
@@ -228,6 +303,26 @@ export const getUserInfo = () => get({
     }
 });
 
+
+export const getOtherUserInfo = (id) => get({
+  url: config.USER + '/' + id,
+  headers: {
+    'Content-Type': 'application/json',
+    'Authorization': 'Bearer ' + storage.get('token')
+  }
+})
+
+
+export const changeUserInfo = (body) => put({
+    url: config.USER,
+    body,
+    headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + storage.get('token')
+    }
+});
+
+
 export const getInvitationCode = () => get({
     url: config.INVITE_CODE,
     headers: {
@@ -250,6 +345,77 @@ export const getValidCode = (phone) => get({
         'Content-Type': 'application/json',
     }
 });
+
+
+/* 好友关系 */
+export const getFriendNumber = () => get({
+  url: config.FRIEND + '?type=1',
+  headers: {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ' + storage.get('token')
+  }
+});
+
+export const getOtherUserFriendNumber = (id) => get({
+  url: config.FRIEND + '?id=' + id + '&type=2',
+  headers: {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ' + storage.get('token')
+  }
+})
+
+export const getOtherUserFollowList = (id) => get({
+  url: config.FRIEND + '/follow?id=' + id + '&type=2',
+  headers: {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ' + storage.get('token')
+  }
+})
+
+export const getMyUserFollowList = () => get({
+  url: config.FRIEND + '/follow?type=1',
+  headers: {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ' + storage.get('token')
+  }
+})
+
+export const getOtherUserFansList = (id) => get({
+  url: config.FRIEND + '/fans?id=' + id + '&' + 'type=2',
+  headers: {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ' + storage.get('token')
+  }
+})
+
+
+export const follow = (body) => post({
+  url: config.FRIEND,
+  body,
+  headers: {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ' + storage.get('token')
+  }
+})
+
+
+export const cancelFollow = (id) => del({
+  url: config.FRIEND + '/' + id,
+  headers: {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ' + storage.get('token')
+  }
+})
+
+/* 还没纳入分类 */
+export const projectTaskUser = (body) => post({
+  url: config.TaskUser,
+  body,
+  headers: {
+    'Content-Type': 'application/json',
+    "Authorization": "Bearer " + storage.get('token')
+  }
+})
 
 export const userLogin = (body) => post({
     url: config.LOGIN,

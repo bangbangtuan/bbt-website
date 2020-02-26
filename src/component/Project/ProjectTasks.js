@@ -32,7 +32,7 @@ class ProjectTasks extends Component{
                 console.log(res)
                 this.setState({
                     task: res.data,
-                });                
+                });
             })
             .catch( err => console.log(err))
     };
@@ -48,11 +48,12 @@ class ProjectTasks extends Component{
                 'Content-Type': 'application/json',
                 "Authorization": "Bearer " + storage.get('token')
             }})
-            .then((res) => res.json())
             .then( res => {
-                console.log(res)
+                console.log('projectTaskUser: ', res)
                 if(res.status === 200 && res.data === true) {
                     message.success('任务领取成功，请到个人中心查看');
+                    // 跳转到个人中心
+                    this.props.history.push({pathname: '/profile', defaultActiveKey: 3})
                 } else {
                     message.error(res.msg);
                 }
@@ -104,5 +105,3 @@ class ProjectTasks extends Component{
 }
 
 export default withRouter(ProjectTasks);
-
-

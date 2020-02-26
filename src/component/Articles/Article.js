@@ -61,7 +61,7 @@ class Article extends Component{
                                     <Radio.Button value="Python" className={type ==='Python' ? 'radioActive':''}>#Python#</Radio.Button>
                                 </Radio.Group>
                             </div>
-                            <ArticleItem articles={this.state.articles}/>
+                            <ArticleItem getArticles={this.getArticles.bind(this, this.state.current, this.state.type)} articles={this.state.articles}/>
                             <ReactPaginate
                                 previousLabel={'<'}
                                 nextLabel={'>'}

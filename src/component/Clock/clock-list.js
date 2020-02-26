@@ -3,8 +3,9 @@ import './Clock.css';
 import noAuthor from '../../images/no-author.png';
 import countImg from '../../images/count.png';
 import storage from "../storage";
-import { withRouter } from 'react-router-dom';
-import { message, Comment, Avatar, Icon, List } from "antd";
+import { withRouter, Link } from 'react-router-dom';
+import {message, Comment, Avatar, Icon, List} from "antd";
+import { getMyLikeArtilce, getPunchTheClockComment } from '../../fetch'
 
 class ClockItem extends Component{
     constructor(props) {
@@ -19,12 +20,7 @@ class ClockItem extends Component{
     componentWillMount() {
         let dakaList = this.props.dakaList;
         if(this.state.token) {
-            fetch('https://api.bangneedu.com/punchTheClock/allLike' , {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json',
-                    "Authorization": "Bearer " + this.state.token
-                }})
+                getMyLikeArtilce()
                 .then((res) => res.json())
                 .then( res => {
                     console.log(res);
@@ -47,12 +43,7 @@ class ClockItem extends Component{
         for(let item of dakaList) {
             item.comments = []
             if(item.comments && item.comments.length === 0) {
-                fetch('https://api.bangneedu.com/punchTheClockComment/' + item.id, {
-                    method: 'GET',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        "Authorization": this.state.token ? "Bearer " + this.state.token : ''
-                    }})
+                    getPunchTheClockComment(item.id)
                     .then((res) => res.json())
                     .then( res => {
                         item.comments = res.data;
@@ -193,6 +184,7 @@ class ClockItem extends Component{
 
     render() {
         let dakaList = this.state.dakaList;
+        console.log('adkaList: ', dakaList)
         return (
             <div className='dakas'>
                 <div className='daka-container'>
@@ -212,7 +204,9 @@ class ClockItem extends Component{
 
                                             }
                                             avatar={
+                                              <Link to={'/profile/' + item.userId}>
                                                 <Avatar src={item.headPortrait} alt={item.name} />
+                                              </Link>
                                             }
                                             content={
                                                 <div>
