@@ -19,6 +19,7 @@ class ClockItem extends Component{
 
     componentWillMount() {
         let dakaList = this.props.dakaList;
+        console.log('首页打卡: ', dakaList)
         if(this.state.token) {
                 getMyLikeArtilce()
                 .then((res) => res.json())

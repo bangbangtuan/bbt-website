@@ -29,7 +29,7 @@ class Clock extends Component{
 
     getDakaList = (page) => {
         getClocks(page).then((res) => {
-            console.log(res.data)
+            console.log('打卡信息: ', res.data)
             this.setState({
                 dakaList: res.data.records,
                 pages: parseInt(res.data.pages),

@@ -55,10 +55,10 @@ class Article extends Component{
                             <div className='type-banner'>
                                 <Radio.Group onChange={this.handleChange} >
                                     <Radio.Button value="" className={type ==='all' ? 'radioActive':''}>全部</Radio.Button>
-                                    <Radio.Button value="前端" className={type ==='前端' ? 'radioActive':''}>#前端#</Radio.Button>
-                                    <Radio.Button value="Java" className={type ==='Java' ? 'radioActive':''}>#Java#</Radio.Button>
-                                    <Radio.Button value="产品经理" className={type ==='产品经理' ? 'radioActive':''}>#产品经理#</Radio.Button>
-                                    <Radio.Button value="Python" className={type ==='Python' ? 'radioActive':''}>#Python#</Radio.Button>
+                                    <Radio.Button value="前端" className={type ==='前端' ? 'radioActive':''}>前端</Radio.Button>
+                                    <Radio.Button value="Java" className={type ==='Java' ? 'radioActive':''}>Java</Radio.Button>
+                                    <Radio.Button value="产品经理" className={type ==='产品经理' ? 'radioActive':''}>产品经理</Radio.Button>
+                                    <Radio.Button value="Python" className={type ==='Python' ? 'radioActive':''}>Python</Radio.Button>
                                 </Radio.Group>
                             </div>
                             <ArticleItem getArticles={this.getArticles.bind(this, this.state.current, this.state.type)} articles={this.state.articles}/>

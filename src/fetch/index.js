@@ -10,6 +10,15 @@ export const getClocks = (current) => get({
     }
 });
 
+
+export const getNbPunckClock = () => get({
+  url: config.CLOCK + '/straightStudent',
+  headers: {
+      'Content-Type': 'application/json',
+  }
+});
+
+
 export const getOtherUserClocks = (id) => get({
   url: config.CLOCK + '/user/' + id,
   headers: {
@@ -56,6 +65,14 @@ export const getOtherUserArticles = (id) => get({
   headers: {
       'Content-Type': 'application/json',
       'Authorization': 'Bearer ' + storage.get('token')
+  }
+});
+
+
+export const getLearnDairy = () => get({
+  url: config.ARTICLE + '/straightStudent',
+  headers: {
+    'Content-Type': 'application/json'
   }
 })
 
