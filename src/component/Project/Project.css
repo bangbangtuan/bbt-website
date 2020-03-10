@@ -107,3 +107,16 @@
     margin-right: 10px;
     border-radius: 50%;
 }
+.button-wrapper {
+  text-align: right;
+}
+
+.schedule {
+  display: inline-block;
+}
+
+.button-wrapper .schedule .ant-btn-danger {
+  background-color: #efa956;
+  margin-left: 25px;
+  border-color: #efa956;
+}

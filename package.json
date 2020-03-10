@@ -5,15 +5,19 @@
   "dependencies": {
     "antd": "^3.26.3",
     "area-data": "^5.0.6",
+    "babel-plugin-import": "^1.13.0",
     "bootstrap": "^4.4.1",
     "cors": "^2.8.5",
+    "customize-cra": "^0.9.1",
     "express": "^4.17.1",
     "for-editor": "^0.3.5",
     "jquery": "^3.4.1",
-    "less": "^3.10.3",
+    "less": "^3.11.1",
+    "less-loader": "^5.0.0",
     "node-sass": "^4.13.0",
     "qrcode.react": "^0.9.3",
     "react": "^16.12.0",
+    "react-app-rewired": "^2.1.5",
     "react-area-linkage": "^3.0.0",
     "react-bootstrap": "^1.0.0-beta.16",
     "react-calendar": "^2.19.2",
@@ -29,8 +33,11 @@
   },
   "scripts": {
     "start": "react-scripts start",
+    "rstart": "react-app-rewired start",
     "build": "react-scripts build",
+    "rbuild": "react-app-rewired build",
     "test": "react-scripts test",
+    "rtest": "react-app-rewired test",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {

@@ -54,21 +54,40 @@
     padding: 10px 0;
 }
 .type-banner .ant-radio-group {
-    margin-left: 20px;
+  display: flex;
+  justify-content: space-between;
+  margin-left: 20px;
+  align-items: center;
+  height: 71px;
 }
 .type-banner .ant-radio-button-wrapper {
     border: none;
+    font-family: MicrosoftYaHei;
+    font-size: 21px;
+    font-weight: normal;
+    font-stretch: normal;
+    line-height: 29px;
+    letter-spacing: 0px;
+    color: #4f4f4f;
 }
 .type-banner .ant-radio-button-wrapper:first-child {
     border: none;
 }
 .type-banner .ant-radio-button-wrapper:not(:first-child)::before {
     background-color: #ffffff;
+
 }
 .type-banner .ant-radio-button-wrapper-checked:not(.ant-radio-button-wrapper-disabled) {
     /*background-color: #ff6e37;*/
     /*border-radius: 5px;*/
-    color: #ff6e37;
+    /*color: #ff6e37;*/
+    box-shadow: 0px 0px 0px;
+    font-size: 19px;
+    color: #ffffff;
+}
+
+.type-banner .ant-radio-button-wrapper-checked {
+  box-shadow: 0px 0px 0px;
 }
 
 .share-modal {
@@ -194,4 +213,19 @@
 .collect {
   width: 18px;
   height: 18px;
+}
+
+.type-banner .ant-radio-button-wrapper-checked {
+  width: 110px;
+  height: 50px;
+  border-radius: 25px;
+  background-color: #fd6f41;
+  text-align: center;
+  line-height: 50px;
+  font-family: MicrosoftYaHei;
+  font-size: 21px;
+  font-weight: normal;
+  font-stretch: normal;
+  letter-spacing: 0px;
+  color: #ffffff;
 }

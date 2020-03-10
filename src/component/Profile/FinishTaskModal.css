@@ -67,3 +67,15 @@
     height: auto;
     font-size: 14px;
 }
+
+.daka-wrapper {
+  text-align: right;
+  bottom: 7px;
+  position: relative;
+  right: 10px;
+}
+
+.daka-wrapper .ant-btn-primary {
+  background-color: #fd6f41;
+  border-color: #ef6656;
+}

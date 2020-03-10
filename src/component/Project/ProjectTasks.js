@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Row, Col, Breadcrumb, Layout, Button, message } from 'antd';
 import './Project.css';
-import { withRouter} from 'react-router-dom';
+import { withRouter, Link} from 'react-router-dom';
 import storage from "../storage";
 import MasterRecommend from "../Master/MasterRecommend"
 const { Content } = Layout;
@@ -91,7 +91,14 @@ class ProjectTasks extends Component{
                                         <div style={detail}>
                                             任务详情： {this.state.task.details}
                                         </div>
-                                        <p align="right"><Button type='primary' shape='round' onClick={this.receiveTask}>领取任务</Button></p>
+                                        <div className="button-wrapper">
+                                          <Button type='primary' shape='round' onClick={this.receiveTask}>领取任务</Button>
+                                          <Link to={'/profile' + '?/defaultActiveKey=3'}>
+                                            <div class="schedule">
+                                              <Button type='danger' shape='round'>进度详情</Button>
+                                            </div>
+                                          </Link>
+                                        </div>
                                     </Content>
                                     <MasterRecommend {...this.props}/>
                                 </div>
