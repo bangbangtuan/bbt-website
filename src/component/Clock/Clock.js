@@ -16,19 +16,19 @@ class Clock extends Component{
             textarea: '',
             current: 1,
             changed: false,
-            type:'',
+            type: props.location.state === undefined? '': props.location.state.tag,
             isClickable: true,
             t_length: 0
         }
     }
 
     componentDidMount() {
-        this.getDakaList(this.state.current);
+        this.getDakaList(this.state.current, this.state.type);
         this.getTags();
     };
 
-    getDakaList = (page) => {
-        getClocks(page).then((res) => {
+    getDakaList = (page, type) => {
+        getClocks(page, type).then((res) => {
             console.log('打卡信息: ', res.data)
             this.setState({
                 dakaList: res.data.records,

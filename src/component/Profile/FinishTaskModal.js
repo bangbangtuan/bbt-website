@@ -114,8 +114,8 @@ class FinishTaskModal extends Component {
         return (
             <div>
                 <div class="daka-wrapper">
-                  <Link to={'/clock' }>
-                    <Button type="primary" shape='round' onClick={this.showModal}>打卡进度</Button>
+                  <Link to={{pathname: '/clock', state: {tag: '实战XX任务'}}}>
+                    <Button type="primary" shape='round'>打卡进度</Button>
                   </Link>
                 </div>
                 <Button type="danger" shape='round' className='finish-btn' onClick={this.showModal}>完成任务</Button>
