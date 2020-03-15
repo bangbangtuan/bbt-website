@@ -12,23 +12,25 @@ const { TextArea } = Input;
 class Clock extends Component{
     constructor(props) {
         super(props);
+        console.log('props.location.state: ', props.location) // 再次进入的时候还是保持刷新
         this.state = {
             textarea: '',
             current: 1,
             changed: false,
-            type:'',
             isClickable: true,
-            t_length: 0
+            t_length: 0,
+            type: props.match.params.task === undefined? '':'实战xx任务'
         }
     }
 
     componentDidMount() {
-        this.getDakaList(this.state.current);
+        this.getDakaList(this.state.current, this.state.type);
         this.getTags();
+
     };
 
-    getDakaList = (page) => {
-        getClocks(page).then((res) => {
+    getDakaList = (page, type) => {
+        getClocks(page, type).then((res) => {
             console.log('打卡信息: ', res.data)
             this.setState({
                 dakaList: res.data.records,
@@ -41,9 +43,11 @@ class Clock extends Component{
     getTags = () => {
         getTags().then((res) => {
             console.log(res.data);
-            this.setState({
-                tags: res.data.records
-            });
+            if (this.state.type === '') {
+              this.setState({
+                  tags: res.data.records
+              });
+            }
         })
     };
 

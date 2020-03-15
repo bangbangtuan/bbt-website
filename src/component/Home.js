@@ -169,7 +169,7 @@ class Home extends Component{
                         </div>
                         <div className='con-header'>学习日记</div>
                         <div class="learn-dairy-wrapper">
-                          <ArticleItem getArticles={this.getArticles.bind(this, this.state.current, this.state.type)} articles={this.state.articles}/>
+                          <ArticleItem getArticles={this.getLearnDairy.bind(this)} articles={this.state.learnDairy}/>
                         </div>
                         <div className='con-header'>优秀打卡</div>
                         <div class="daka-wrapper">

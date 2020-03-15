@@ -3,8 +3,8 @@ import * as config from './config';
 import storage from "../component/storage";
 
 /* 打卡相关 */
-export const getClocks = (current) => get({
-    url: config.CLOCK + '?current=' + current +'&size=10',
+export const getClocks = (current, type) => get({
+    url: config.CLOCK + '?current=' + current +'&size=10' + (type === ''? '':`&type=${type}`),
     headers: {
         'Content-Type': 'application/json',
     }
