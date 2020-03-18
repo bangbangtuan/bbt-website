@@ -3,12 +3,21 @@ import * as config from './config';
 import storage from "../component/storage";
 
 /* 打卡相关 */
-export const getClocks = (current) => get({
-    url: config.CLOCK + '?current=' + current +'&size=10',
+export const getClocks = (current, type) => get({
+    url: config.CLOCK + '?current=' + current +'&size=10' + (type === ''? '':`&type=${type}`),
     headers: {
         'Content-Type': 'application/json',
     }
 });
+
+
+export const getNbPunckClock = () => get({
+  url: config.CLOCK + '/straightStudent',
+  headers: {
+      'Content-Type': 'application/json',
+  }
+});
+
 
 export const getOtherUserClocks = (id) => get({
   url: config.CLOCK + '/user/' + id,
@@ -56,6 +65,14 @@ export const getOtherUserArticles = (id) => get({
   headers: {
       'Content-Type': 'application/json',
       'Authorization': 'Bearer ' + storage.get('token')
+  }
+});
+
+
+export const getLearnDairy = () => get({
+  url: config.ARTICLE + '/straightStudent',
+  headers: {
+    'Content-Type': 'application/json'
   }
 })
 

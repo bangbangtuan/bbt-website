@@ -143,3 +143,14 @@
     position: relative;
 }
 
+.con-header {
+    margin: 30px 0;
+    font-size: 16px;
+    border-left: 4px solid #ff6e37;
+    padding-left: 10px;
+    width: 90%;
+}
+
+.learn-dairy-wrapper, .daka-wrapper {
+  width: 90%;
+}

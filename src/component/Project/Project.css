@@ -107,3 +107,29 @@
     margin-right: 10px;
     border-radius: 50%;
 }
+
+
+
+.task-wrapper {
+  display: inline-block;
+  position: relative;
+  left: 645px;
+}
+.schedule-detail-wrapper {
+  display: inline-block;
+  position: relative;
+  left: 670px;
+}
+
+.schedule-detail-wrapper .ant-btn-primary {
+  background-color: #efa956;
+  border-radius: 25px;
+  border-color: #efa956;
+}
+
+
+.schedule-detail-wrapper .ant-btn-primary:hover, .ant-btn-primary:focus {
+  background-color: #efa956;
+  border-radius: 25px;
+  border-color: #efa956;
+}

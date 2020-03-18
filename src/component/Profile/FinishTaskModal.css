@@ -67,3 +67,16 @@
     height: auto;
     font-size: 14px;
 }
+
+.daka-schedule-wrapper .ant-btn {
+  position: relative;
+  right: 136px;
+  background-color: #fd6f41;
+  border-color: #fd6f41;
+}
+
+.daka-schedule-wrapper .ant-btn-primary:hover, .ant-btn-primary:focus {
+  color: #fff;
+  background-color: #fd6f41;
+  border-color: #fd6f41;
+}

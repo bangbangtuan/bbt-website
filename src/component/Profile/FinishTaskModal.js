@@ -5,7 +5,7 @@ import React, { Component } from 'react';
 import {Button, Modal, Layout, PageHeader, Form, Input, Divider, message} from 'antd';
 import './FinishTaskModal.css';
 import storage from "../storage";
-import { withRouter } from 'react-router-dom'
+import { withRouter, Link } from 'react-router-dom'
 const FormItem = Form.Item;
 const { Content, Sider } = Layout;
 const { TextArea } = Input;
@@ -113,6 +113,11 @@ class FinishTaskModal extends Component {
         );
         return (
             <div>
+                <div class="daka-schedule-wrapper">
+                  <Link to={'/clock/' + 'daka'}>
+                    <Button type="primary" shape='round' className='finish-btn'>打卡进度</Button>
+                  </Link>
+                </div>
                 <Button type="danger" shape='round' className='finish-btn' onClick={this.showModal}>完成任务</Button>
                 <SubmitTaskForm
                     ref={this.saveFormRef}

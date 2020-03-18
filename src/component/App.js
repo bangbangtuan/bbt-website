@@ -58,6 +58,9 @@ class App extends React.Component {
                 <BrowserRouter>
                     <Switch>
                         <Route path="/" component={Home} exact />
+                        <Route path="/clock/:task" render={() => {
+                            return <Clock />
+                        }} />
                         <Route path="/clock" render={() => {
                             return <Clock />
                         }} />

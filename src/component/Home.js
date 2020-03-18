@@ -6,14 +6,23 @@ import {Row, Col, Carousel, Calendar, Descriptions, List } from "antd";
 import moment from 'moment';
 import 'moment/locale/zh-cn';
 import { Link } from 'react-router-dom';
-import CarousalItem from './Carousel/Carousel'
+import CarousalItem from './Carousel/Carousel';
+import ArticleItem from './Articles/article-list';
+import ClockItem from './Clock/clock-list.js';
+import {getLearnDairy, getArticles, getNbPunckClock} from '../fetch/index.js';
+
+
 moment.locale('zh-cn');
 
 class Home extends Component{
     constructor(props) {
         super(props);
         this.state = {
-            date: new Date()
+            date: new Date(),
+            current: 1,
+            changed: false,
+            page: 1,
+            type: ''
         }
     }
 
@@ -21,6 +30,9 @@ class Home extends Component{
         this.getScheduleByDate(moment(this.state.date).format("YYYY-MM-DD"));
         this.getBanners();
         this.getProject();
+        this.getLearnDairy();
+        this.getArticles(1);
+        this.getNbPunckClock();
     }
 
     onDataSelect = (date) => {
@@ -28,6 +40,34 @@ class Home extends Component{
         let selectedDate = moment(date).format("YYYY-MM-DD");
         this.getScheduleByDate(selectedDate);
     };
+
+    getLearnDairy = () => {
+      getLearnDairy().then((res) => {
+        this.setState({
+          learnDairy: res.data
+        })
+      })
+    };
+
+    getNbPunckClock = () => {
+      getNbPunckClock().then((res) => {
+        this.setState({
+          clocks: res.data
+        })
+      })
+    }
+
+    getArticles = (page, type) => {
+    getArticles(page, type).then((res) => {
+        console.log('首页获取文章: ', res.data);
+        this.setState({
+            articles: res.data.records,
+            pages: parseInt(res.data.pages),
+            changed: true
+        })
+      })
+    };
+
 
     getScheduleByDate = (date) => {
         fetch('https://api.bangneedu.com/schedule/' + date, {
@@ -127,8 +167,17 @@ class Home extends Component{
                                 </Row>
                             }
                         </div>
-                        <div className='mid-xibao' >
-                            <CarousalItem />
+                        <div className='con-header'>学习日记</div>
+                        <div class="learn-dairy-wrapper">
+                          <ArticleItem getArticles={this.getLearnDairy.bind(this)} articles={this.state.learnDairy}/>
+                        </div>
+                        <div className='con-header'>优秀打卡</div>
+                        <div class="daka-wrapper">
+                        {
+                          ( this.state.clocks &&
+                            <ClockItem dakaList={this.state.clocks} />
+                          )
+                        }
                         </div>
                     </div>
                 </Col>
