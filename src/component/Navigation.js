@@ -65,7 +65,6 @@ export default class Navigation extends React.Component {
         let navRight;
         console.log('token: ', token)
         if(token) {
-
             if (!this.state.loginStatus) {
                 navRight = null
             } else {

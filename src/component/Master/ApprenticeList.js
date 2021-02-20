@@ -1,8 +1,9 @@
 import React, { Component } from "react";
 import { List, Card, Descriptions, Breadcrumb, Row, Col, Layout, Divider, Icon} from "antd";
 import "./Master.css";
-import photo from "../../images/author.jpg"
+
 import { getMasterOrApprenticeList,getMasterDetail,getProjectTaskDetail } from "../../fetch";
+import { Link } from "react-router-dom";
 const { Sider, Content } = Layout;
 
 export default class ApprenticeList extends Component {
@@ -121,7 +122,11 @@ export default class ApprenticeList extends Component {
                               <p
                                 style={{ display: "inline", fontSize: "14px" }}
                               >
-                                等待师傅收徒/拜师成功/完成任务/拜师失败
+                                {item.orderFormStatus==='1'?'等待付款'
+                                :item.orderFormStatus==='2'?'订单成功'
+                                :item.orderFormStatus==='3'?'已收徒'
+                                :item.orderFormStatus==='5'?'订单完成':
+                                "拜师已取消"}
                               </p>
                             </Descriptions.Item>
                           </Descriptions>
@@ -135,8 +140,10 @@ export default class ApprenticeList extends Component {
                             联系徒弟
                         </div>
                         <div style={{float:"right", width:"180px", textAlign:"center"}}>
-                            <div style={{float:"left", border:"1px solid #000", width:"80px"}}>确认收徒</div>
-                            <div style={{float:"right", border:"1px solid #000", width:"80px"}}>删除订单</div>
+
+                            <div style={{float:"right", border:"1px solid #000", width:"80px"}}>
+                              <Link to={{pathname: '/apprenticeOrderDetail/'+item.id, state:item}}>订单详情</Link>
+                            </div>
                         </div>
                     </div>
                   </Card>

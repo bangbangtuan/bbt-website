@@ -27,7 +27,6 @@ class MasterPaySuccess extends React.Component {
       this.setState({
         master: res.data
       })
-      console.log(res.data)
     })
     
   }
@@ -62,7 +61,8 @@ class MasterPaySuccess extends React.Component {
                 <h2 >支付成功</h2>
                 <p>￥{this.props.location.state.commodityPrice}</p>
                 <div className="seeDetailContent">
-                    <Link to={"/masterOrderDetails/"+this.props.location.state.id} className="seeDetail">查看订单详情</Link>
+                    <Link to={{pathname:"/masterOrderDetails/"+this.props.location.state.id, state:this.props.location.state}} className="seeDetail">查看订单详情</Link>
+                    {/*state:this.props.location.state*/}
                 </div>
                 <p className="payNote">本公司不会用任何理由要求您登录银行卡信息或支付额外费用 请谨防钓鱼链接或诈骗电话</p>
               </div>

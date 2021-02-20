@@ -222,6 +222,7 @@ class ArticleDetails extends Component{
 
     render() {
         let article = this.state.article;
+        let isMyLike = this.state.isMyLike
         return (
             <div>
                 <Row>

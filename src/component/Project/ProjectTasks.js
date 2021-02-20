@@ -32,7 +32,7 @@ class ProjectTasks extends Component{
                 console.log(res)
                 this.setState({
                     task: res.data,
-                });
+                });                
             })
             .catch( err => console.log(err))
     };

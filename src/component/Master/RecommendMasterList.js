@@ -135,7 +135,6 @@ class RecommendMasterList extends Component {
                           }}>
                           <Link to={"/masterDetail/"+item.id}>查看详情</Link>
                         </div>
-
                       </div>
                     </div>
                   </Card>

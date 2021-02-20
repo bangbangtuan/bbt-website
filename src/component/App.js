@@ -41,13 +41,15 @@ import MasterPostList from "./Master/MasterPostList"
 import ApprenticeList from "./Master/ApprenticeList"
 import MasterList from "./Master/MasterList"
 import AllMasterList from "./Master/AllMasterList";
+
+import MasterPayList from "./Master/MasterPayList"
+import ApprenticeOrderDetail from "./Master/ApprenticeOrderDetail"
 import Friend from "./Profile/Friend";
 import MasterOrderDetails from "./Master/MasterOrderDetails"
 import RecommendMasterList from "./Master/RecommendMasterList"
 import { Layout } from 'antd';
 
 const { Footer } = Layout;
-
 class App extends React.Component {
 
     render() {
@@ -173,6 +175,13 @@ class App extends React.Component {
                         <Route path="/masterOrderDetails/:id" render={() => {
                             return <MasterOrderDetails/>
                         }}/>
+                        <Route path="/masterPayList" render={() => {
+                            return <MasterPayList/>
+                        }}/>
+                        <Route path="/apprenticeOrderDetail" render={() => {
+                            return <ApprenticeOrderDetail/>
+                        }}/>
+
                         <Route path='/recommendMasterList' render={() => {
                             return <RecommendMasterList/>
                         }}/>
@@ -180,8 +189,6 @@ class App extends React.Component {
                             return <AllMasterList/>
                         }}/>
                         <Route path="/follow" component={Friend}/>
-
-
                         <Route component={PageNotFound}/>
                     </Switch>
                 </BrowserRouter>

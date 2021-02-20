@@ -28,7 +28,7 @@ class MasterPostList extends React.Component {
           this.setState({
             projectDetail: projectTask.data.details
           })
-          getProjectDetail(projectTask.projectId).then(project =>{
+          getProjectDetail(projectTask.data.projectId).then(project =>{
             this.setState({
               projectImage: project.data.image
             })
@@ -36,7 +36,7 @@ class MasterPostList extends React.Component {
         })
         this.setState({
           initLoading: false,
-          data:[res]
+          data:[res.data]
         })
       }
     });

@@ -38,7 +38,6 @@ class Profile extends Component{
         this.setState({
             token: token
         });
-
         getUserInfo().then((res) => {
           console.log('res: ', res)
           this.setState({
